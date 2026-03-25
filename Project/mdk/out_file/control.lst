@@ -1,0 +1,205 @@
+C251 COMPILER V5.60.0,  control                                                            25/03/26  14:00:18  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE control
+OBJECT MODULE PLACED IN .\out_file\control.obj
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\code_c\control.c LARGE NOALIAS WARNINGLEVEL(3) OPTIMIZ
+                    -E(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\librarie
+                    -s\zf_driver;..\user;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h) DEBUG PRINT(.\out_file\control.lst) OBJECT(.\
+                    -out_file\control.obj) 
+
+stmt  level    source
+
+    1          #include "control.h"
+    2          
+    3          Track_State_e current_track_state = TRACK_NORMAL;
+    4          Track_PID_t track_pid;
+    5          
+    6          uint16 element_lock_timer = 0; // 元素状态机锁定时间，防止重复误判
+    7          
+    8          /**
+    9           * @brief 循迹模块初始化
+   10           * 配置PID默认参数
+   11           */
+   12          void Track_Control_Init(void)
+   13          {
+   14   1          track_pid.kp = 1.2f; // 比例系数 (需自行整定)
+   15   1          track_pid.kd = 2.5f; // 微分系数 (需自行整定)
+   16   1          track_pid.error = 0.0f;
+   17   1          track_pid.last_error = 0.0f;
+   18   1          track_pid.output = 0.0f;
+   19   1      }
+   20          
+   21          /**
+   22           * @brief 赛道元素识别状态机
+   23           * 根据卓晴老师的电磁分析：
+   24           * 十字：两边横向电感同时感应到垂直电磁线，产生双峰。
+   25           * 环岛：单侧横向电感产生巨大突变峰值。
+   26           * @param ind_data 经过滤波后的四电感数组 (1:L横, 2:LM竖, 3:RM竖, 4:R横)
+   27           */
+   28          void Track_Element_Recognize(uint16 *ind_data)
+   29          {
+   30   1          // 提取电感值，方便阅读
+   31   1          uint16 L_H = ind_data[1]; // 左横
+   32   1          uint16 L_V = ind_data[2]; // 左竖
+   33   1          uint16 R_V = ind_data[3]; // 右竖
+   34   1          uint16 R_H = ind_data[4]; // 右横
+   35   1      
+   36   1          // 丢线检测
+   37   1          if ((L_V + R_V + L_H + R_H) < LOST_LINE_SUM)
+   38   1          {
+   39   2              current_track_state = TRACK_LOST;
+   40   2              return;
+   41   2          }
+   42   1      
+   43   1          // 延时锁定期，不进行新的识别
+   44   1          if (element_lock_timer > 0)
+   45   1          {
+   46   2              element_lock_timer--;
+   47   2              return;
+   48   2          }
+   49   1      
+   50   1          current_track_state = TRACK_NORMAL; // 默认为正常赛道
+   51   1      
+   52   1          // 1. 识别十字路口：左右横电感同时急剧增大
+   53   1          if (L_H > CROSS_H_THRESHOLD && R_H > CROSS_H_THRESHOLD)
+   54   1          {
+   55   2              current_track_state = TRACK_CROSS;
+   56   2              element_lock_timer = 50; // 锁定状态一定周期 (根据定时器执行频率调整)
+C251 COMPILER V5.60.0,  control                                                            25/03/26  14:00:18  PAGE 2   
+
+   57   2          }
+   58   1          // 2. 识别左环岛入环：左横电感极大，右横正常
+   59   1          else if (L_H > RING_H_THRESHOLD && R_H < CROSS_H_THRESHOLD)
+   60   1          {
+   61   2              current_track_state = TRACK_RING_L_IN;
+   62   2              element_lock_timer = 40;
+   63   2          }
+   64   1          // 3. 识别右环岛入环：右横电感极大，左横正常
+   65   1          else if (R_H > RING_H_THRESHOLD && L_H < CROSS_H_THRESHOLD)
+   66   1          {
+   67   2              current_track_state = TRACK_RING_R_IN;
+   68   2              element_lock_timer = 40;
+   69   2          }
+   70   1      }
+   71          
+   72          /**
+   73           * @brief 优化后的差比和误差计算
+   74           * @param ind_data 经过滤波后的四电感数组
+   75           * @return float 计算出的最终偏差值
+   76           */
+   77          float Track_Get_Optimized_Error(uint16 *ind_data)
+   78          {
+   79   1          float scaled_err = 0.0f;
+   80   1              float denominator,numerator;
+   81   1          uint16 L_H = ind_data[1];
+   82   1          uint16 L_V = ind_data[2];
+   83   1          uint16 R_V = ind_data[3];
+   84   1          uint16 R_H = ind_data[4];
+   85   1      
+   86   1          // 分母防零除保护
+   87   1          denominator = Str_value * (float)(L_H + R_H) + Cur_value * (float)(L_V + R_V);
+   88   1          if (denominator < 1.0f)
+   89   1          {
+   90   2              return track_pid.last_error; // 如果分母过小，维持上次偏差
+   91   2          }
+   92   1      
+   93   1          // 基础差比和计算 (引入了你原代码中的 Str_value 和 Cur_value 权重)
+   94   1          numerator = Str_value * (float)((int32)L_H - R_H) + Cur_value * (float)((int32)L_V - R_V);
+   95   1          scaled_err = (numerator / denominator) * 100.0f;
+   96   1      
+   97   1          // 限幅保护
+   98   1          scaled_err = range_protect(scaled_err, -100.0, 100.0);
+   99   1      
+  100   1          // --- 根据赛道元素强行修正偏差 ---
+  101   1          switch (current_track_state)
+  102   1          {
+  103   2          case TRACK_CROSS:
+  104   2              // 十字路口中心通常会丢线或严重畸变，直接锁死偏差为0，让车直冲过去
+  105   2              scaled_err = 0.0f;
+  106   2              break;
+  107   2          case TRACK_RING_L_IN:
+  108   2              // 检测到左环岛，强行赋予一个极大的负偏差，让车猛烈向左打角进环
+  109   2              scaled_err = -80.0f;
+  110   2              break;
+  111   2          case TRACK_RING_R_IN:
+  112   2              // 检测到右环岛，强行向右切入
+  113   2              scaled_err = 80.0f;
+  114   2              break;
+  115   2          default:
+  116   2              break;
+  117   2          }
+  118   1      
+  119   1          return scaled_err;
+  120   1      }
+  121          
+  122          /**
+C251 COMPILER V5.60.0,  control                                                            25/03/26  14:00:18  PAGE 3   
+
+  123           * @brief 核心控制执行函数 (建议在定时器中断中调用，如 5ms 一次)
+  124           * 包含：采数据 -> 判元素 -> 算PID -> 差速输出
+  125           */
+  126          void Track_Execute_Steering(void)
+  127          {
+  128   1          uint16 ind_filtered[5] = {0};
+  129   1          int16 speed_L = 0, speed_R = 0;
+  130   1      
+  131   1          // 1. 读取并滤波电感数据 (调用你 inductance.c 中的函数)
+  132   1          Inductance_Read(ind_filtered);
+  133   1      
+  134   1          // 2. 赛道元素识别更新
+  135   1          Track_Element_Recognize(ind_filtered);
+  136   1      
+  137   1          // 3. 丢线停车保护
+  138   1          if (current_track_state == TRACK_LOST)
+  139   1          {
+  140   2              motor_L(0);
+  141   2              motor_R(0);
+  142   2              return;
+  143   2          }
+  144   1      
+  145   1          // 4. 获取计算出的偏差
+  146   1          track_pid.error = Track_Get_Optimized_Error(ind_filtered);
+  147   1      
+  148   1          // 5. PD 位置式计算
+  149   1          track_pid.output = track_pid.kp * track_pid.error +
+  150   1                             track_pid.kd * (track_pid.error - track_pid.last_error);
+  151   1          track_pid.last_error = track_pid.error;
+  152   1      
+  153   1          // 6. 差速计算 (基础速度 ± 转向PWM)
+  154   1          // 假设 error 为正时车体偏右，需要向左拐 -> 左轮减速，右轮加速
+  155   1          speed_L = BASE_SPEED - (int16)track_pid.output;
+  156   1          speed_R = BASE_SPEED + (int16)track_pid.output;
+  157   1      
+  158   1          // 7. 速度限幅 (匹配你 motor.c 中 -100 到 100 的范围)
+  159   1          speed_L = (int16)range_protect(speed_L, MIN_SPEED, MAX_SPEED);
+  160   1          speed_R = (int16)range_protect(speed_R, MIN_SPEED, MAX_SPEED);
+  161   1      
+  162   1          // 8. 驱动底层电机
+  163   1          motor_L(speed_L);
+  164   1          motor_R(speed_R);
+  165   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      1241     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =        74     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        24     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

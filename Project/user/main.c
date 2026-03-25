@@ -3,9 +3,9 @@ void main()
 {
 	clock_init(SYSTEM_CLOCK_30M);
 	debug_init();
-	imu_init();
-	LED_Init();
+
 	while (1)
 	{
+		
 	}
 }

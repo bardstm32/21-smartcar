@@ -817,6 +817,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Libraries\code_c\init.c</FilePath>
             </File>
+            <File>
+              <FileName>control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Libraries\code_c\control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -861,6 +866,11 @@
               <FileName>init.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Libraries\code_h\init.h</FilePath>
+            </File>
+            <File>
+              <FileName>control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Libraries\code_h\control.h</FilePath>
             </File>
           </Files>
         </Group>
