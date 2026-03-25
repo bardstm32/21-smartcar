@@ -1,0 +1,48 @@
+{
+    "configurations": [
+        {
+            "name": "STC32G",
+            "cStandard": "c89",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "${default}",
+            "includePath": [
+                "D:/Keil_v5/C251/INC",
+                "c:/Users/LENOVO/Desktop/20 smartcar/STC32G12K128/libraries/zf_common",
+                "c:/Users/LENOVO/Desktop/20 smartcar/STC32G12K128/libraries/zf_components",
+                "c:/Users/LENOVO/Desktop/20 smartcar/STC32G12K128/libraries/zf_device",
+                "c:/Users/LENOVO/Desktop/20 smartcar/STC32G12K128/libraries/zf_driver",
+                "c:/Users/LENOVO/Desktop/20 smartcar/STC32G12K128/Project/user",
+                "c:/Users/LENOVO/Desktop/20 smartcar/STC32G12K128/Project/code",
+                "c:/Users/LENOVO/Desktop/20 smartcar/STC32G12K128/Libraries/code_c",
+                "c:/Users/LENOVO/Desktop/20 smartcar/STC32G12K128/Libraries/code_h"
+            ],
+            "defines": [
+                "__C251__",
+                "__VSCODE_C251__",
+                "reentrant=",
+                "compact=",
+                "small=",
+                "large=",
+                "data=",
+                "idata=",
+                "pdata=",
+                "bdata=",
+                "edata=",
+                "xdata=",
+                "code=",
+                "bit=char",
+                "sbit=char",
+                "sfr=char",
+                "sfr16=int",
+                "sfr32=int",
+                "interrupt=",
+                "using=",
+                "far=",
+                "_at_=",
+                "_priority_=",
+                "_task_="
+            ]
+        }
+    ],
+    "version": 4
+}

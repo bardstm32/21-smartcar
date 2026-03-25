@@ -1,0 +1,85 @@
+C251 COMPILER V5.60.0,  buzzer                                                             23/03/26  21:43:05  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE buzzer
+OBJECT MODULE PLACED IN .\out_file\buzzer.obj
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\code_c\buzzer.c LARGE NOALIAS WARNINGLEVEL(3) OPTIMIZE
+                    -(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries
+                    -\zf_driver;..\user;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h) DEBUG PRINT(.\out_file\buzzer.lst) OBJECT(.\ou
+                    -t_file\buzzer.obj) 
+
+stmt  level    source
+
+    1          /********************************************************************************************************
+             -*************
+    2           *  @file  Buzzer.c
+    3           *  @brief  蜂鸣器初始化与控制
+    4           * 该文件包含了蜂鸣器初始化、打开和关闭的相关函数。
+    5           * 通过初始化指定的GPIO引脚来控制蜂鸣器的开关状态。
+    6           * 根据需要，可以在头文件中修改蜂鸣器的引脚配置。
+    7           *  @date              @author            备注
+    8           *  2025-12-21        三帅勇闯智能车-rw   初始版本
+    9           *  修改记录：
+   10           *  @date              @author            备注
+   11           * 
+   12           ********************************************************************************************************
+             -************/
+   13          
+   14          #include "zf_common_headfile.h"
+   15          #include "Buzzer.h"
+   16          
+   17          /**
+   18            * @brief 初始化蜂鸣器,可根据头文件修改引脚
+   19            * @param 无
+   20            * @return 无
+   21            */
+   22          void Buzzer_Init(void)
+   23          {
+   24   1          gpio_init(Buzzer, GPO, 1, GPO_PUSH_PULL);
+   25   1      }
+   26          
+   27          /**
+   28           * @brief 打开蜂鸣器
+   29           * @param pin：蜂鸣器引脚
+   30           * @return 无
+   31           */
+   32          void Buzzer_On(void)
+   33          {
+   34   1          gpio_set_level(Buzzer, 0);
+   35   1      }
+   36          
+   37          /**
+   38           * @brief 关闭蜂鸣器
+   39           * @param pin：蜂鸣器引脚
+   40           * @return 无
+   41           */
+   42          void Buzzer_Off(void)
+   43          {
+   44   1          gpio_set_level(Buzzer, 1);
+   45   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =        37     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+C251 COMPILER V5.60.0,  buzzer                                                             23/03/26  21:43:05  PAGE 2   
+
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

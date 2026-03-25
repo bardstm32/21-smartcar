@@ -1,0 +1,66 @@
+C251 COMPILER V5.60.0,  init                                                               23/03/26  21:43:05  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE init
+OBJECT MODULE PLACED IN .\out_file\init.obj
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\code_c\init.c LARGE NOALIAS WARNINGLEVEL(3) OPTIMIZE(0
+                    -,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\z
+                    -f_driver;..\user;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h) DEBUG PRINT(.\out_file\init.lst) OBJECT(.\out_fi
+                    -le\init.obj) 
+
+stmt  level    source
+
+    1          /********************************************************************************************************
+             -*************
+    2           *  @file  init.c
+    3           *  @brief  初始化各个模块
+    4           * 初始化智能车系统
+    5           * 该函数用于初始化智能车系统中的各个模块，包括系统时钟、调试接口、中断
+             -、电感传感器、蜂鸣器、IMU传感器、陀螺仪和无线通讯模块。
+    6           * 初始化完成后，启用全局中断。
+    7           *  @date              @author            备注
+    8           *  2026-3-23        三帅勇闯智能车-rw   初始版本
+    9           *  修改记录：
+   10           *  @date              @author            备注
+   11           *
+   12           ********************************************************************************************************
+             -************/
+   13          #include "init.h"
+   14          
+   15          void Car_Init(void)
+   16          {
+   17   1          clock_init(SYSTEM_CLOCK_30M);
+   18   1          debug_init();
+   19   1          interrupt_global_disable();
+   20   1          Inductance_Init();                                                  // 电感初始化
+   21   1          Buzzer_Init();                                                      // 蜂鸣器初始化
+   22   1          imu660ra_init();
+   23   1          gyro_init();
+   24   1          wireless_uart_init(); // 无线通讯（调试用）
+   25   1          pit_ms_init(TIM0_PIT, 1);
+   26   1          interrupt_global_enable();
+   27   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =        64     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
