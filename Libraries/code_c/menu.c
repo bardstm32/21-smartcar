@@ -13,7 +13,7 @@
 #include "zf_device_ips114.h"
 #include "imu.h"
 #include "inductance.h"
-
+#include "encoder.h"
 uint8 data_buffer[32];
 uint8 gyro_buffer[32];
 // 菜单初始化函数
@@ -24,12 +24,14 @@ void Menu_Init(void)
 
     // 提前显示静态的字符串标签，避免在主循环中重复刷新导致屏幕闪烁
     // 默认字体下每个字符宽8像素，高16像素
-    ips114_show_string(0, 0, "Gyro Z :");  // 偏航角速度标签
-    ips114_show_string(0, 16, "Yaw Ang:"); // 偏航角标签
-    ips114_show_string(0, 32, "L1:");      // 电感L1标签
-    ips114_show_string(72, 32, "L2:");     // 电感L2标签
-    ips114_show_string(0, 48, "L3:");      // 电感L3标签
-    ips114_show_string(72, 48, "L4:");     // 电感L4标签
+    ips114_show_string(0, 0, "Gyro Z :");    // 偏航角速度标签
+    ips114_show_string(0, 16, "Yaw Ang:");   // 偏航角标签
+    ips114_show_string(0, 32, "L1:");        // 电感L1标签
+    ips114_show_string(72, 32, "L2:");       // 电感L2标签
+    ips114_show_string(0, 48, "L3:");        // 电感L3标签
+    ips114_show_string(72, 48, "L4:");       // 电感L4标签
+    ips114_show_string(0, 64, "Encoder_L:"); // 左编码器标签
+    ips114_show_string(0, 80, "Encoder_R:"); // 右编码器标签
 }
 
 // 菜单数据显示更新函数
@@ -49,6 +51,8 @@ void Menu_Display(uint16 *inductance_data)
     ips114_show_uint16(96, 32, inductance_data[1]); // L2 数值
     ips114_show_uint16(24, 48, inductance_data[2]); // L3 数值
     ips114_show_uint16(96, 48, inductance_data[3]); // L4 数值
+    ips114_show_uint16(88, 64, real_left);          // 左编码器数值
+    ips114_show_uint16(88, 80, real_right);         // 右编码数值
 
     Send_Data_To_PC(inductance_data); // 将数据通过无线串口发送到电脑端
 }
@@ -61,13 +65,15 @@ void Send_Data_To_PC(uint16 *inductance_data)
 
     // 2. 使用 sprintf 将数值格式化为字符串
     // 这里以浮点数保留2位小数 (%.2f)，整数 (%d) 为例。加上 \r\n 以便电脑端串口助手换行显示。
-    sprintf(send_buf, "Yaw: %.2f, GyroZ: %.2f, L1: %d, L2: %d, L3: %d, L4: %d\r\n",
-            Daty_Z,              // 偏航角
-            IMU_Data.gyro_z,     // Z轴角速度
-            inductance_data[0],  // 电感L1
-            inductance_data[1],  // 电感L2
-            inductance_data[2],  // 电感L3
-            inductance_data[3]); // 电感L4
+    sprintf(send_buf, "Yaw: %.2f, GyroZ: %.2f, L1:%d, L2:%d, L3:%d, L4:%d, EL:%d, ER:%d\r\n",
+            Daty_Z,
+            IMU_Data.gyro_z,
+            inductance_data[0],
+            inductance_data[1],
+            inductance_data[2],
+            inductance_data[3],
+            real_left,
+            real_right);
 
     // 3. 调用库函数发送最终拼装好的字符串
     wireless_uart_send_string(send_buf);

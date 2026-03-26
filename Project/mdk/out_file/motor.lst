@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  motor                                                              26/03/26  15:21:59  PAGE 1   
+C251 COMPILER V5.60.0,  motor                                                              26/03/26  19:03:38  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE motor
@@ -66,7 +66,7 @@ stmt  level    source
    49   2                      // 根据duty值计算左电机的PWM占空比并设置，控制电机转速
    50   2                      pwm_set_duty(PWM_L, duty * (PWM_DUTY_MAX / 100)); 
    51   2              }
-C251 COMPILER V5.60.0,  motor                                                              26/03/26  15:21:59  PAGE 2   
+C251 COMPILER V5.60.0,  motor                                                              26/03/26  19:03:38  PAGE 2   
 
    52   1              else
    53   1              {

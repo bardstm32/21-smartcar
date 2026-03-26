@@ -108,4 +108,5 @@
 #include "led.h"
 #include "menu.h"
 #include "init.h"
+#include "encoder.h"
 #endif
