@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  inductance                                                         25/03/26  13:57:41  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         25/03/26  16:03:45  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
@@ -66,7 +66,7 @@ stmt  level    source
    49           */
    50          int Median_Average_Filter(int *arr, int times)
    51          {
-C251 COMPILER V5.60.0,  inductance                                                         25/03/26  13:57:41  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         25/03/26  16:03:45  PAGE 2   
 
    52   1          // 初始化最小值、最大值和累加和
    53   1          int min = arr[0], max = arr[0], sum = 0, i = 0;
@@ -134,7 +134,7 @@ stmt  level    source
   113           */
   114          void Inductance_Read(uint16 *inductance_filter_data) 
   115          {
-C251 COMPILER V5.60.0,  inductance                                                         25/03/26  13:57:41  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         25/03/26  16:03:45  PAGE 3   
 
   116   1          uint8 i; // 声明变量i，必须在作用域最前面
   117   1          // 原始值

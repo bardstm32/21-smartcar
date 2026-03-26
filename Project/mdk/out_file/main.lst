@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               25/03/26  13:58:06  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               25/03/26  17:12:38  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -10,26 +10,46 @@ COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS W
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          void main()
-    3          {
-    4   1              clock_init(SYSTEM_CLOCK_30M);
-    5   1              debug_init();
-    6   1      
-    7   1              while (1)
-    8   1              {
-    9   2                      
-   10   2              }
-   11   1      }
+    2          uint16 pit0_count = 0;
+    3          void pit_handler(void);
+    4          
+    5          void main()
+    6          {
+    7   1              clock_init(SYSTEM_CLOCK_30M);
+    8   1              debug_init();
+    9   1              tim0_irq_handler = pit_handler; 
+   10   1              interrupt_global_disable();
+   11   1              pit_init(TIM_0, 1);
+   12   1              LED_Init();
+   13   1              interrupt_global_enable();
+   14   1              
+   15   1              while (1)
+   16   1              {
+   17   2                      gpio_set_level(IO_P33, 1);
+   18   2              }
+   19   1      }
+   20          
+   21          void pit_handler(void)
+   22          {
+   23   1              pit0_count++;
+   24   1              printf("%d\r\n",pit0_count);
+   25   1              if(pit0_count >= 10000)
+   26   1              {
+   27   2                      pit0_count = 0;
+   28   2                      gpio_set_level(IO_P33,0);
+   29   2                      LED_On(LED1);
+   30   2              }
+   31   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        61     ------
+  code size            =       174     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =    ------     ------
+  xdata size           =         2     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -39,7 +59,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =         2     ------
+  hconst size          =        14     ------
 End of Module Information.
 
 

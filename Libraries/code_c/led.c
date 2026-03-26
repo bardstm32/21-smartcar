@@ -23,6 +23,7 @@ void LED_Init(void)
 {
     gpio_init(LED1, GPO, 1, GPO_PUSH_PULL);
     gpio_init(LED2, GPO, 1, GPO_PUSH_PULL);
+	LED_Off(LED1);
 }
 
 /**

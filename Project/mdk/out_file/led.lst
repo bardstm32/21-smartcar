@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  led                                                                25/03/26  13:57:42  PAGE 1   
+C251 COMPILER V5.60.0,  led                                                                25/03/26  16:08:45  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE led
@@ -37,39 +37,40 @@ stmt  level    source
    23          {
    24   1          gpio_init(LED1, GPO, 1, GPO_PUSH_PULL);
    25   1          gpio_init(LED2, GPO, 1, GPO_PUSH_PULL);
-   26   1      }
-   27          
-   28          /**
-   29           * @brief 点亮LED
-   30           * @param pin：LED引脚
-   31           * @return 无
-   32           */
-   33          void LED_On(gpio_pin_enum pin)
-   34          {
-   35   1          gpio_set_level(pin, 0);
-   36   1      }
-   37          
-   38          /**
-   39           * @brief 熄灭LED
-   40           * @param pin：LED引脚
-   41           * @return 无
-   42           */
-   43          void LED_Off(gpio_pin_enum pin)
-   44          {
-   45   1          gpio_set_level(pin, 1);
-   46   1      }
-   47          
-   48          void LED_Switch(gpio_pin_enum pin)
-   49          {
-   50   1          gpio_set_level(pin, !(gpio_get_level(pin)));
-   51   1      }
+   26   1              LED_Off(LED1);
+   27   1      }
+   28          
+   29          /**
+   30           * @brief 点亮LED
+   31           * @param pin：LED引脚
+   32           * @return 无
+   33           */
+   34          void LED_On(gpio_pin_enum pin)
+   35          {
+   36   1          gpio_set_level(pin, 0);
+   37   1      }
+   38          
+   39          /**
+   40           * @brief 熄灭LED
+   41           * @param pin：LED引脚
+   42           * @return 无
+   43           */
+   44          void LED_Off(gpio_pin_enum pin)
+   45          {
+   46   1          gpio_set_level(pin, 1);
+   47   1      }
+   48          
+   49          void LED_Switch(gpio_pin_enum pin)
+   50          {
+   51   1          gpio_set_level(pin, !(gpio_get_level(pin)));
+   52   1      }
 
+
+C251 COMPILER V5.60.0,  led                                                                25/03/26  16:08:45  PAGE 2   
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-C251 COMPILER V5.60.0,  led                                                                25/03/26  13:57:42  PAGE 2   
-
-  code size            =       105     ------
+  code size            =       112     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
