@@ -106,5 +106,6 @@
 #include "motor.h"
 #include "buzzer.h"
 #include "led.h"
-
+#include "menu.h"
+#include "init.h"
 #endif

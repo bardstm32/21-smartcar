@@ -48,7 +48,8 @@
 ".\out_file\buzzer.obj",
 ".\out_file\led.obj",
 ".\out_file\init.obj",
-".\out_file\control.obj" 
+".\out_file\control.obj",
+".\out_file\menu.obj" 
 TO ".\out_file\SEEKFREE" 
 PRINT(".\out_file\SEEKFREE.map") CASE DISABLEWARNING (57,16) 
 REMOVEUNUSED 

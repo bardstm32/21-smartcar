@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  eeprom                                                             25/03/26  16:03:45  PAGE 1   
+C251 COMPILER V5.60.0,  eeprom                                                             26/03/26  14:52:13  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE eeprom
@@ -66,7 +66,7 @@ stmt  level    source
    50          void eeprom_read(uint32 addr, uint8 *buf, uint16 len)
    51          {
    52   1          iap_read_buff(addr, buf, len); // 调用iap_read_buff函数读取数据
-C251 COMPILER V5.60.0,  eeprom                                                             25/03/26  16:03:45  PAGE 2   
+C251 COMPILER V5.60.0,  eeprom                                                             26/03/26  14:52:13  PAGE 2   
 
    53   1      }
    54          

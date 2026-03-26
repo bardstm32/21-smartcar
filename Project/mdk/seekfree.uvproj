@@ -822,6 +822,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Libraries\code_c\control.c</FilePath>
             </File>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Libraries\code_c\menu.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -871,6 +876,11 @@
               <FileName>control.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Libraries\code_h\control.h</FilePath>
+            </File>
+            <File>
+              <FileName>menu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Libraries\code_h\menu.h</FilePath>
             </File>
           </Files>
         </Group>

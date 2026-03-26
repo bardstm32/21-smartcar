@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               25/03/26  17:12:38  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               26/03/26  14:57:35  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -11,45 +11,44 @@ stmt  level    source
 
     1          #include "zf_common_headfile.h"
     2          uint16 pit0_count = 0;
-    3          void pit_handler(void);
-    4          
+    3          uint16 ind_data[4]; // 申请一个全局数组存放4个电感数值
+    4          void pit_handler(void);
     5          void main()
     6          {
-    7   1              clock_init(SYSTEM_CLOCK_30M);
-    8   1              debug_init();
-    9   1              tim0_irq_handler = pit_handler; 
-   10   1              interrupt_global_disable();
-   11   1              pit_init(TIM_0, 1);
-   12   1              LED_Init();
-   13   1              interrupt_global_enable();
-   14   1              
-   15   1              while (1)
-   16   1              {
-   17   2                      gpio_set_level(IO_P33, 1);
-   18   2              }
-   19   1      }
-   20          
-   21          void pit_handler(void)
-   22          {
-   23   1              pit0_count++;
-   24   1              printf("%d\r\n",pit0_count);
-   25   1              if(pit0_count >= 10000)
+    7   1              Car_Init();
+    8   1              tim0_irq_handler = pit_handler;
+    9   1              while (1)
+   10   1              {
+   11   2                      Inductance_Read(ind_data);
+   12   2                      // 将获取的数据实时更新至屏幕
+   13   2                      Menu_Display(ind_data);
+   14   2      
+   15   2                      // 可选：适当延时控制屏幕刷新率，避免主循环跑太快导致屏幕闪烁
+   16   2                      system_delay_ms(50);
+   17   2              }
+   18   1      }
+   19          
+   20          void pit_handler(void)
+   21          {
+   22   1              imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
+   23   1              imu660ra_get_gyro();
+   24   1              pit0_count++;
+   25   1              if (pit0_count >= 5)
    26   1              {
    27   2                      pit0_count = 0;
-   28   2                      gpio_set_level(IO_P33,0);
-   29   2                      LED_On(LED1);
-   30   2              }
-   31   1      }
+   28   2                      gyro_proc();
+   29   2              }
+   30   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       174     ------
+  code size            =       136     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =         2     ------
+  xdata size           =        10     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -59,7 +58,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        14     ------
+  hconst size          =         9     ------
 End of Module Information.
 
 

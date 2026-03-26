@@ -14,14 +14,20 @@
 
 void Car_Init(void)
 {
-    clock_init(SYSTEM_CLOCK_30M);
-    debug_init();
-    interrupt_global_disable();
-    Inductance_Init();                                                  // 电感初始化
-    Buzzer_Init();                                                      // 蜂鸣器初始化
-    imu660ra_init();
-    gyro_init();
-    wireless_uart_init(); // 无线通讯（调试用）
-    pit_ms_init(TIM0_PIT, 1);
-    interrupt_global_enable();
+    
+    // 内部函数初始化
+    clock_init(SYSTEM_CLOCK_30M);       // 系统时钟初始化
+    debug_init();                       // 调试接口初始化
+    interrupt_global_disable();         // 全局中断禁用
+    gyro_init();                        // 陀螺仪初始化
+    Menu_Init();                        // 菜单初始化
+    pit_ms_init(TIM0_PIT, 1);           // 定时器初始化
+
+    // 外部模块初始化
+    Inductance_Init();                  // 电感初始化
+    Buzzer_Init();                      // 蜂鸣器初始化
+    wireless_uart_init();               // 无线UART通讯初始化（调试用）
+    imu660ra_init();                    // IMU660RA传感器初始化
+
+    interrupt_global_enable();            // 全局中断使能
 }
