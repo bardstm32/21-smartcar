@@ -34,7 +34,6 @@
 ********************************************************************************************************************/
 
 #ifndef __HEADFILE_H_
-
 #define __HEADFILE_H_
 
 
@@ -107,6 +106,8 @@
 #include "buzzer.h"
 #include "led.h"
 #include "menu.h"
-#include "init.h"
+#include "control.h"
 #include "encoder.h"
+#include "voltage_warning.h"
+#include "init.h"
 #endif

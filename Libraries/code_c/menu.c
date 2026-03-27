@@ -21,7 +21,7 @@ void Menu_Init(void)
 {
     ips114_init();                        // 初始化IPS114屏幕
     ips114_clear(IPS114_DEFAULT_BGCOLOR); // 清除屏幕为默认背景色
-
+    LED_Off(LED1);                            // 点亮LED1，表示菜单已初始化
     // 提前显示静态的字符串标签，避免在主循环中重复刷新导致屏幕闪烁
     // 默认字体下每个字符宽8像素，高16像素
     ips114_show_string(0, 0, "Gyro Z :");    // 偏航角速度标签
@@ -65,7 +65,7 @@ void Send_Data_To_PC(uint16 *inductance_data)
 
     // 2. 使用 sprintf 将数值格式化为字符串
     // 这里以浮点数保留2位小数 (%.2f)，整数 (%d) 为例。加上 \r\n 以便电脑端串口助手换行显示。
-    sprintf(send_buf, "Yaw: %.2f, GyroZ: %.2f, L1:%d, L2:%d, L3:%d, L4:%d, EL:%d, ER:%d\r\n",
+    /*sprintf(send_buf, "Yaw: %.2f, GyroZ: %.2f, L1:%d, L2:%d, L3:%d, L4:%d, EL:%d, ER:%d\r\n",
             Daty_Z,
             IMU_Data.gyro_z,
             inductance_data[0],
@@ -74,7 +74,8 @@ void Send_Data_To_PC(uint16 *inductance_data)
             inductance_data[3],
             real_left,
             real_right);
-
+	*/
+	sprintf(send_buf, "EL:%d\r\n",real_left);
     // 3. 调用库函数发送最终拼装好的字符串
     wireless_uart_send_string(send_buf);
 }

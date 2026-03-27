@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  motor                                                              26/03/26  19:03:38  PAGE 1   
+C251 COMPILER V5.60.0,  motor                                                              27/03/26  19:30:32  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE motor
@@ -41,11 +41,11 @@ stmt  level    source
    26   1              // 初始化左电机方向控制GPIO为输出模式，默认上拉高电平
    27   1              gpio_init(DIR_L, GPO, GPIO_HIGH, GPO_PUSH_PULL);
    28   1              // 初始化左电机PWM通道，频率设置为25kHz，占空比初始为0
-   29   1              pwm_init(PWM_L, 25000, 0);
+   29   1              pwm_init(PWM_L, 17000, 0);
    30   1              // 初始化右电机方向控制GPIO为输出模式，默认上拉高电平
    31   1              gpio_init(DIR_R, GPO, GPIO_HIGH, GPO_PUSH_PULL);
    32   1              // 初始化右电机PWM通道，频率设置为25kHz，占空比初始为0
-   33   1              pwm_init(PWM_R, 25000, 0);                                               
+   33   1              pwm_init(PWM_R, 17000, 0);                                               
    34   1      }
    35          
    36          /**
@@ -66,7 +66,7 @@ stmt  level    source
    49   2                      // 根据duty值计算左电机的PWM占空比并设置，控制电机转速
    50   2                      pwm_set_duty(PWM_L, duty * (PWM_DUTY_MAX / 100)); 
    51   2              }
-C251 COMPILER V5.60.0,  motor                                                              26/03/26  19:03:38  PAGE 2   
+C251 COMPILER V5.60.0,  motor                                                              27/03/26  19:30:32  PAGE 2   
 
    52   1              else
    53   1              {

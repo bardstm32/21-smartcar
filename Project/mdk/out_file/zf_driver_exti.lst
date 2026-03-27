@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_driver_exti                                                     26/03/26  19:02:43  PAGE 1   
+C251 COMPILER V5.60.0,  zf_driver_exti                                                     27/03/26  18:56:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_driver_exti
@@ -66,7 +66,7 @@ stmt  level    source
    50   1              EX4 = 0;
    51   1      }
    52          
-C251 COMPILER V5.60.0,  zf_driver_exti                                                     26/03/26  19:02:43  PAGE 2   
+C251 COMPILER V5.60.0,  zf_driver_exti                                                     27/03/26  18:56:00  PAGE 2   
 
    53          //-------------------------------------------------------------------------------------------------------
              -------------
@@ -134,7 +134,7 @@ stmt  level    source
   108          //  使用示例      exti_init(INT0_P32, EXTI_TRIGGER_BOTH);  //初始化P32 作为外部中断引脚，双边沿触发。
   109          //  备注信息
   110          //-------------------------------------------------------------------------------------------------------
-C251 COMPILER V5.60.0,  zf_driver_exti                                                     26/03/26  19:02:43  PAGE 3   
+C251 COMPILER V5.60.0,  zf_driver_exti                                                     27/03/26  18:56:00  PAGE 3   
 
              -------------
   111          void exti_init (exti_pin_enum eru_pin, exti_trigger_enum trigger)

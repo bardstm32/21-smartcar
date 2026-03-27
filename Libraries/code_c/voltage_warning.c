@@ -8,7 +8,7 @@
  *  2026-03-14        三帅勇闯智能车-rw      初始版本
  *  修改记录：
  *  @date              @author            备注
- * 
+ *
  ********************************************************************************************************************/
 #include "voltage_warning.h"
 
@@ -28,6 +28,7 @@ void voltage_warning_init(void)
 {
     // 初始化ADC通道为Battery_Channel，设置分辨率为12位
     adc_init(Battery_Channel, ADC_12BIT);
+    gpio_init(IO_P01, GPI, 0, GPI_PULL_DOWN);
 }
 
 /**
@@ -39,17 +40,20 @@ void voltage_warning_init(void)
  */
 void voltage_warning_task(float target_voltage)
 {
+    char voltage_buf[128];
+
     // 使用均值滤波方法读取Battery_Channel的转换结果，采样次数为10次
-    ad_result = adc_mean_filter_convert(Battery_Channel,10);
+    ad_result = adc_mean_filter_convert(Battery_Channel, 10);
 
     // 计算电池电压
     // ADC满量程为4096，参考电压为5伏，放大倍数为6
-    battery_voltage = ((ad_result*5)/4095.0)*6+0.37;
+    battery_voltage = ((ad_result * 30) / 4096.0);
 
     // 如果电池电压低于设定值，则开启蜂鸣器进行警告
     if (battery_voltage <= target_voltage)
     {
         Buzzer_On();
     }
-    printf("%f\r\n", battery_voltage);
+    sprintf(voltage_buf, "voltage: %f\r\n", battery_voltage);
+    wireless_uart_send_string(voltage_buf);
 }

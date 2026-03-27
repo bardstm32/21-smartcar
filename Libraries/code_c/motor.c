@@ -26,11 +26,11 @@ void motor_init(void)
 	// 初始化左电机方向控制GPIO为输出模式，默认上拉高电平
 	gpio_init(DIR_L, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 	// 初始化左电机PWM通道，频率设置为25kHz，占空比初始为0
-	pwm_init(PWM_L, 25000, 0);
+	pwm_init(PWM_L, 17000, 0);
 	// 初始化右电机方向控制GPIO为输出模式，默认上拉高电平
 	gpio_init(DIR_R, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 	// 初始化右电机PWM通道，频率设置为25kHz，占空比初始为0
-	pwm_init(PWM_R, 25000, 0);						 
+	pwm_init(PWM_R, 17000, 0);						 
 }
 
 /**

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_driver_pit                                                      26/03/26  19:02:44  PAGE 1   
+C251 COMPILER V5.60.0,  zf_driver_pit                                                      27/03/26  18:56:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_driver_pit
@@ -66,7 +66,7 @@ stmt  level    source
    50          void pit_init(pit_index_enum pit_n, uint32 period)
    51          {
    52   1              uint8 freq_div = 0;                
-C251 COMPILER V5.60.0,  zf_driver_pit                                                      26/03/26  19:02:44  PAGE 2   
+C251 COMPILER V5.60.0,  zf_driver_pit                                                      27/03/26  18:56:00  PAGE 2   
 
    53   1          uint16 period_temp = 0;               
    54   1          uint16 temp = 0;
@@ -134,7 +134,7 @@ stmt  level    source
   116   1      
   117   1          if(TIM0_PIT == pit_n)
   118   1          {
-C251 COMPILER V5.60.0,  zf_driver_pit                                                      26/03/26  19:02:44  PAGE 3   
+C251 COMPILER V5.60.0,  zf_driver_pit                                                      27/03/26  18:56:00  PAGE 3   
 
   119   2                      TM0PS = freq_div;       // 设置分频值
   120   2              TMOD |= 0x00;           // 模式 0

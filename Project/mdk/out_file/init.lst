@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  init                                                               26/03/26  19:03:39  PAGE 1   
+C251 COMPILER V5.60.0,  init                                                               27/03/26  19:16:44  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE init
@@ -29,28 +29,29 @@ stmt  level    source
    14          
    15          void Car_Init(void)
    16          {
-   17   1          
-   18   1          // 内部函数初始化
-   19   1          clock_init(SYSTEM_CLOCK_30M);       // 系统时钟初始化
-   20   1          debug_init();                       // 调试接口初始化
-   21   1          interrupt_global_disable();         // 全局中断禁用
-   22   1          gyro_init();                        // 陀螺仪初始化
-   23   1          Menu_Init();                        // 菜单初始化
-   24   1          pit_ms_init(TIM0_PIT, 1);           // 定时器初始化
-   25   1      
-   26   1          // 外部模块初始化
-   27   1          Inductance_Init();                  // 电感初始化
-   28   1          Buzzer_Init();                      // 蜂鸣器初始化
-   29   1          wireless_uart_init();               // 无线UART通讯初始化（调试用）
-   30   1          imu660ra_init();                    // IMU660RA传感器初始化
-   31   1      
-   32   1          interrupt_global_enable();            // 全局中断使能
-   33   1      }
+   17   1          // 内部函数初始化
+   18   1          clock_init(SYSTEM_CLOCK_30M);       // 系统时钟初始化
+   19   1          debug_init();                       // 调试接口初始化
+   20   1          interrupt_global_disable();         // 全局中断禁用
+   21   1          gyro_init();                        // 陀螺仪初始化
+   22   1          Menu_Init();                        // 菜单初始化
+   23   1          LED_Init();                         // LED 初始化
+   24   1              voltage_warning_init();
+   25   1          pit_ms_init(TIM0_PIT, 1);           // 定时器初始化
+   26   1      
+   27   1          // 外部模块初始化
+   28   1          Inductance_Init();                  // 电感初始化
+   29   1          Buzzer_Init();                      // 蜂鸣器初始化
+   30   1          wireless_uart_init();               // 无线UART通讯初始化（调试用）
+   31   1              encoder_init();
+   32   1              motor_init();
+   33   1          interrupt_global_enable();            // 全局中断使能
+   34   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        67     ------
+  code size            =        76     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -66,9 +67,9 @@ Module Information          Static   Overlayable
   huge data size       =    ------     ------
   const size           =    ------     ------
   hconst size          =    ------     ------
-End of Module Information.
+C251 COMPILER V5.60.0,  init                                                               27/03/26  19:16:44  PAGE 2   
 
-C251 COMPILER V5.60.0,  init                                                               26/03/26  19:03:39  PAGE 2   
+End of Module Information.
 
 
 C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

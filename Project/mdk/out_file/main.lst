@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               26/03/26  19:04:27  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               27/03/26  19:39:18  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -10,21 +10,20 @@ COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS W
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          uint16 pit0_count = 0;
-    3          uint16 ind_data[4]; // 申请一个全局数组存放4个电感数值
-    4          void main()
-    5          {
-    6   1              Car_Init();
+    2          int16 int_data[4];
+    3          void main()
+    4          {
+    5   1              Car_Init();
+    6   1              LED_On(LED1);
     7   1              while (1)
     8   1              {
-    9   2                      Inductance_Read(ind_data);
-   10   2                      // 将获取的数据实时更新至屏幕
-   11   2                      Menu_Display(ind_data);
-   12   2      
-   13   2                      // 可选：适当延时控制屏幕刷新率，避免主循环跑太快导致屏幕闪烁
-   14   2                      system_delay_ms(50);
-   15   2              }
-   16   1      }
+    9   2                      Menu_Display(int_data);
+*** WARNING C91 IN LINE 9 OF ..\user\main.c: '&': pointer to different objects
+   10   2                      voltage_warning_task(11.4f); // 设置目标电压为3.7V
+   11   2                      //motor_L(30);
+   12   2              }
+   13   1      }
+   14          
 
 
 Module Information          Static   Overlayable
@@ -34,7 +33,7 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        10     ------
+  xdata size           =         8     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -44,8 +43,8 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =         9     ------
+  hconst size          =         2     ------
 End of Module Information.
 
 
-C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

@@ -272,7 +272,7 @@ float KalmanFilter(extKalman_t *p, float dat)
 
 void gyro_init(void)
 {
-    //imu660ra_init();
+    imu660ra_init();
     IMU_gyro_Offset_Init();
     KalmanCreate(&Kalman1, 0.01f, 0.05f); // Roll卡尔曼初始化
     KalmanCreate(&Kalman2, 0.01f, 0.05f); // Pitch卡尔曼初始化

@@ -12,6 +12,7 @@
 
 void pit_handler (void);
 
+
 int16 speed_left = 0;
 int16 speed_right = 0;
 int16 last_speed_left=0;
@@ -29,9 +30,8 @@ void encoder_init()
 
 }
 
-void pit_handler (void)
+void pit_handler(void)
 {
-	
 	imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
 	imu660ra_get_gyro();
 	imu_cnt++; 
@@ -52,6 +52,6 @@ void pit_handler (void)
 		
 	real_right = last_speed_right * 0.9 + speed_right * 0.1;
 	last_speed_right=speed_right;
-
-//	Dual_Loop_Control();
+	//PID_Inc_Calc(&Speed_PID_L,20,real_left);
+	//	Dual_Loop_Control();
 }
