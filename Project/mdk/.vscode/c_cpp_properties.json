@@ -7,12 +7,12 @@
             "intelliSenseMode": "${default}",
             "includePath": [
                 "D:/Keil_v5/C251/INC",
-                "libraries/zf_common",
-                "libraries/zf_components",
-                "libraries/zf_device",
-                "libraries/zf_driver",
-                "Project/user",
-                "Project/code"
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/libraries/zf_common",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/libraries/zf_components",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/libraries/zf_device",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/libraries/zf_driver",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/Project/user",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/Project/code"
             ],
             "defines": [
                 "__C251__",
