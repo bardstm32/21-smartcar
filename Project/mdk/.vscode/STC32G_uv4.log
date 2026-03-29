@@ -1,0 +1,7 @@
+Build target 'STC32G'
+compiling main.c...
+..\user\main.c(24): error C68: left side of '->' requires struct/union pointer
+..\user\main.c(25): error C68: left side of '->' requires struct/union pointer
+..\user\main.c(26): error C68: left side of '->' requires struct/union pointer
+Target not created.
+Build Time Elapsed:  00:00:00

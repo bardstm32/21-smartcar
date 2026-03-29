@@ -47,7 +47,6 @@
 ".\out_file\encoder.obj",
 ".\out_file\moto.obj",
 ".\out_file\led.obj",
-".\out_file\buzzer.obj",
 ".\out_file\trank.obj",
 ".\out_file\inductance.obj",
 ".\out_file\menu.obj" 

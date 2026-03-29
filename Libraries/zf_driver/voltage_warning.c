@@ -18,7 +18,6 @@ void voltage_warning_init(adc_channel_enum channel)
     // 检查电压值是否低于1575（假设1575是一个预设的阈值，即11.4V，用于触发电压警告）
     if(value < 1575)
     {
-    Buzzer_On();  // 如果电压值低于阈值，则开启蜂鸣器报警
 //	pwm_set_duty(PWMA_CH1P_P60,0);    
 //	pwm_set_duty(PWMA_CH2P_P62,0);    
 	

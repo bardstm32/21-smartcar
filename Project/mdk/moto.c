@@ -26,3 +26,12 @@ void Motor_SetSpeed(int16 speed_left, int16 speed_right)
 	pwm_set_duty(PWMA_CH1P_P60,ABS(speed_left));    
 	pwm_set_duty(PWMA_CH2P_P62,ABS(speed_right));    
 }
+
+void Motor_Protect(uint16 *inductance_norm_data)
+{
+  uint16 sum = inductance_norm_data[1] + inductance_norm_data[2] + inductance_norm_data[3] + inductance_norm_data[4];
+  if (sum < 20) // 如果四个电感的ADC值之和低于20，立即停止电机
+  {
+    Motor_SetSpeed(0, 0); // 停止电机
+  }
+}

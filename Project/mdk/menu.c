@@ -10,9 +10,16 @@
  * @date              @author            备注
  * ********************************************************************************************************************/
 #include "zf_common_headfile.h"
-	
+#include <stdlib.h>
+#include <string.h>
 uint8 data_buffer[32];
 uint8 gyro_buffer[32];
+
+#define TEMP_BUFFER_SIZE 64
+static uint8 temp_uart_buffer[TEMP_BUFFER_SIZE]; // 数据存放数组
+
+char send_str[32] = {0};
+
 // 菜单初始化函数
 void Menu_Init(void)
 {
@@ -21,15 +28,14 @@ void Menu_Init(void)
 
     // 提前显示静态的字符串标签，避免在主循环中重复刷新导致屏幕闪烁
     // 默认字体下每个字符宽8像素，高16像素
-    ips114_show_string(0, 0, "Gyro Z :");  // 偏航角速度标签
-    ips114_show_string(0, 16, "Yaw Ang:"); // 偏航角标签
-    ips114_show_string(0, 32, "L1:");      // 电感L1标签
-    ips114_show_string(72, 32, "L2:");     // 电感L2标签
-    ips114_show_string(0, 48, "L3:");      // 电感L3标签
-    ips114_show_string(72, 48, "L4:");     // 电感L4标签
-	ips114_show_string(0,64, "Encoder_L:");     //左编码器标签
-	ips114_show_string(0,80, "Encoder_R:");     //右编码器标签
-
+    ips114_show_string(0, 0, "Gyro Z :");    // 偏航角速度标签
+    ips114_show_string(0, 16, "Yaw Ang:");   // 偏航角标签
+    ips114_show_string(0, 32, "L1:");        // 电感L1标签
+    ips114_show_string(72, 32, "L2:");       // 电感L2标签
+    ips114_show_string(0, 48, "L3:");        // 电感L3标签
+    ips114_show_string(72, 48, "L4:");       // 电感L4标签
+    ips114_show_string(0, 64, "Encoder_L:"); // 左编码器标签
+    ips114_show_string(0, 80, "Encoder_R:"); // 右编码器标签
 }
 
 // 菜单数据显示更新函数
@@ -49,12 +55,10 @@ void Menu_Display(uint16 *inductance_data)
     ips114_show_uint16(96, 32, inductance_data[1]); // L2 数值
     ips114_show_uint16(24, 48, inductance_data[2]); // L3 数值
     ips114_show_uint16(96, 48, inductance_data[3]); // L4 数值
-	ips114_show_int16(88,64,real_left ); // 左编码器数值
-	ips114_show_int16(88,80,real_right ); // 右编码数值
+    ips114_show_int16(88, 64, real_left);           // 左编码器数值
+    ips114_show_int16(88, 80, real_right);          // 右编码数值
 
-	
-	
-//    Send_Data_To_PC(inductance_data); // 将数据通过无线串口发送到电脑端
+    //    Send_Data_To_PC(inductance_data); // 将数据通过无线串口发送到电脑端
 }
 
 // 通过无线串口发送可变数据的函数
@@ -72,10 +76,37 @@ void Send_Data_To_PC(uint16 *inductance_data)
             inductance_data[1],
             inductance_data[2],
             inductance_data[3]
-//            real_left,
-//            real_right
-	);
-				
+            //            real_left,
+            //            real_right
+    );
+
     // 3. 调用库函数发送最终拼装好的字符串
     wireless_uart_send_string(send_buf);
+}
+
+void Parameter_Debug_Init(void)
+{
+    seekfree_assistant_receive_callback = wireless_uart_read_buffer;
+    seekfree_assistant_init();
+}
+
+void Parameter_Debug(float *param1, float *param2, float *param3)
+{
+    uint8 i;
+    seekfree_assistant_data_analysis();
+    // 遍历
+    for (i = 0; i < 2; i++)
+    {
+        if (seekfree_assistant_parameter_update_flag[i])
+        {
+            seekfree_assistant_parameter_update_flag[i] = 0;
+            sprintf(send_str, "\r\nreceive data channel : %d  ", i);
+            wireless_uart_send_buffer((uint8 *)send_str, strlen(send_str));
+            sprintf(send_str, "data : %.2f \r\n", seekfree_assistant_parameter[i]);
+            wireless_uart_send_buffer((uint8 *)send_str, strlen(send_str));
+            *param1 = seekfree_assistant_parameter[0] * 0.01f;
+            *param2 = seekfree_assistant_parameter[1] * 0.01f;
+            *param3 = seekfree_assistant_parameter[2] * 0.01f;
+        }
+    }
 }

@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  voltage_warning                                                    29/03/26  14:39:55  PAGE 1   
+C251 COMPILER V5.60.0,  voltage_warning                                                    29/03/26  20:32:36  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE voltage_warning
 OBJECT MODULE PLACED IN .\out_file\voltage_warning.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\..\Libraries\zf_driver\voltage_warning.c LARGE NOALIAS WARNINGLEVEL
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\zf_driver\voltage_warning.c LARGE NOALIAS WARNINGLEVEL
                     -(1) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\
                     -..\libraries\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\voltage_warning.lst) OBJECT(.\out_file\voltage_warning.ob
                     -j) 
@@ -34,19 +34,18 @@ stmt  level    source
              -��警告）
    19   1          if(value < 1575)
    20   1          {
-   21   2          Buzzer_On();  // 如果电压值低于阈值，则开启蜂鸣器报警
-   22   2      //      pwm_set_duty(PWMA_CH1P_P60,0);    
-   23   2      //      pwm_set_duty(PWMA_CH2P_P62,0);    
-   24   2              
-   25   2          }
-   26   1      
-   27   1      }
-   28          
+   21   2      //      pwm_set_duty(PWMA_CH1P_P60,0);    
+   22   2      //      pwm_set_duty(PWMA_CH2P_P62,0);    
+   23   2              
+   24   2          }
+   25   1      
+   26   1      }
+   27          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        49     ------
+  code size            =        32     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

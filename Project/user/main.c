@@ -1,28 +1,28 @@
 #include "zf_common_headfile.h"
-uint16 ADC_value[5]={0};
+#define TEMP_BUFFER_SIZE  	64
+static  uint8           	temp_uart_buffer[TEMP_BUFFER_SIZE];  // 数据存放数组
+
+float kp,ki,kd;
+
+
 void main()
 {
-    clock_init(SYSTEM_CLOCK_30M);
-	debug_init();	
-	ALL_init();
+	clock_init(SYSTEM_CLOCK_30M);
+	debug_init();
 	ips114_init();
-    PID_Init(&pos_pid,    2.8f,  0.15f, 0.6f,  POS_PID_MAX_OUT, POS_PID_MAX_I);
-    PID_Init(&left_spid,  2.0f,  0.1f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-    PID_Init(&right_spid, 2.0f,  0.1f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	ips114_clear(IPS114_DEFAULT_BGCOLOR);
-	Inductance_Init();
-    while(1){
-//		Menu_Display(ADC_value);
-//		ADC_value[0]=adc_convert(ADC_CH8_P00);
-//		ADC_value[1]=adc_convert(ADC_CH9_P01);
-//		ADC_value[2]=adc_convert(ADC_CH13_P05);
-//		ADC_value[3]=adc_convert(ADC_CH14_P06);
-		ips114_show_int16(0,0,real_left);
-		ips114_show_int16(0,16,real_right);
-		Motor_SetSpeed(500,500);
-		
-		    }
+	// 此处编写用户代码 例如外设初始化代码等
+	
+	// 初始化无线转串口
+    wireless_uart_init();
+	Parameter_Debug_Init();
+	// 此处编写用户代码 例如外设初始化代码等
+
+	while (1)
+	{
+		Parameter_Debug(&kp, &ki, &kd);
+		ips114_show_float(64, 0, kp, 3, 2);
+		ips114_show_float(64, 16, ki, 3, 2);
+		ips114_show_float(64, 32, kd, 3, 2);
+	}
 }
-
-
 

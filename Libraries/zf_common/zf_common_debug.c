@@ -43,6 +43,10 @@
 
 #pragma warning disable = 183
 #pragma warning disable = 177
+#pragma warning disable = 165
+#pragma warning disable = 287
+#pragma warning disable = 47
+#pragma warning disable = 98
 
 #if DEBUG_UART_USE_INTERRUPT                                                    // 如果启用 debug uart 接收中断
 uint8                       debug_uart_buffer[DEBUG_RING_BUFFER_LEN];           // 数据存放数组
