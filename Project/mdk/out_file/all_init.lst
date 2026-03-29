@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  all_init                                                           28/03/26  14:29:00  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           29/03/26  20:16:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
 OBJECT MODULE PLACED IN .\out_file\all_init.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INCDI
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INCDI
                     -R(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..
                     -\code) DEBUG PRINT(.\out_file\all_init.lst) OBJECT(.\out_file\all_init.obj) 
 
@@ -16,19 +16,12 @@ stmt  level    source
     5   1              gyro_init();
     6   1              pwm_init(PWMA_CH1P_P60, 25000,0);
     7   1              pwm_init(PWMA_CH2P_P62, 25000,0);
-    8   1              
-    9   1      //      gpio_init(IO_P61, GPO,0, GPO_PUSH_PULL);
-   10   1      //      gpio_init(IO_P63, GPO,0, GPO_PUSH_PULL);
-   11   1      //      gpio_init(IO_P67, GPO,0, GPO_PUSH_PULL);        
-   12   1      //      gpio_init(IO_P33, GPO,0, GPO_PUSH_PULL);
-   13   1      //      Inductance_Init();
-   14   1      //      wireless_uart_init();
-   15   1      //      seekfree_assistant_init();
-   16   1              encoder_init();
-   17   1              LED_Init();
-   18   1              Buzzer_Init();
-   19   1              Menu_Init();
-   20   1      }
+    8   1              ips114_init();
+    9   1              wireless_uart_init();
+   10   1              encoder_init();
+   11   1              LED_Init();
+   12   1              //Menu_Init();
+   13   1      }
 
 
 Module Information          Static   Overlayable

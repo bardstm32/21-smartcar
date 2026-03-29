@@ -843,16 +843,6 @@
               <FilePath>.\led.h</FilePath>
             </File>
             <File>
-              <FileName>buzzer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\buzzer.c</FilePath>
-            </File>
-            <File>
-              <FileName>buzzer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\buzzer.h</FilePath>
-            </File>
-            <File>
               <FileName>trank.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\trank.c</FilePath>

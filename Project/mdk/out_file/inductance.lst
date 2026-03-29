@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  inductance                                                         28/03/26  14:29:01  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         29/03/26  20:16:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
 OBJECT MODULE PLACED IN .\out_file\inductance.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INC
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INC
                     -DIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;
                     -..\code) DEBUG PRINT(.\out_file\inductance.lst) OBJECT(.\out_file\inductance.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          // 遍历数组，更新最小值、最大值，并计算累加和
    54   1          for(i = 0; i < times; i++) {
    55   2              if(arr[i] < min) min = arr[i]; // 更新最小值
-C251 COMPILER V5.60.0,  inductance                                                         28/03/26  14:29:01  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         29/03/26  20:16:09  PAGE 2   
 
    56   2              if(arr[i] > max) max = arr[i]; // 更新最大值
    57   2              sum += arr[i];                 // 计算累加和
@@ -134,7 +134,7 @@ stmt  level    source
   119           * @return 无
   120           */
   121          void Inductance_Read(uint16 *inductance_norm_data) 
-C251 COMPILER V5.60.0,  inductance                                                         28/03/26  14:29:01  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         29/03/26  20:16:09  PAGE 3   
 
   122          {
   123   1          uint8 i; // 声明变量i，必须在作用域最前面

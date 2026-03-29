@@ -108,7 +108,6 @@
 #include "encoder.h"
 #include "moto.h"
 #include "led.h"
-#include "buzzer.h"
 #include "trank.h"
 #include "inductance.h"
 #include "menu.h"

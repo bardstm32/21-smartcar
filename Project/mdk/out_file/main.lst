@@ -1,43 +1,52 @@
-C251 COMPILER V5.60.0,  main                                                               29/03/26  12:34:25  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               29/03/26  20:20:13  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
 OBJECT MODULE PLACED IN .\out_file\main.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE I
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE I
                     -NCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\use
                     -r;..\code) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
 
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          uint16 ADC_value[5];
-    3          void main()
-    4          {
-    5   1          clock_init(SYSTEM_CLOCK_30M);
-    6   1              debug_init();   
-    7   1              ALL_init();
-    8   1      
-    9   1          PID_Init(&pos_pid,    2.8f,  0.15f, 0.6f,  POS_PID_MAX_OUT, POS_PID_MAX_I);
-   10   1          PID_Init(&left_spid,  6.0f,  0.8f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   11   1          PID_Init(&right_spid, 6.0f,  0.8f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   12   1          while(1){
-   13   2                      Menu_Display(ADC_value);
-   14   2                      
-   15   2                          }
-   16   1      }
-   17          
-   18          
-   19          
+    2          #define TEMP_BUFFER_SIZE        64
+    3          static  uint8                   temp_uart_buffer[TEMP_BUFFER_SIZE];  // 数据存放数组
+    4          
+    5          float kp,ki,kd;
+    6          
+    7          
+    8          void main()
+    9          {
+   10   1              clock_init(SYSTEM_CLOCK_30M);
+   11   1              debug_init();
+   12   1              ips114_init();
+   13   1              // 此处编写用户代码 例如外设初始化代码等
+   14   1              
+   15   1              // 初始化无线转串口
+   16   1          wireless_uart_init();
+   17   1              Parameter_Debug_Init();
+   18   1              // 此处编写用户代码 例如外设初始化代码等
+   19   1      
+   20   1              while (1)
+   21   1              {
+   22   2                      Parameter_Debug(&kp, &ki, &kd);
+   23   2                      ips114_show_float(64, 0, kp, 3, 2);
+   24   2                      ips114_show_float(64, 16, ki, 3, 2);
+   25   2                      ips114_show_float(64, 32, kd, 3, 2);
+   26   2              }
+   27   1      }
+   28          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       320     ------
+  code size            =       192     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        10     ------
+  xdata size           =        76     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
