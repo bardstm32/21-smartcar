@@ -41,7 +41,7 @@
 // 内部使用，用户无需关心。
 static void gpio_set_mode(gpio_pin_enum pin, gpio_mode_enum mode)
 {
-	#define PXPU(pin)  (*(unsigned char volatile far *)(0x7efe10 + (pin >> 4) - 1))
+	#define PXPU(pin)  (*(unsigned char volatile far *)(0x7efe10 + (pin >> 4 - 1)))
 //	#define PXPD(pin)  (*(unsigned char volatile far *)(0x7efe40 + (pin >> 4 - 1)))
 	
     if(GPI_FLOATING_IN == mode || GPIO_NO_PULL == mode)

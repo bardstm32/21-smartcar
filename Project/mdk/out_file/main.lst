@@ -1,39 +1,43 @@
-C251 COMPILER V5.60.0,  main                                                               27/03/26  19:39:18  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               29/03/26  12:34:25  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
 OBJECT MODULE PLACED IN .\out_file\main.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(3) OPTIMIZE(0,SIZE) BROWSE I
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE I
                     -NCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\use
-                    -r;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
+                    -r;..\code) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
 
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          int16 int_data[4];
+    2          uint16 ADC_value[5];
     3          void main()
     4          {
-    5   1              Car_Init();
-    6   1              LED_On(LED1);
-    7   1              while (1)
-    8   1              {
-    9   2                      Menu_Display(int_data);
-*** WARNING C91 IN LINE 9 OF ..\user\main.c: '&': pointer to different objects
-   10   2                      voltage_warning_task(11.4f); // 设置目标电压为3.7V
-   11   2                      //motor_L(30);
-   12   2              }
-   13   1      }
-   14          
+    5   1          clock_init(SYSTEM_CLOCK_30M);
+    6   1              debug_init();   
+    7   1              ALL_init();
+    8   1      
+    9   1          PID_Init(&pos_pid,    2.8f,  0.15f, 0.6f,  POS_PID_MAX_OUT, POS_PID_MAX_I);
+   10   1          PID_Init(&left_spid,  6.0f,  0.8f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1          PID_Init(&right_spid, 6.0f,  0.8f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   12   1          while(1){
+   13   2                      Menu_Display(ADC_value);
+   14   2                      
+   15   2                          }
+   16   1      }
+   17          
+   18          
+   19          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        79     ------
+  code size            =       320     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =         8     ------
+  xdata size           =        10     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -47,4 +51,4 @@ Module Information          Static   Overlayable
 End of Module Information.
 
 
-C251 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

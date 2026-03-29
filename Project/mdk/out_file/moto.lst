@@ -1,0 +1,63 @@
+C251 COMPILER V5.60.0,  moto                                                               28/03/26  14:29:00  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE moto
+OBJECT MODULE PLACED IN .\out_file\moto.obj
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE moto.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INCDIR(..
+                    -\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\cod
+                    -e) DEBUG PRINT(.\out_file\moto.lst) OBJECT(.\out_file\moto.obj) 
+
+stmt  level    source
+
+    1          #include "zf_common_headfile.h"
+    2          uint16  ABS(int16 P)
+    3          {
+    4   1              if(P>0)
+    5   1                      return P;
+    6   1              else
+    7   1                      return -P;
+    8   1      }
+    9          
+   10          void Motor_SetSpeed(int16 speed_left, int16 speed_right)
+   11          {    
+   12   1          // 左轮方向控制
+   13   1          if(speed_left > 0) {
+   14   2             gpio_set_level(IO_P61, 0);    // 正转
+   15   2          } else if(speed_left < 0) {
+   16   2             gpio_set_level(IO_P61, 1);    // 正转
+   17   2          } 
+   18   1          // 右轮方向控制 - 注意反转了方向
+   19   1          if(speed_right < 0) {
+   20   2                      gpio_set_level(IO_P63, 0);    // 正转
+   21   2      
+   22   2          } else if(speed_right > 0) {
+   23   2                      gpio_set_level(IO_P63,1);    // 正转
+   24   2          }
+   25   1          // 设置PWM值
+   26   1              pwm_set_duty(PWMA_CH1P_P60,ABS(speed_left));    
+   27   1              pwm_set_duty(PWMA_CH2P_P62,ABS(speed_right));    
+   28   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       178     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =         6     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -265,14 +265,14 @@
             <uFlt64>0</uFlt64>
             <Fuzzy>3</Fuzzy>
             <Optim>0</Optim>
-            <wLevel>3</wLevel>
+            <wLevel>1</wLevel>
             <SizSpd>0</SizSpd>
             <AcaOpt>0</AcaOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h</IncludePath>
+              <IncludePath>..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\code</IncludePath>
             </VariousControls>
           </C251>
           <Ax51>
@@ -559,6 +559,26 @@
               <FileType>5</FileType>
               <FilePath>..\..\libraries\zf_driver\zf_driver_uart.h</FilePath>
             </File>
+            <File>
+              <FileName>eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Libraries\zf_driver\eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Libraries\zf_driver\eeprom.h</FilePath>
+            </File>
+            <File>
+              <FileName>voltage_warning.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Libraries\zf_driver\voltage_warning.c</FilePath>
+            </File>
+            <File>
+              <FileName>voltage_warning.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Libraries\zf_driver\voltage_warning.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -724,6 +744,16 @@
               <FileType>5</FileType>
               <FilePath>..\..\libraries\zf_device\zf_device_wireless_uart.h</FilePath>
             </File>
+            <File>
+              <FileName>imu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Libraries\zf_device\imu.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Libraries\zf_device\imu.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -758,6 +788,11 @@
           <GroupName>user</GroupName>
           <Files>
             <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\main.c</FilePath>
+            </File>
+            <File>
               <FileName>isr.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\isr.c</FilePath>
@@ -768,129 +803,84 @@
               <FilePath>..\user\isr.h</FilePath>
             </File>
             <File>
-              <FileName>main.c</FileName>
+              <FileName>all_init.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\user\main.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>code_c</GroupName>
-          <Files>
-            <File>
-              <FileName>imu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\imu.c</FilePath>
+              <FilePath>.\all_init.c</FilePath>
             </File>
             <File>
-              <FileName>eeprom.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\eeprom.c</FilePath>
-            </File>
-            <File>
-              <FileName>inductance.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\inductance.c</FilePath>
-            </File>
-            <File>
-              <FileName>voltage_warning.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\voltage_warning.c</FilePath>
-            </File>
-            <File>
-              <FileName>motor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\motor.c</FilePath>
-            </File>
-            <File>
-              <FileName>buzzer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\buzzer.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\led.c</FilePath>
-            </File>
-            <File>
-              <FileName>init.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\init.c</FilePath>
-            </File>
-            <File>
-              <FileName>control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\control.c</FilePath>
+              <FileName>all_init.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\all_init.h</FilePath>
             </File>
             <File>
               <FileName>encoder.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\encoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>menu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Libraries\code_c\menu.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>code_h</GroupName>
-          <Files>
-            <File>
-              <FileName>imu.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\imu.h</FilePath>
-            </File>
-            <File>
-              <FileName>eeprom.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\eeprom.h</FilePath>
-            </File>
-            <File>
-              <FileName>inductance.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\inductance.h</FilePath>
-            </File>
-            <File>
-              <FileName>voltage_warning.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\voltage_warning.h</FilePath>
-            </File>
-            <File>
-              <FileName>motor.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\motor.h</FilePath>
-            </File>
-            <File>
-              <FileName>buzzer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\buzzer.h</FilePath>
-            </File>
-            <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\led.h</FilePath>
-            </File>
-            <File>
-              <FileName>init.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\init.h</FilePath>
-            </File>
-            <File>
-              <FileName>control.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\control.h</FilePath>
+              <FilePath>.\encoder.c</FilePath>
             </File>
             <File>
               <FileName>encoder.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\encoder.h</FilePath>
+              <FilePath>.\encoder.h</FilePath>
+            </File>
+            <File>
+              <FileName>moto.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\moto.c</FilePath>
+            </File>
+            <File>
+              <FileName>moto.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\moto.h</FilePath>
+            </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>buzzer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\buzzer.c</FilePath>
+            </File>
+            <File>
+              <FileName>buzzer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\buzzer.h</FilePath>
+            </File>
+            <File>
+              <FileName>trank.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\trank.c</FilePath>
+            </File>
+            <File>
+              <FileName>trank.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\trank.h</FilePath>
+            </File>
+            <File>
+              <FileName>inductance.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\inductance.c</FilePath>
+            </File>
+            <File>
+              <FileName>inductance.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inductance.h</FilePath>
+            </File>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\menu.c</FilePath>
             </File>
             <File>
               <FileName>menu.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\Libraries\code_h\menu.h</FilePath>
+              <FilePath>.\menu.h</FilePath>
             </File>
           </Files>
         </Group>

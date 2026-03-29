@@ -99,6 +99,6 @@ uint16  adc_convert             (adc_channel_enum ch);
 uint16  adc_mean_filter_convert (adc_channel_enum ch, const uint8 count);
 void    adc_init                (adc_channel_enum ch, adc_resolution_enum resolution);
 
-
+extern int16 adc_value[4];
 
 #endif

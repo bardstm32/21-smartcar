@@ -1,0 +1,57 @@
+C251 COMPILER V5.60.0,  pid                                                                20/03/26  22:05:18  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE pid
+OBJECT MODULE PLACED IN .\out_file\pid.obj
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE pid.c LARGE NOALIAS WARNINGLEVEL(3) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\
+                    -..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\code
+                    -) DEBUG PRINT(.\out_file\pid.lst) OBJECT(.\out_file\pid.obj) 
+
+stmt  level    source
+
+    1          #include "pid.h"
+    2          #include "imu.h"
+*** ERROR C25 IN LINE 23 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'n'
+*** ERROR C25 IN LINE 26 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'n'
+*** ERROR C25 IN LINE 29 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'n'
+*** ERROR C42 IN LINE 31 OF E:\keil_v5\C251\Inc\string.h: 'strlen': not in formal parameter list
+*** ERROR C29 IN LINE 33 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C33 IN LINE 33 OF E:\keil_v5\C251\Inc\string.h: 'strchr': invalid storage class
+*** ERROR C29 IN LINE 34 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C33 IN LINE 34 OF E:\keil_v5\C251\Inc\string.h: 'strpos': invalid storage class
+*** ERROR C29 IN LINE 35 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C33 IN LINE 35 OF E:\keil_v5\C251\Inc\string.h: 'strrchr': invalid storage class
+*** ERROR C29 IN LINE 36 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C33 IN LINE 36 OF E:\keil_v5\C251\Inc\string.h: 'strrpos': invalid storage class
+*** ERROR C29 IN LINE 38 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C33 IN LINE 38 OF E:\keil_v5\C251\Inc\string.h: 'size_t': invalid storage class
+*** ERROR C25 IN LINE 38 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'strspn'
+*** ERROR C33 IN LINE 38 OF E:\keil_v5\C251\Inc\string.h: 'strspn': invalid storage class
+*** ERROR C29 IN LINE 39 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C33 IN LINE 39 OF E:\keil_v5\C251\Inc\string.h: 'size_t': invalid storage class
+*** ERROR C25 IN LINE 39 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'strcspn'
+*** ERROR C33 IN LINE 39 OF E:\keil_v5\C251\Inc\string.h: 'strcspn': invalid storage class
+*** ERROR C29 IN LINE 40 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C33 IN LINE 40 OF E:\keil_v5\C251\Inc\string.h: 'strpbrk': invalid storage class
+*** ERROR C29 IN LINE 41 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C33 IN LINE 41 OF E:\keil_v5\C251\Inc\string.h: 'strrpbrk': invalid storage class
+*** ERROR C29 IN LINE 43 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C25 IN LINE 43 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'n'
+*** ERROR C33 IN LINE 43 OF E:\keil_v5\C251\Inc\string.h: 'memcmp': invalid storage class
+*** ERROR C29 IN LINE 44 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C25 IN LINE 44 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'n'
+*** ERROR C33 IN LINE 44 OF E:\keil_v5\C251\Inc\string.h: 'memcpy': invalid storage class
+*** ERROR C29 IN LINE 45 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C25 IN LINE 45 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'n'
+*** ERROR C33 IN LINE 45 OF E:\keil_v5\C251\Inc\string.h: 'memchr': invalid storage class
+*** ERROR C29 IN LINE 46 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C25 IN LINE 46 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'n'
+*** ERROR C33 IN LINE 46 OF E:\keil_v5\C251\Inc\string.h: 'memccpy': invalid storage class
+*** ERROR C29 IN LINE 47 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C25 IN LINE 47 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'n'
+*** ERROR C33 IN LINE 47 OF E:\keil_v5\C251\Inc\string.h: 'memmove': invalid storage class
+*** ERROR C29 IN LINE 48 OF E:\keil_v5\C251\Inc\string.h: formal/parameter has illegal storage class
+*** ERROR C25 IN LINE 48 OF E:\keil_v5\C251\Inc\string.h: syntax error near 'n'
+*** ERROR C7 IN LINE 48 OF E:\keil_v5\C251\Inc\string.h: compilation aborted
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  42 ERROR(S)
