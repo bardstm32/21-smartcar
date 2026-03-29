@@ -16,5 +16,5 @@ void ALL_init()
 	encoder_init();
 	LED_Init();
 	Buzzer_Init();
-	Menu_Init();
+//	Menu_Init();
 }

@@ -4,8 +4,8 @@
 // 定义电感传感器连接的IO引脚
 #define L1 (ADC_CH8_P00) // 电感传感器L1连接到IO引脚P0.0
 #define L2 (ADC_CH9_P01) // 电感传感器L2连接到IO引脚P0.1
-#define L3 (ADC_CH13_P05) // 电感传感器L3连接到IO引脚P0.5
-#define L4 (ADC_CH14_P06) // 电感传感器L4连接到IO引脚P0.6
+#define L3 (ADC_CH14_P06) // 电感传感器L3连接到IO引脚P0.5
+#define L4 (ADC_CH13_P05) // 电感传感器L4连接到IO引脚P0.6
 
 // 滤波深度，连读N次的电感进行滤波防止异常抖动
 #define Filter_deepth 5

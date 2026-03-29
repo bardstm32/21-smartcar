@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  all_init                                                           28/03/26  14:29:00  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           29/03/26  14:39:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
@@ -27,13 +27,13 @@ stmt  level    source
    16   1              encoder_init();
    17   1              LED_Init();
    18   1              Buzzer_Init();
-   19   1              Menu_Init();
+   19   1      //      Menu_Init();
    20   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        65     ------
+  code size            =        62     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
