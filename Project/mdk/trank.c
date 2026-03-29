@@ -90,18 +90,18 @@ void Dual_Loop_Control(void)
     int16 right_pwm;       // 右轮最终PWM
     
     //===================== 1. 读取电感数据+计算误差 =====================//
-    uint16 adc[5];
-    Inductance_Read(adc);
-    // 调用原有差比和函数(输入L1/L2/L3/L4,输出-100~100)
-    inductance_err = Inductance_Count_Err(adc[1], adc[2], adc[3], adc[4]);
-    
-    //===================== 2. 位置环PID(循迹外环) =====================//
-    pos_out = PID_Calc(&pos_pid, 0, inductance_err);
-    
-    //===================== 3. 计算左右轮目标速度 =====================//
-    // 位置环输出=速度差：左轮减速、右轮加速(向右偏); 左轮加速、右轮减速(向左偏)
-    left_target  = BASE_SPEED - pos_out;
-    right_target = BASE_SPEED + pos_out;
+//    uint16 adc[5];
+//    Inductance_Read(adc);
+//    // 调用原有差比和函数(输入L1/L2/L3/L4,输出-100~100)
+//    inductance_err = Inductance_Count_Err(adc[1], adc[2], adc[3], adc[4]);
+//    
+//    //===================== 2. 位置环PID(循迹外环) =====================//
+//    pos_out = PID_Calc(&pos_pid, 0, inductance_err);
+//    
+//    //===================== 3. 计算左右轮目标速度 =====================//
+//    // 位置环输出=速度差：左轮减速、右轮加速(向右偏); 左轮加速、右轮减速(向左偏)
+//    left_target  = BASE_SPEED - pos_out;
+//    right_target = BASE_SPEED + pos_out;
     
     //===================== 4. 读取编码器实际速度 =====================//
 	speed_left = 	encoder_get_count(TIM0_ENCOEDER);                  	// 获取编码器计数
@@ -114,11 +114,11 @@ void Dual_Loop_Control(void)
     real_right = real_right * 0.9 + speed_right * 0.1;
     
     //===================== 5. 速度环PID(稳速内环) =====================//
-    left_pwm  = (int16)PID_Calc(&left_spid,  left_target,  real_left);
-    right_pwm = (int16)PID_Calc(&right_spid, right_target, real_right);
+    left_pwm  = (int16)PID_Calc(&left_spid,  2500,  real_left);
+    right_pwm = (int16)PID_Calc(&right_spid, 2000, real_right);
     
     //===================== 6. 输出到电机 =====================//
-    Motor_SetSpeed(left_pwm, right_pwm);
+    Motor_SetSpeed(left_pwm,0);
 }
 
 

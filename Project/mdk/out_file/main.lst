@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  main                                                               29/03/26  20:32:37  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               29/03/26  23:00:57  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
 OBJECT MODULE PLACED IN .\out_file\main.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE I
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE I
                     -NCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\use
                     -r;..\code) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
 
@@ -14,34 +14,35 @@ stmt  level    source
     3          static  uint8                   temp_uart_buffer[TEMP_BUFFER_SIZE];  // 数据存放数组
     4          
     5          float kp,ki,kd;
-    6          
+    6          #include "trank.h"
     7          
     8          void main()
     9          {
    10   1              clock_init(SYSTEM_CLOCK_30M);
    11   1              debug_init();
-   12   1              ips114_init();
-   13   1              // 此处编写用户代码 例如外设初始化代码等
-   14   1              
-   15   1              // 初始化无线转串口
-   16   1          wireless_uart_init();
-   17   1              Parameter_Debug_Init();
-   18   1              // 此处编写用户代码 例如外设初始化代码等
-   19   1      
-   20   1              while (1)
-   21   1              {
-   22   2                      Parameter_Debug(&kp, &ki, &kd);
-   23   2                      ips114_show_float(64, 0, kp, 3, 2);
-   24   2                      ips114_show_float(64, 16, ki, 3, 2);
-   25   2                      ips114_show_float(64, 32, kd, 3, 2);
-   26   2              }
-   27   1      }
-   28          
+   12   1              // 此处编写用户代码 例如外设初始化代码等
+   13   1              ALL_init();
+   14   1              // 初始化无线转串口
+   15   1              Parameter_Debug_Init();
+   16   1              // 此处编写用户代码 例如外设初始化代码等
+   17   1              PID_Init(&right_spid, 6.2f,  1.9f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   18   1              PID_Init(&left_spid,  2.0f,  0.2f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   19   1              while (1)
+   20   1              {
+   21   2                      Parameter_Debug(&left_spid.Kp,&left_spid.Ki,&left_spid.Kd);
+   22   2                      ips114_show_float(64, 0,  left_spid.Kp, 3, 2);
+   23   2                      ips114_show_float(64, 16, left_spid.Ki, 3, 2);
+   24   2                      ips114_show_float(64, 32, left_spid.Kd, 3, 2);
+   25   2                      ips114_show_int16(64,48,real_left);
+   26   2                      ips114_show_int16(64,64,real_right);
+   27   2              }
+   28   1      }
+   29          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       192     ------
+  code size            =       384     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

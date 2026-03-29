@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  inductance                                                         29/03/26  20:32:38  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         29/03/26  22:19:01  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
 OBJECT MODULE PLACED IN .\out_file\inductance.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INC
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INC
                     -DIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;
                     -..\code) DEBUG PRINT(.\out_file\inductance.lst) OBJECT(.\out_file\inductance.obj) 
 
@@ -20,7 +20,7 @@ stmt  level    source
     8           * 2026-3-21     三帅勇闯智能车-rw         无
     9           * 修改记录：
    10           * @date              @author            备注
-   11           * 
+   11           *
    12           ********************************************************************************************************
              -************/
    13          #include "zf_common_headfile.h"
@@ -34,134 +34,145 @@ stmt  level    source
    21           * @param max_value 最大值
    22           * @return          限制在[min_value, max_value]之间的值
    23           */
-   24          int8 range_protect(int8 value, int8 min_value, int8 max_value) {
-   25   1          return (value > max_value) ? max_value : ((value < min_value) ? min_value : value);
-   26   1      }
-   27          
-   28          /**
-   29           * Inductance_Init - 初始化电感传感器
-   30           * 该函数用于初始化四个电感传感器，每个传感器配置为12位ADC模式。
-   31           * @return 无
-   32           */
-   33          void Inductance_Init(void) {
-   34   1          adc_init(L1, ADC_12BIT); // 初始化电感传感器L1为12位ADC模式
-   35   1          adc_init(L2, ADC_12BIT); // 初始化电感传感器L2为12位ADC模式
-   36   1          adc_init(L3, ADC_12BIT); // 初始化电感传感器L3为12位ADC模式
-   37   1          adc_init(L4, ADC_12BIT); // 初始化电感传感器L4为12位ADC模式
-   38   1      }
-   39          
-   40          /**
-   41           * Median_Average_Filter - 计算数组中去掉一个最大值和一个最小值后的平均值
-   42           * 该函数接收一个整型数组和一个整数times作为参数，计算数组中去掉一个最大值
-   43           * 和一个最小值后的平均值。适用于需要滤除异常值的场景。
-   44           * @param arr   整型数组，包含待处理的数据
-   45           * @param times 需要处理的数组元素个数
-   46           * @return      去掉一个最大值和一个最小值后的数组元素平均值
-   47           */
-   48          int Median_Average_Filter(int *arr, int times)
-   49          {
-   50   1          // 初始化最小值、最大值和累加和
-   51   1          int min = arr[0], max = arr[0], sum = 0, i = 0;
-   52   1          
-   53   1          // 遍历数组，更新最小值、最大值，并计算累加和
-   54   1          for(i = 0; i < times; i++) {
-   55   2              if(arr[i] < min) min = arr[i]; // 更新最小值
-C251 COMPILER V5.60.0,  inductance                                                         29/03/26  20:32:38  PAGE 2   
+   24          int8 range_protect(int8 value, int8 min_value, int8 max_value)
+   25          {
+   26   1          return (value > max_value) ? max_value : ((value < min_value) ? min_value : value);
+   27   1      }
+   28          
+   29          /**
+   30           * Inductance_Init - 初始化电感传感器
+   31           * 该函数用于初始化四个电感传感器，每个传感器配置为12位ADC模式。
+   32           * @return 无
+   33           */
+   34          void Inductance_Init(void)
+   35          {
+   36   1          adc_init(L1, ADC_12BIT); // 初始化电感传感器L1为12位ADC模式
+   37   1          adc_init(L2, ADC_12BIT); // 初始化电感传感器L2为12位ADC模式
+   38   1          adc_init(L3, ADC_12BIT); // 初始化电感传感器L3为12位ADC模式
+   39   1          adc_init(L4, ADC_12BIT); // 初始化电感传感器L4为12位ADC模式
+   40   1      }
+   41          
+   42          /**
+   43           * Median_Average_Filter - 计算数组中去掉一个最大值和一个最小值后的平均值
+   44           * 该函数接收一个整型数组和一个整数times作为参数，计算数组中去掉一个最大值
+   45           * 和一个最小值后的平均值。适用于需要滤除异常值的场景。
+   46           * @param arr   整型数组，包含待处理的数据
+   47           * @param times 需要处理的数组元素个数
+   48           * @return      去掉一个最大值和一个最小值后的数组元素平均值
+   49           */
+   50          int Median_Average_Filter(int *arr, int times)
+   51          {
+   52   1          // 初始化最小值、最大值和累加和
+   53   1          int min = arr[0], max = arr[0], sum = 0, i = 0;
+   54   1      
+   55   1          // 遍历数组，更新最小值、最大值，并计算累加和
+C251 COMPILER V5.60.0,  inductance                                                         29/03/26  22:19:01  PAGE 2   
 
-   56   2              if(arr[i] > max) max = arr[i]; // 更新最大值
-   57   2              sum += arr[i];                 // 计算累加和
-   58   2          }
-   59   1          
-   60   1          // 返回去掉最大值和最小值后的平均值
-   61   1          // 注意：该方法假设times至少为3，否则会导致除以零的错误
-   62   1          return (sum - min - max) / (times - 2);
-   63   1      }
-   64          
-   65          /**
-   66           * Adc_Normalize - 将ADC值归一化到指定范围
-   67           * 该函数接收一个ADC值以及最大值和最小值作为参数，将ADC值归一化到0到100之间，
-   68           * 并使用range_protect函数确保结果在[1.0, 100.0]范围内。
-   69           * @param value     ADC值
-   70           * @param max_value 最大值
-   71           * @param min_value 最小值
-   72           * @return          归一化后的值，范围在[1.0, 100.0]之间
-   73           */
-   74          uint8 ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
-   75          {
-   76   1          uint16 temp;
-   77   1          // 公式：(值 - 最小值) * 100 / (最大值 - 最小值)
-   78   1          temp = (adc_val - adc_min) * 100 / (adc_max - adc_min);
-   79   1          // 限幅，防止越界
-   80   1          if(temp > 100) temp = 100;
-   81   1          if(temp < 0)   temp = 0;
-   82   1          return (uint8)temp;
-   83   1      }
-   84          
-   85          /* Inductance_Count_Err - 差比和计算（按公式修改版）
-   86           * 该函数接收四个电感值作为参数，按公式计算电感误差并将其限制在-100到100之间。
-   87           * @param L  电感值L（对应公式中a1）
-   88           * @param LM 电感值LM（对应公式中a2）
-   89           * @param RM 电感值RM（对应公式中b1）
-   90           * @param R  电感值R（对应公式中b2）
-   91           * @return   电感误差值，范围在[-100, 100]之间
-   92           */
-   93          int8 Inductance_Count_Err(uint16 L, uint16 LM, uint16 RM, uint16 R) 
-   94          {
-   95   1          int8 scaled_err;
-   96   1          // 1. 计算分子：√(a12+a22) - √(b12+b22)
-   97   1          float sqrt_a = sqrt((float)L*L + (float)LM*LM);
-   98   1          float sqrt_b = sqrt((float)R*R + (float)RM*RM);
-   99   1          float numerator = sqrt_a - sqrt_b;
-  100   1          float denominator = sqrt_a + sqrt_b;
-  101   1          
-  102   1          // 2. 计算并钳制结果
-  103   1          if (denominator == 0.0f) {
-  104   2              // 避免除零错误，直接返回0或根据需求处理
-  105   2              scaled_err = 0;
-  106   2          } else {
-  107   2              scaled_err = ((int16)numerator / (int16)denominator) * 100;
-  108   2          }
-  109   1          // 使用range_protect函数确保结果在[-100.0, 100.0]范围内
-  110   1          scaled_err = range_protect(scaled_err, -100, 100);
-  111   1          // 返回电感误差值
-  112   1          return scaled_err;
-  113   1      }
-  114          
-  115          /**
-  116           * Inductance_Read - 读取并滤波电感值
-  117           * 该函数用于读取四个电感传感器的原始值，并使用Median_Average_Filter函数进行滤波处理。
-  118           * @param inductance_filter_data 用于存储滤波后的电感值的数组
-  119           * @return 无
-  120           */
-  121          void Inductance_Read(uint16 *inductance_norm_data) 
-C251 COMPILER V5.60.0,  inductance                                                         29/03/26  20:32:38  PAGE 3   
+   56   1          for (i = 0; i < times; i++)
+   57   1          {
+   58   2              if (arr[i] < min)
+   59   2                  min = arr[i]; // 更新最小值
+   60   2              if (arr[i] > max)
+   61   2                  max = arr[i]; // 更新最大值
+   62   2              sum += arr[i];    // 计算累加和
+   63   2          }
+   64   1      
+   65   1          // 返回去掉最大值和最小值后的平均值
+   66   1          // 注意：该方法假设times至少为3，否则会导致除以零的错误
+   67   1          return (sum - min - max) / (times - 2);
+   68   1      }
+   69          
+   70          /**
+   71           * Adc_Normalize - 将ADC值归一化到指定范围
+   72           * 该函数接收一个ADC值以及最大值和最小值作为参数，将ADC值归一化到0到100之间，
+   73           * 并使用range_protect函数确保结果在[1.0, 100.0]范围内。
+   74           * @param value     ADC值
+   75           * @param max_value 最大值
+   76           * @param min_value 最小值
+   77           * @return          归一化后的值，范围在[1.0, 100.0]之间
+   78           */
+   79          uint8 ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
+   80          {
+   81   1          uint16 temp;
+   82   1          // 公式：(值 - 最小值) * 100 / (最大值 - 最小值)
+   83   1          temp = (adc_val - adc_min) * 100 / (adc_max - adc_min);
+   84   1          // 限幅，防止越界
+   85   1          if (temp > 100)
+   86   1              temp = 100;
+   87   1          if (temp < 0)
+   88   1              temp = 0;
+   89   1          return (uint8)temp;
+   90   1      }
+   91          
+   92          /* Inductance_Count_Err - 差比和计算（按公式修改版）
+   93           * 该函数接收四个电感值作为参数，按公式计算电感误差并将其限制在-100到100之间。
+   94           * @param L  电感值L（对应公式中a1）
+   95           * @param LM 电感值LM（对应公式中a2）
+   96           * @param RM 电感值RM（对应公式中b1）
+   97           * @param R  电感值R（对应公式中b2）
+   98           * @return   电感误差值，范围在[-100, 100]之间
+   99           */
+  100          int8 Inductance_Count_Err(uint16 L, uint16 LM, uint16 RM, uint16 R)
+  101          {
+  102   1          int8 scaled_err;
+  103   1          // 1. 计算分子：√(a12+a22) - √(b12+b22)
+  104   1          float sqrt_a = sqrt((float)L * L + (float)LM * LM);
+  105   1          float sqrt_b = sqrt((float)R * R + (float)RM * RM);
+  106   1          float numerator = sqrt_a - sqrt_b;
+  107   1          float denominator = sqrt_a + sqrt_b;
+  108   1      
+  109   1          // 2. 计算并钳制结果
+  110   1          if (denominator == 0.0f)
+  111   1          {
+  112   2              // 避免除零错误，直接返回0或根据需求处理
+  113   2              scaled_err = 0;
+  114   2          }
+  115   1          else
+  116   1          {
+  117   2              scaled_err = ((int16)numerator / (int16)denominator) * 100;
+  118   2          }
+  119   1          // 使用range_protect函数确保结果在[-100.0, 100.0]范围内
+  120   1          scaled_err = range_protect(scaled_err, -100, 100);
+  121   1          // 返回电感误差值
+C251 COMPILER V5.60.0,  inductance                                                         29/03/26  22:19:01  PAGE 3   
 
-  122          {
-  123   1          uint8 i; // 声明变量i，必须在作用域最前面
-  124   1          // 原始值
-  125   1          uint16 inductance_init_data[5][Filter_deepth];
-  126   1          uint16 inductance_filter_data[5];
-  127   1          // 原始值的读取
-  128   1          for (i = 0; i < Filter_deepth; i++) {
-  129   2              inductance_init_data[1][i] = adc_convert(L1); // 将电感传感器L1的值读取并存储
-  130   2              inductance_init_data[2][i] = adc_convert(L2); // 将电感传感器L2的值读取并存储
-  131   2              inductance_init_data[3][i] = adc_convert(L3); // 将电感传感器L3的值读取并存储
-  132   2              inductance_init_data[4][i] = adc_convert(L4); // 将电感传感器L4的值读取并存储
-  133   2          }
-  134   1          
-  135   1          // 滤波
-  136   1          for (i = 1; i <= 4; i++) 
-  137   1          {
-  138   2              // 使用Median_Average_Filter函数进行滤波处理
-  139   2              inductance_filter_data[i] =Median_Average_Filter(inductance_init_data[i],Filter_deepth);
-*** WARNING C98 IN LINE 139 OF inductance.c: parameter 1: pointer to different objects
-  140   2          }
-  141   1              
-  142   1              inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 2400, 0);
-  143   1          inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 2400, 0);
-  144   1          inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 2400, 0);
-  145   1          inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 2400, 0);
-  146   1      }
+  122   1          return scaled_err;
+  123   1      }
+  124          
+  125          /**
+  126           * Inductance_Read - 读取并滤波电感值
+  127           * 该函数用于读取四个电感传感器的原始值，并使用Median_Average_Filter函数进行滤波处理。
+  128           * @param inductance_filter_data 用于存储滤波后的电感值的数组
+  129           * @return 无
+  130           */
+  131          void Inductance_Read(uint16 *inductance_norm_data)
+  132          {
+  133   1          uint8 i; // 声明变量i，必须在作用域最前面
+  134   1          // 原始值
+  135   1          uint16 inductance_init_data[5][Filter_deepth];
+  136   1          uint16 inductance_filter_data[5];
+  137   1          // 原始值的读取
+  138   1          for (i = 0; i < Filter_deepth; i++)
+  139   1          {
+  140   2              inductance_init_data[1][i] = adc_convert(L1); // 将电感传感器L1的值读取并存储
+  141   2              inductance_init_data[2][i] = adc_convert(L2); // 将电感传感器L2的值读取并存储
+  142   2              inductance_init_data[3][i] = adc_convert(L3); // 将电感传感器L3的值读取并存储
+  143   2              inductance_init_data[4][i] = adc_convert(L4); // 将电感传感器L4的值读取并存储
+  144   2          }
+  145   1      
+  146   1          // 滤波
+  147   1          for (i = 1; i <= 4; i++)
+  148   1          {
+  149   2              // 使用Median_Average_Filter函数进行滤波处理
+  150   2              inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
+*** WARNING C98 IN LINE 150 OF inductance.c: parameter 1: pointer to different objects
+  151   2          }
+  152   1      
+  153   1          inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 270, 0);
+  154   1          inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 125, 0);
+  155   1          inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 117, 0);
+  156   1          inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 270, 0);
+  157   1      }
 
 
 Module Information          Static   Overlayable

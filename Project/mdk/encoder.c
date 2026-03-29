@@ -29,6 +29,6 @@ void pit_handler (void)
 	imu660ra_get_gyro();
 		gyro_proc();
 
-	Dual_Loop_Control();
+//	Dual_Loop_Control();
 }
 
