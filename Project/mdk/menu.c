@@ -98,7 +98,7 @@ void Parameter_Debug_Init(void)
 
 // 参数调试函数
 // 从无线串口接收数据以更新参数值
-void Parameter_Debug(float *param1, float *param2, float *param3, uint8 *speed)
+void Parameter_Debug(float *param1, float *param2, float *param3, uint32 *speed)
 {
     uint8 i; // 循环计数器
     seekfree_assistant_data_analysis(); // 分析接收到的数据

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               30/03/26  16:35:38  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               30/03/26  17:57:05  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -12,44 +12,37 @@ stmt  level    source
     1          #include "zf_common_headfile.h"
     2          #define TEMP_BUFFER_SIZE        64
     3          static  uint8                   temp_uart_buffer[TEMP_BUFFER_SIZE];  // 数据存放数组
-    4          uint8 speed = 2000;
-    5          uint8 spd_left = 0,spd_right;
-    6          
-    7          void main()
-    8          {
-    9   1              clock_init(SYSTEM_CLOCK_30M);
-   10   1              debug_init();
-   11   1              // 此处编写用户代码 例如外设初始化代码等
-   12   1              ALL_init();
-   13   1              // 初始化无线转串口
-   14   1              
-   15   1              // 此处编写用户代码 例如外设初始化代码等
-   16   1              //PID_Init(&right_spid, 6.2f,  1.9f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   17   1              while (1)
-   18   1              {
-   19   2                      Parameter_Debug(&left_spid.Kp,&left_spid.Ki,&left_spid.Kd,&speed);
-   20   2                      spd_left = encoder_get_count(TIM0_ENCOEDER);                    // 获取编码器计数
-   21   2                      Oscilloscope_Display(spd_left,0);
-   22   2                      encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
-   23   2                      ips114_show_float(64, 0,  left_spid.Kp, 3, 2);
-   24   2                      ips114_show_float(64, 16, left_spid.Ki, 3, 2);
-   25   2                      ips114_show_float(64, 32, left_spid.Kd, 3, 2);
-   26   2                      ips114_show_uint16(64, 48, speed);
-   27   2                      ips114_show_uint16(64, 64, spd_left);
-   28   2                      Motor_SetSpeed(speed, 0);
-   29   2              }
-   30   1      }
-   31          
+    4          
+    5          
+    6          void main()
+    7          {
+    8   1              clock_init(SYSTEM_CLOCK_30M);
+    9   1              debug_init();
+   10   1              // 此处编写用户代码 例如外设初始化代码等
+   11   1              ALL_init();
+   12   1              // 初始化无线转串口
+   13   1              
+   14   1              // 此处编写用户代码 例如外设初始化代码等
+   15   1              //PID_Init(&right_spid, 6.2f,  1.9f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   16   1              while (1)
+   17   1              {
+   18   2                      //Parameter_Debug(&left_spid.Kp,&left_spid.Ki,&left_spid.Kd,NULL);                      // 获取编码器计数  
+             -                     // 清空编码器计数
+   19   2                      ips114_show_float(64, 0,  left_spid.Kp, 3, 2);
+   20   2                      ips114_show_uint16(64, 16, real_left);
+   21   2              }
+   22   1      }
+   23          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       277     ------
+  code size            =       108     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        67     ------
+  xdata size           =        64     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -59,7 +52,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        14     ------
+  hconst size          =         2     ------
 End of Module Information.
 
 

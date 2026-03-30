@@ -27,8 +27,8 @@ void pit_handler (void)
 {	
 	imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
 	imu660ra_get_gyro();
-		gyro_proc();
-
-//	Dual_Loop_Control();
+	gyro_proc();
+	Dual_Loop_Control();
+	
 }
 

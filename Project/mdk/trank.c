@@ -109,16 +109,17 @@ void Dual_Loop_Control(void)
 	
     encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
     encoder_clear_count(TIM3_ENCOEDER);	
-
+	
+	
     real_left  = real_left  * 0.9 + speed_left  * 0.1;
     real_right = real_right * 0.9 + speed_right * 0.1;
-    
+    Oscilloscope_Display(real_left, 0);
     //===================== 5. 速度环PID(稳速内环) =====================//
-    left_pwm  = (int16)PID_Calc(&left_spid,  2500,  real_left);
-    right_pwm = (int16)PID_Calc(&right_spid, 2000, real_right);
+    //left_pwm  = (int16)PID_Calc(&left_spid,  2500,  real_left);
+    //right_pwm = (int16)PID_Calc(&right_spid, 2000, real_right);
     
     //===================== 6. 输出到电机 =====================//
-    Motor_SetSpeed(left_pwm,0);
+    Motor_SetSpeed(2000,0);
 }
 
 
