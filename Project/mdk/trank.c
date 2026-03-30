@@ -12,11 +12,11 @@ PID_TypeDef right_spid;
 #define ENCODER_DIR_DIR_RIGHT              	(IO_P53)            				 	// DIR 对应的引脚
 #define ENCODER_DIR_PULSE_RIGHT            	(TIM3_ENCOEDER_P04)            			// PULSE 对应的引脚
 
-volatile int16 speed_left = 0;
-volatile int16 speed_right = 0;
+volatile int32 speed_left = 0;
+volatile int32 speed_right = 0;
 
-volatile int16 real_left=0;
-volatile int16 real_right=0;
+volatile int32 real_left=0;
+volatile int32 real_right=0;
 
 
 /**
@@ -86,8 +86,8 @@ void Dual_Loop_Control(void)
     float left_speed;      // 左轮实际速度(编码器读取)
     float right_speed;     // 右轮实际速度
     
-    int16 left_pwm;        // 左轮最终PWM
-    int16 right_pwm;       // 右轮最终PWM
+    int32 left_pwm;        // 左轮最终PWM
+    int32 right_pwm;       // 右轮最终PWM
     
     //===================== 1. 读取电感数据+计算误差 =====================//
 //    uint16 adc[5];
@@ -109,17 +109,16 @@ void Dual_Loop_Control(void)
 	
     encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
     encoder_clear_count(TIM3_ENCOEDER);	
-	
-	
+
     real_left  = real_left  * 0.9 + speed_left  * 0.1;
     real_right = real_right * 0.9 + speed_right * 0.1;
-    Oscilloscope_Display(real_left, 0);
+    //Oscilloscope_Display(real_left,real_right,right_spid.target);
     //===================== 5. 速度环PID(稳速内环) =====================//
-    //left_pwm  = (int16)PID_Calc(&left_spid,  2500,  real_left);
-    //right_pwm = (int16)PID_Calc(&right_spid, 2000, real_right);
+    left_pwm  = (int16)PID_Calc(&left_spid, 1000,real_left);
+    right_pwm = (int16)PID_Calc(&right_spid, 1000, real_right);
     
     //===================== 6. 输出到电机 =====================//
-    Motor_SetSpeed(2000,0);
+    Motor_SetSpeed(left_pwm,right_pwm);
 }
 
 

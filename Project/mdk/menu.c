@@ -98,25 +98,17 @@ void Parameter_Debug_Init(void)
 
 // 参数调试函数
 // 从无线串口接收数据以更新参数值
-void Parameter_Debug(float *param1, float *param2, float *param3, uint32 *speed)
+void Parameter_Debug(float *param1, float *param2, uint32 *param3, uint32 *speed)
 {
     uint8 i; // 循环计数器
     seekfree_assistant_data_analysis(); // 分析接收到的数据
-
-    // 遍历
-    for (i = 0; i < 3; i++) // 遍历三个参数
-    {
-        if (seekfree_assistant_parameter_update_flag[i]) // 检查参数是否需要更新
-        {
-            seekfree_assistant_parameter_update_flag[i] = 0; // 重置更新标志
-            sprintf(send_str, "%d\r\n", real_left); // 将左编码器的值格式化为字符串
-            wireless_uart_send_buffer((uint8 *)send_str, strlen(send_str)); // 发送左编码器的值至电脑
-            *param1 = seekfree_assistant_parameter[0] * 0.01f; // 更新参数1
-            *param2 = seekfree_assistant_parameter[1] * 0.01f; // 更新参数2
-            *param3 = seekfree_assistant_parameter[2] * 0.01f; // 更新参数3
-            *speed = seekfree_assistant_parameter[3] * 10; // 更新速度参数
-        }
-    }
+    seekfree_assistant_parameter_update_flag[i] = 0; // 重置更新标志
+    *param1 = seekfree_assistant_parameter[0] * 0.1f; // 更新参数1
+    *param2 = seekfree_assistant_parameter[1] * 0.01f; // 更新参数2
+    //*param3 = seekfree_assistant_parameter[2] * 0.1f; // 更新参数3
+    *speed = seekfree_assistant_parameter[3] * 5; // 更新速度参数
+	*param3 = *speed;
+           
 }
 
 // 示波器初始化函数
@@ -128,10 +120,12 @@ void Oscilloscope_Init(void)
 
 // 示波器数据发送函数
 // 将两个通道的数据打包并通过无线串口发送到电脑端
-void Oscilloscope_Display(uint16 num1, uint16 num2)
+void Oscilloscope_Display(int32 num1, int32 num2,int32 target)
 {
     seekfree_assistant_oscilloscope_data.dat[0] = num1; // 设置第一个通道的数据
     seekfree_assistant_oscilloscope_data.dat[1] = num2; // 设置第二个通道的数据
-    seekfree_assistant_oscilloscope_data.channel_num = 2; // 设置发送的通道数量为2
+    seekfree_assistant_oscilloscope_data.dat[2] = target; // 设置第二个通道的数据
+
+    seekfree_assistant_oscilloscope_data.channel_num = 3; // 设置发送的通道数量为2
     seekfree_assistant_oscilloscope_send(&seekfree_assistant_oscilloscope_data); // 发送示波器数据至电脑
 }

@@ -36,10 +36,6 @@
 #ifndef __HEADFILE_H_
 #define __HEADFILE_H_
 
-
-#pragma warning disable = 115
-#pragma warning disable = 188
-
 #include <string.h>
 #include <stdio.h>
 #include <math.h>

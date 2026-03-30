@@ -13,7 +13,8 @@ void pit_handler 	(void);
 #define ENCODER_DIR_DIR_RIGHT              	(IO_P53)            				 	// DIR 对应的引脚
 #define ENCODER_DIR_PULSE_RIGHT            	(TIM3_ENCOEDER_P04)            			// PULSE 对应的引脚
 
-
+uint16 cnt = 0;
+	
 void encoder_init()
 {	
 	tim1_irq_handler = pit_handler;
@@ -24,11 +25,21 @@ void encoder_init()
 }
 
 void pit_handler (void)
-{	
-	imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
-	imu660ra_get_gyro();
-	gyro_proc();
-	Dual_Loop_Control();
+{
 	
+	cnt++;
+	if(cnt <=500)
+	{
+		Dual_Loop_Control();
+		gpio_set_level(IO_P33,1);
+	}
+	if(cnt >= 500)
+	{
+	//imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
+	//imu660ra_get_gyro();
+	//gyro_proc();
+		Motor_SetSpeed(0,0);
+		gpio_set_level(IO_P33,0);
+	}
 }
 

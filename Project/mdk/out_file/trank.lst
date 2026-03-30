@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  trank                                                              30/03/26  17:54:36  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              30/03/26  21:47:36  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
@@ -25,11 +25,11 @@ stmt  level    source
    12          #define ENCODER_DIR_DIR_RIGHT                   (IO_P53)                                                // DIR 对应的引脚
    13          #define ENCODER_DIR_PULSE_RIGHT                 (TIM3_ENCOEDER_P04)                             // PULSE 对应的引脚
    14          
-   15          volatile int16 speed_left = 0;
-   16          volatile int16 speed_right = 0;
+   15          volatile int32 speed_left = 0;
+   16          volatile int32 speed_right = 0;
    17          
-   18          volatile int16 real_left=0;
-   19          volatile int16 real_right=0;
+   18          volatile int32 real_left=0;
+   19          volatile int32 real_right=0;
    20          
    21          
    22          /**
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          
    54   1          // 比例项
    55   1          pid->P = pid->Kp * pid->err;
-C251 COMPILER V5.60.0,  trank                                                              30/03/26  17:54:36  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              30/03/26  21:47:36  PAGE 2   
 
    56   1          
    57   1          // 积分项+限幅
@@ -101,8 +101,8 @@ stmt  level    source
    86   1          float left_speed;      // 左轮实际速度(编码器读取)
    87   1          float right_speed;     // 右轮实际速度
    88   1          
-   89   1          int16 left_pwm;        // 左轮最终PWM
-   90   1          int16 right_pwm;       // 右轮最终PWM
+   89   1          int32 left_pwm;        // 左轮最终PWM
+   90   1          int32 right_pwm;       // 右轮最终PWM
    91   1          
    92   1          //===================== 1. 读取电感数据+计算误差 =====================//
    93   1      //    uint16 adc[5];
@@ -124,41 +124,38 @@ stmt  level    source
   109   1              
   110   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
   111   1          encoder_clear_count(TIM3_ENCOEDER); 
-  112   1              
-  113   1              
-  114   1          real_left  = real_left  * 0.9 + speed_left  * 0.1;
-  115   1          real_right = real_right * 0.9 + speed_right * 0.1;
-  116   1          Oscilloscope_Display(real_left, 0);
-  117   1          //===================== 5. 速度环PID(稳速内环) =====================//
-  118   1          //left_pwm  = (int16)PID_Calc(&left_spid,  2500,  real_left);
-  119   1          //right_pwm = (int16)PID_Calc(&right_spid, 2000, real_right);
-  120   1          
-  121   1          //===================== 6. 输出到电机 =====================//
-C251 COMPILER V5.60.0,  trank                                                              30/03/26  17:54:36  PAGE 3   
+  112   1      
+  113   1          real_left  = real_left  * 0.9 + speed_left  * 0.1;
+  114   1          real_right = real_right * 0.9 + speed_right * 0.1;
+  115   1          //Oscilloscope_Display(real_left,real_right,right_spid.target);
+  116   1          //===================== 5. 速度环PID(稳速内环) =====================//
+  117   1          left_pwm  = (int16)PID_Calc(&left_spid, 1000,real_left);
+  118   1          right_pwm = (int16)PID_Calc(&right_spid, 1000, real_right);
+  119   1          
+  120   1          //===================== 6. 输出到电机 =====================//
+  121   1          Motor_SetSpeed(left_pwm,right_pwm);
+C251 COMPILER V5.60.0,  trank                                                              30/03/26  21:47:36  PAGE 3   
 
-  122   1          Motor_SetSpeed(2000,0);
-  123   1      }
+  122   1      }
 *** WARNING C47 IN LINE 81 OF trank.c: 'inductance_err': unreferenced local variable
 *** WARNING C47 IN LINE 82 OF trank.c: 'pos_out': unreferenced local variable
 *** WARNING C47 IN LINE 84 OF trank.c: 'left_target': unreferenced local variable
 *** WARNING C47 IN LINE 85 OF trank.c: 'right_target': unreferenced local variable
 *** WARNING C47 IN LINE 86 OF trank.c: 'left_speed': unreferenced local variable
 *** WARNING C47 IN LINE 87 OF trank.c: 'right_speed': unreferenced local variable
-*** WARNING C47 IN LINE 89 OF trank.c: 'left_pwm': unreferenced local variable
-*** WARNING C47 IN LINE 90 OF trank.c: 'right_pwm': unreferenced local variable
+  123          
   124          
   125          
-  126          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1447     ------
+  code size            =      1620     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =       200     ------
+  xdata size           =       216     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -168,8 +165,8 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        28     ------
+  hconst size          =        36     ------
 End of Module Information.
 
 
-C251 COMPILATION COMPLETE.  8 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  6 WARNING(S),  0 ERROR(S)

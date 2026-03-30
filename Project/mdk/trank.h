@@ -2,7 +2,7 @@
 #define __TRANK_H
 
 //===================== 全局宏定义 =====================//
-#define PWM_MAX             2000    // 电机PWM最大限幅
+#define PWM_MAX             5000   // 电机PWM最大限幅
 #define BASE_SPEED          700     // 基础直行速度(可调)
 
 // 位置环(循迹外环)参数限幅
@@ -10,7 +10,7 @@
 #define POS_PID_MAX_I       200     // 位置环积分限幅
 // 速度环(稳速内环)参数限幅
 #define SPEED_PID_MAX_OUT    PWM_MAX // 速度环最大输出(PWM)
-#define SPEED_PID_MAX_I      800     // 速度环积分限幅
+#define SPEED_PID_MAX_I      2500     // 速度环积分限幅
 
 //===================== PID结构体 =====================//
 // 通用PID结构体(位置/速度环共用)
@@ -20,7 +20,7 @@ typedef struct
     float Ki;      // 积分系数
     float Kd;      // 微分系数
     
-    float target;  // 目标值
+    int32 target;  // 目标值
     float measure; // 测量值
     float err;     // 当前误差
     float last_err;// 上一次误差
@@ -39,8 +39,8 @@ extern PID_TypeDef pos_pid;   // 位置环PID(循迹)
 extern PID_TypeDef left_spid; // 左轮速度环PID
 extern PID_TypeDef right_spid;// 右轮速度环PID
 
-extern  volatile int16 real_left;
-extern volatile int16 real_right;
+extern  volatile int32 real_left;
+extern volatile int32 real_right;
 
 
 //===================== 函数声明 =====================//

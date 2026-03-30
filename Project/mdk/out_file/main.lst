@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               30/03/26  17:57:05  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               30/03/26  21:57:37  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -10,34 +10,36 @@ COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS W
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          #define TEMP_BUFFER_SIZE        64
-    3          static  uint8                   temp_uart_buffer[TEMP_BUFFER_SIZE];  // 数据存放数组
+    2          #define TEMP_BUFFER_SIZE 64
+    3          static uint8 temp_uart_buffer[TEMP_BUFFER_SIZE]; // 数据存放数组
     4          
-    5          
-    6          void main()
-    7          {
-    8   1              clock_init(SYSTEM_CLOCK_30M);
-    9   1              debug_init();
-   10   1              // 此处编写用户代码 例如外设初始化代码等
-   11   1              ALL_init();
+    5          void main()
+    6          {
+    7   1              clock_init(SYSTEM_CLOCK_30M);
+    8   1              debug_init();
+    9   1              // 此处编写用户代码 例如外设初始化代码等
+   10   1              ALL_init();
+   11   1              gpio_init(IO_P33, GPO, 0, GPO_PUSH_PULL);
    12   1              // 初始化无线转串口
-   13   1              
-   14   1              // 此处编写用户代码 例如外设初始化代码等
-   15   1              //PID_Init(&right_spid, 6.2f,  1.9f,  0.0f,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   16   1              while (1)
-   17   1              {
-   18   2                      //Parameter_Debug(&left_spid.Kp,&left_spid.Ki,&left_spid.Kd,NULL);                      // 获取编码器计数  
-             -                     // 清空编码器计数
-   19   2                      ips114_show_float(64, 0,  left_spid.Kp, 3, 2);
-   20   2                      ips114_show_uint16(64, 16, real_left);
-   21   2              }
-   22   1      }
-   23          
+   13   1              // 此处编写用户代码 例如外设初始化代码等
+   14   1              PID_Init(&left_spid, 8.5f,0.15,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   15   1              PID_Init(&right_spid, 8.5f,0.15,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   16   1      
+   17   1              while (1)
+   18   1              {
+   19   2                      //Parameter_Debug(&right_spid.Kp,&right_spid.Ki,&left_spid.target,&right_spid.target);   
+   20   2                      ips114_show_int16(64,32,right_spid.target);
+   21   2                      ips114_show_int16(64,48,left_spid.target);              // 获取编码器计数                       // 清空编码器计数
+   22   2                      ips114_show_int16(64,16,real_left);
+   23   2                      ips114_show_int16(64,0,real_right);
+   24   2                      
+   25   2              }
+   26   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       108     ------
+  code size            =       328     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
