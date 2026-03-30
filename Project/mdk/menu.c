@@ -20,6 +20,7 @@ static uint8 temp_uart_buffer[TEMP_BUFFER_SIZE]; // 数据存放数组
 
 char send_str[32] = {0};
 
+
 // 菜单初始化函数
 void Menu_Init(void)
 {
@@ -90,23 +91,35 @@ void Parameter_Debug_Init(void)
     seekfree_assistant_init();
 }
 
-void Parameter_Debug(float *param1, float *param2, float *param3)
+void Parameter_Debug(float *param1, float *param2, float *param3,uint8 *speed)
 {
     uint8 i;
     seekfree_assistant_data_analysis();
     // 遍历
-    for (i = 0; i < 2; i++)
+    for (i = 0; i < 3; i++)
     {
         if (seekfree_assistant_parameter_update_flag[i])
         {
             seekfree_assistant_parameter_update_flag[i] = 0;
-            sprintf(send_str, "\r\nreceive data channel : %d  ", i);
-            wireless_uart_send_buffer((uint8 *)send_str, strlen(send_str));
-            sprintf(send_str, "data : %.2f \r\n", seekfree_assistant_parameter[i]);
+            sprintf(send_str, "%d\r\n", real_left);
             wireless_uart_send_buffer((uint8 *)send_str, strlen(send_str));
             *param1 = seekfree_assistant_parameter[0] * 0.01f;
             *param2 = seekfree_assistant_parameter[1] * 0.01f;
             *param3 = seekfree_assistant_parameter[2] * 0.01f;
+            *speed = seekfree_assistant_parameter[3]*10;
         }
     }
+}
+
+void Oscilloscope_Init(void)
+{
+    seekfree_assistant_transfer_callback = wireless_uart_send_buffer;
+}
+
+void Oscilloscope_Display(uint16 num1,uint16 num2)
+{
+	seekfree_assistant_oscilloscope_data.dat[0] = num1;
+    seekfree_assistant_oscilloscope_data.dat[1] = num2;
+    seekfree_assistant_oscilloscope_data.channel_num = 2; // 发送两个通道的数据
+    seekfree_assistant_oscilloscope_send(&seekfree_assistant_oscilloscope_data);
 }

@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  all_init                                                           29/03/26  22:19:00  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           30/03/26  16:23:37  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
 OBJECT MODULE PLACED IN .\out_file\all_init.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INCDI
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INCDI
                     -R(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..
                     -\code) DEBUG PRINT(.\out_file\all_init.lst) OBJECT(.\out_file\all_init.obj) 
 
@@ -20,13 +20,15 @@ stmt  level    source
     9   1              wireless_uart_init();
    10   1              encoder_init();
    11   1              LED_Init();
-   12   1              //Menu_Init();
-   13   1      }
+   12   1              Oscilloscope_Init();
+   13   1              Parameter_Debug_Init();
+   14   1              //Menu_Init();
+   15   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        65     ------
+  code size            =        71     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

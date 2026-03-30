@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  inductance                                                         29/03/26  22:19:01  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         30/03/26  16:23:38  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
 OBJECT MODULE PLACED IN .\out_file\inductance.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INC
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INC
                     -DIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;
                     -..\code) DEBUG PRINT(.\out_file\inductance.lst) OBJECT(.\out_file\inductance.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          int min = arr[0], max = arr[0], sum = 0, i = 0;
    54   1      
    55   1          // 遍历数组，更新最小值、最大值，并计算累加和
-C251 COMPILER V5.60.0,  inductance                                                         29/03/26  22:19:01  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         30/03/26  16:23:38  PAGE 2   
 
    56   1          for (i = 0; i < times; i++)
    57   1          {
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          // 使用range_protect函数确保结果在[-100.0, 100.0]范围内
   120   1          scaled_err = range_protect(scaled_err, -100, 100);
   121   1          // 返回电感误差值
-C251 COMPILER V5.60.0,  inductance                                                         29/03/26  22:19:01  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         30/03/26  16:23:38  PAGE 3   
 
   122   1          return scaled_err;
   123   1      }

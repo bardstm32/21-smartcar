@@ -9,5 +9,7 @@ void ALL_init()
 	wireless_uart_init();
 	encoder_init();
 	LED_Init();
+	Oscilloscope_Init();
+	Parameter_Debug_Init();
 	//Menu_Init();
 }
