@@ -33,7 +33,7 @@ void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, flo
     pid->measure = 0;
     pid->err = 0;
     pid->last_err = 0;
-    pid->last_last_err = 0; // ——> 【新增】初始化上上次误差
+    pid->prev_err = 0; // ——> 【新增】初始化上上次误差
     pid->P = 0;
     pid->I = 0;
     pid->D = 0;
@@ -73,49 +73,30 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
     return pid->out;
 }
 
-/**
- * @brief  通用增量式PID计算
- * @param  pid      PID结构体指针
- * @param  target   目标值
- * @param  measure  实际测量值
- * @retval 经过限幅后的总输出
- */
-float PID_Inc_Calc(PID_TypeDef *pid, float target, float measure)
+// 增量式PID计算函数
+// 公式: ΔU = Kp*(e(k) - e(k-1)) + Ki*e(k) + Kd*(e(k) - 2*e(k-1) + e(k-2))
+void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
 {
-    float inc_out; // 本次输出的增量
+	int16 inc_out;
+    // 1. 计算当前误差
+    pid->err = pid->target - current_speed;
 
-    pid->target = target;
-    pid->measure = measure;
+    // 2. 计算输出增量 (ΔU)
+    inc_out = (int16)(pid->Kp * (pid->err - pid->last_err) +
+                            pid->Ki * pid->err +
+                            pid->Kd * (pid->err - 2 * pid->last_err + pid->prev_err));
 
-    // 1. 计算当前误差 e(k)
-    pid->err = pid->target - pid->measure;
+    // 3. 累加增量得到最终实际输出
+    pid->out += inc_out;
 
-    // 2. 增量式比例项：Kp * [e(k) - e(k-1)]
-    pid->P = pid->Kp * (pid->err - pid->last_err);
-
-    // 3. 增量式积分项：Ki * e(k)
-    // (注：增量式的积分项不需要像位置式那样累加，它直接是当前误差乘以Ki)
-    pid->I = pid->Ki * pid->err;
-
-    // 4. 增量式微分项：Kd * [e(k) - 2e(k-1) + e(k-2)]
-    pid->D = pid->Kd * (pid->err - 2.0f * pid->last_err + pid->last_last_err);
-
-        // 8. 更新历史误差
-    pid->last_last_err = pid->last_err; // 更新 e(k-2)
-    pid->last_err = pid->err;           // 更新 e(k-1)
-    // 5. 计算本次输出增量 △out
-    inc_out = pid->P + pid->I + pid->D;
-
-    // 6. 累加到总输出：out(k) = out(k-1) + △out
-    pid->out = inc_out;
-
-    // 7. 总输出限幅 (增量式通常只需要对最终输出限幅即可，无需单独对积分限幅)
+    // 4. 输出限幅 (防止PWM跑飞)
     if (pid->out > pid->max_out)
         pid->out = pid->max_out;
     if (pid->out < -pid->max_out)
         pid->out = -pid->max_out;
-
-    return pid->out;
+    // 5. 保存历史误差，供下一次计算使用
+    pid->prev_err = pid->last_err;
+    pid->last_err = pid->err;
 }
 
 /**
@@ -134,7 +115,7 @@ void Dual_Loop_Control(void)
 //    
     int32 left_pwm;        // 左轮最终PWM
     int32 right_pwm;       // 右轮最终PWM
-    
+
     //===================== 1. 读取电感数据+计算误差 =====================//
 //    uint16 adc[5];
 //    Inductance_Read(adc);
@@ -156,18 +137,18 @@ void Dual_Loop_Control(void)
     encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
     encoder_clear_count(TIM3_ENCOEDER);
 
- 
-    real_left = real_left * 0.9 + speed_left * 0.1;
-    real_right = real_right * 0.9 + speed_right * 0.1;
+	
+    real_left =  speed_left;
+    real_right = speed_right;
 	
    
 //    //===================== 5. 速度环PID(稳速内环) =====================//
-    left_pwm = (int16)PID_Calc(&left_spid, left_spid.target, real_left);
-    right_pwm = (int16)PID_Calc(&right_spid, right_spid.target, real_right);
-	Oscilloscope_Display(real_left,speed_right,right_spid.target,left_pwm,right_pwm,left_spid.I,right_spid.I,NULL);
+    IncPID_Calc(&left_spid,real_left);
+    IncPID_Calc(&right_spid,real_right);
+    Oscilloscope_Display(real_left, real_right, right_spid.target, left_spid.Kp, left_spid.Ki,  left_spid.out, NULL, NULL);
 
     //    //===================== 6. 输出到电机 =====================//
-    Motor_SetSpeed(left_pwm,right_pwm);
+    Motor_SetSpeed(left_spid.out, right_spid.out);
 }
 
 

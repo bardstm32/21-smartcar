@@ -11,7 +11,7 @@
 // 速度环(稳速内环)参数限幅
 #define SPEED_PID_MAX_OUT    PWM_MAX // 速度环最大输出(PWM)
 #define SPEED_PID_MAX_I      1900    // 速度环积分限幅
-
+#define MOTOR_DEAD_ZONE      1
 //===================== PID结构体 =====================//
 // 通用PID结构体(位置/速度环共用)
 typedef struct
@@ -24,7 +24,7 @@ typedef struct
     float measure;       // 测量值
     float err;           // 当前误差
     float last_err;      // 上一次误差 e(k-1)
-    float last_last_err; // 上上次误差 e(k-2) ——> 【新增】用于增量式PID
+    float prev_err; // 上上次误差 e(k-2) ——> 【新增】用于增量式PID
 
     float P;   // 比例项
     float I;   // 积分项
@@ -47,6 +47,6 @@ extern volatile int32 real_right;
 void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, float max_i);
 float PID_Calc(PID_TypeDef *pid, float target, float measure);
 void Dual_Loop_Control(void);  // 双闭环核心控制函数
-float PID_Inc_Calc(PID_TypeDef *pid, float target, float measure);
+void IncPID_Calc(PID_TypeDef *pid, int16 current_speed);
 
 #endif 

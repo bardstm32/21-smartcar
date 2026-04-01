@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               31/03/26  21:40:50  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               01/04/26  15:45:30  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -22,13 +22,13 @@ stmt  level    source
    11   1              //gpio_init(IO_P33, GPO, 0, GPO_PUSH_PULL);
    12   1              // 初始化无线转串口
    13   1              // 此处编写用户代码 例如外设初始化代码等
-   14   1              PID_Init(&left_spid, 8.5f,0.15,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   15   1              PID_Init(&right_spid, 8.5f,0.15,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   14   1              PID_Init(&left_spid,2.0f,0.07f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   15   1              PID_Init(&right_spid,0,0,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    16   1              while (1)
    17   1              {
    18   2      
-   19   2                      Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&left_spid.target, &right_sp
-             -id.target);
+   19   2                      Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&left_spid.Kd,&right_spid.Ki,&left_spid.target, &right_spi
+             -d.target);
    20   2      //              ips114_show_int16(64,0,real_right);
    21   2      //              ips114_show_int16(64,16,real_left);
    22   2      //              ips114_show_int16(64,32,right_spid.target);
@@ -44,7 +44,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       321     ------
+  code size            =       311     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

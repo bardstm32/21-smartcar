@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            31/03/26  23:17:20  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            01/04/26  15:45:31  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -31,7 +31,7 @@ stmt  level    source
    18          void encoder_init()
    19          {       
    20   1              tim1_irq_handler = pit_handler;
-   21   1              pit_ms_init(PIT_CH,5);
+   21   1              pit_ms_init(PIT_CH,10);
    22   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
    23   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
    24   1      
@@ -67,7 +67,7 @@ Module Information          Static   Overlayable
   pdata size           =    ------     ------
   xdata size           =         2     ------
   xdata-const size     =    ------     ------
-C251 COMPILER V5.60.0,  encoder                                                            31/03/26  23:17:20  PAGE 2   
+C251 COMPILER V5.60.0,  encoder                                                            01/04/26  15:45:31  PAGE 2   
 
   edata size           =    ------     ------
   bit size             =    ------     ------
