@@ -1,10 +1,10 @@
-C251 COMPILER V5.60.0,  voltage_warning                                                    30/03/26  21:43:48  PAGE 1   
+C251 COMPILER V5.60.0,  voltage_warning                                                    31/03/26  21:40:49  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE voltage_warning
 OBJECT MODULE PLACED IN .\out_file\voltage_warning.obj
 COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\zf_driver\voltage_warning.c LARGE NOALIAS WARNINGLEVEL
-                    -(1) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\
+                    -(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\
                     -..\libraries\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\voltage_warning.lst) OBJECT(.\out_file\voltage_warning.ob
                     -j) 
 

@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  encoder                                                            30/03/26  21:54:40  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            31/03/26  23:17:20  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
 OBJECT MODULE PLACED IN .\out_file\encoder.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE encoder.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INCDIR
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE encoder.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
                     -(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\
                     -code) DEBUG PRINT(.\out_file\encoder.lst) OBJECT(.\out_file\encoder.obj) 
 
@@ -31,7 +31,7 @@ stmt  level    source
    18          void encoder_init()
    19          {       
    20   1              tim1_irq_handler = pit_handler;
-   21   1              pit_ms_init(PIT_CH,10);
+   21   1              pit_ms_init(PIT_CH,5);
    22   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
    23   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
    24   1      
@@ -40,34 +40,34 @@ stmt  level    source
    27          void pit_handler (void)
    28          {
    29   1              
-   30   1              cnt++;
-   31   1              if(cnt <=500)
-   32   1              {
-   33   2                      Dual_Loop_Control();
-   34   2                      gpio_set_level(IO_P33,1);
-   35   2              }
-   36   1              if(cnt >= 500)
-   37   1              {
-   38   2              //imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
-   39   2              //imu660ra_get_gyro();
-   40   2              //gyro_proc();
-   41   2                      Motor_SetSpeed(0,0);
-   42   2                      gpio_set_level(IO_P33,0);
-   43   2              }
+   30   1      ////    cnt++;
+   31   1      //      if(cnt <=500
+   32   1      //      {
+   33   1              Dual_Loop_Control();
+   34   1      //              //gpio_set_level(IO_P33,1);
+   35   1      //      }
+   36   1      //      if(cnt >= 500)
+   37   1      //      {
+   38   1      //      //imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
+   39   1      //      //imu660ra_get_gyro();
+   40   1      //      //gyro_proc();
+   41   1      //              Motor_SetSpeed(0,0);
+   42   1      //              gpio_set_level(IO_P33,0);
+   43   1      //      }
    44   1      }
    45          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       147     ------
+  code size            =        80     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =         2     ------
   xdata-const size     =    ------     ------
-C251 COMPILER V5.60.0,  encoder                                                            30/03/26  21:54:40  PAGE 2   
+C251 COMPILER V5.60.0,  encoder                                                            31/03/26  23:17:20  PAGE 2   
 
   edata size           =    ------     ------
   bit size             =    ------     ------

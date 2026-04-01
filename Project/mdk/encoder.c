@@ -18,7 +18,7 @@ uint16 cnt = 0;
 void encoder_init()
 {	
 	tim1_irq_handler = pit_handler;
-	pit_ms_init(PIT_CH,10);
+	pit_ms_init(PIT_CH,5);
 	encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
 	encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
 
@@ -27,19 +27,19 @@ void encoder_init()
 void pit_handler (void)
 {
 	
-	cnt++;
-	if(cnt <=500)
-	{
-		Dual_Loop_Control();
-		gpio_set_level(IO_P33,1);
-	}
-	if(cnt >= 500)
-	{
-	//imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
-	//imu660ra_get_gyro();
-	//gyro_proc();
-		Motor_SetSpeed(0,0);
-		gpio_set_level(IO_P33,0);
-	}
+////	cnt++;
+//	if(cnt <=500
+//	{
+	Dual_Loop_Control();
+//		//gpio_set_level(IO_P33,1);
+//	}
+//	if(cnt >= 500)
+//	{
+//	//imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
+//	//imu660ra_get_gyro();
+//	//gyro_proc();
+//		Motor_SetSpeed(0,0);
+//		gpio_set_level(IO_P33,0);
+//	}
 }
 

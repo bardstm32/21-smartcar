@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  inductance                                                         30/03/26  21:43:50  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         31/03/26  21:40:51  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
 OBJECT MODULE PLACED IN .\out_file\inductance.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INC
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
                     -DIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;
                     -..\code) DEBUG PRINT(.\out_file\inductance.lst) OBJECT(.\out_file\inductance.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          int min = arr[0], max = arr[0], sum = 0, i = 0;
    54   1      
    55   1          // 遍历数组，更新最小值、最大值，并计算累加和
-C251 COMPILER V5.60.0,  inductance                                                         30/03/26  21:43:50  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         31/03/26  21:40:51  PAGE 2   
 
    56   1          for (i = 0; i < times; i++)
    57   1          {
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          // 使用range_protect函数确保结果在[-100.0, 100.0]范围内
   120   1          scaled_err = range_protect(scaled_err, -100, 100);
   121   1          // 返回电感误差值
-C251 COMPILER V5.60.0,  inductance                                                         30/03/26  21:43:50  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         31/03/26  21:40:51  PAGE 3   
 
   122   1          return scaled_err;
   123   1      }
@@ -165,7 +165,6 @@ stmt  level    source
   148   1          {
   149   2              // 使用Median_Average_Filter函数进行滤波处理
   150   2              inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
-*** WARNING C98 IN LINE 150 OF inductance.c: parameter 1: pointer to different objects
   151   2          }
   152   1      
   153   1          inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 270, 0);
@@ -196,4 +195,4 @@ Module Information          Static   Overlayable
 End of Module Information.
 
 
-C251 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

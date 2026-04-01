@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  trank                                                              30/03/26  21:47:36  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              31/03/26  23:08:06  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
 OBJECT MODULE PLACED IN .\out_file\trank.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
                     -.\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\co
                     -de) DEBUG PRINT(.\out_file\trank.lst) OBJECT(.\out_file\trank.obj) 
 
@@ -31,22 +31,22 @@ stmt  level    source
    18          volatile int32 real_left=0;
    19          volatile int32 real_right=0;
    20          
-   21          
-   22          /**
-   23           * @brief  PID初始化(通用)
-   24           */
-   25          void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, float max_i)
-   26          {
-   27   1          pid->Kp = kp;
-   28   1          pid->Ki = ki;
-   29   1          pid->Kd = kd;
-   30   1          pid->max_out = max_out;
-   31   1          pid->max_i = max_i;
-   32   1          
-   33   1          pid->target = 0;
-   34   1          pid->measure = 0;
-   35   1          pid->err = 0;
-   36   1          pid->last_err = 0;
+   21          /**
+   22           * @brief  PID初始化(通用)
+   23           */
+   24          void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, float max_i)
+   25          {
+   26   1          pid->Kp = kp;
+   27   1          pid->Ki = ki;
+   28   1          pid->Kd = kd;
+   29   1          pid->max_out = max_out;
+   30   1          pid->max_i = max_i;
+   31   1      
+   32   1          pid->target = 0;
+   33   1          pid->measure = 0;
+   34   1          pid->err = 0;
+   35   1          pid->last_err = 0;
+   36   1          pid->last_last_err = 0; // ——> 【新增】初始化上上次误差
    37   1          pid->P = 0;
    38   1          pid->I = 0;
    39   1          pid->D = 0;
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          
    54   1          // 比例项
    55   1          pid->P = pid->Kp * pid->err;
-C251 COMPILER V5.60.0,  trank                                                              30/03/26  21:47:36  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              31/03/26  23:08:06  PAGE 2   
 
    56   1          
    57   1          // 积分项+限幅
@@ -87,78 +87,124 @@ stmt  level    source
    72   1          
    73   1          return pid->out;
    74   1      }
-   75          /**
-   76           * @brief  双闭环循迹控制(核心函数)
-   77           * 流程：电感差比和 → 位置环 → 左右轮目标速度 → 速度环 → 电机PWM
-   78           */
-   79          void Dual_Loop_Control(void)
-   80          {
-   81   1          int16 inductance_err;  // 电感差比和误差
-   82   1          float pos_out;         // 位置环输出(速度差)
-   83   1          
-   84   1          float left_target;     // 左轮目标速度
-   85   1          float right_target;    // 右轮目标速度
-   86   1          float left_speed;      // 左轮实际速度(编码器读取)
-   87   1          float right_speed;     // 右轮实际速度
-   88   1          
-   89   1          int32 left_pwm;        // 左轮最终PWM
-   90   1          int32 right_pwm;       // 右轮最终PWM
-   91   1          
-   92   1          //===================== 1. 读取电感数据+计算误差 =====================//
-   93   1      //    uint16 adc[5];
-   94   1      //    Inductance_Read(adc);
-   95   1      //    // 调用原有差比和函数(输入L1/L2/L3/L4,输出-100~100)
-   96   1      //    inductance_err = Inductance_Count_Err(adc[1], adc[2], adc[3], adc[4]);
-   97   1      //    
-   98   1      //    //===================== 2. 位置环PID(循迹外环) =====================//
-   99   1      //    pos_out = PID_Calc(&pos_pid, 0, inductance_err);
-  100   1      //    
-  101   1      //    //===================== 3. 计算左右轮目标速度 =====================//
-  102   1      //    // 位置环输出=速度差：左轮减速、右轮加速(向右偏); 左轮加速、右轮减速(向左偏)
-  103   1      //    left_target  = BASE_SPEED - pos_out;
-  104   1      //    right_target = BASE_SPEED + pos_out;
-  105   1          
-  106   1          //===================== 4. 读取编码器实际速度 =====================//
-  107   1              speed_left =    encoder_get_count(TIM0_ENCOEDER);                       // 获取编码器计数
-  108   1          speed_right =       encoder_get_count(TIM3_ENCOEDER);               
-  109   1              
-  110   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
-  111   1          encoder_clear_count(TIM3_ENCOEDER); 
-  112   1      
-  113   1          real_left  = real_left  * 0.9 + speed_left  * 0.1;
-  114   1          real_right = real_right * 0.9 + speed_right * 0.1;
-  115   1          //Oscilloscope_Display(real_left,real_right,right_spid.target);
-  116   1          //===================== 5. 速度环PID(稳速内环) =====================//
-  117   1          left_pwm  = (int16)PID_Calc(&left_spid, 1000,real_left);
-  118   1          right_pwm = (int16)PID_Calc(&right_spid, 1000, real_right);
-  119   1          
-  120   1          //===================== 6. 输出到电机 =====================//
-  121   1          Motor_SetSpeed(left_pwm,right_pwm);
-C251 COMPILER V5.60.0,  trank                                                              30/03/26  21:47:36  PAGE 3   
+   75          
+   76          /**
+   77           * @brief  通用增量式PID计算
+   78           * @param  pid      PID结构体指针
+   79           * @param  target   目标值
+   80           * @param  measure  实际测量值
+   81           * @retval 经过限幅后的总输出
+   82           */
+   83          float PID_Inc_Calc(PID_TypeDef *pid, float target, float measure)
+   84          {
+   85   1          float inc_out; // 本次输出的增量
+   86   1      
+   87   1          pid->target = target;
+   88   1          pid->measure = measure;
+   89   1      
+   90   1          // 1. 计算当前误差 e(k)
+   91   1          pid->err = pid->target - pid->measure;
+   92   1      
+   93   1          // 2. 增量式比例项：Kp * [e(k) - e(k-1)]
+   94   1          pid->P = pid->Kp * (pid->err - pid->last_err);
+   95   1      
+   96   1          // 3. 增量式积分项：Ki * e(k)
+   97   1          // (注：增量式的积分项不需要像位置式那样累加，它直接是当前误差乘以Ki)
+   98   1          pid->I = pid->Ki * pid->err;
+   99   1      
+  100   1          // 4. 增量式微分项：Kd * [e(k) - 2e(k-1) + e(k-2)]
+  101   1          pid->D = pid->Kd * (pid->err - 2.0f * pid->last_err + pid->last_last_err);
+  102   1      
+  103   1              // 8. 更新历史误差
+  104   1          pid->last_last_err = pid->last_err; // 更新 e(k-2)
+  105   1          pid->last_err = pid->err;           // 更新 e(k-1)
+  106   1          // 5. 计算本次输出增量 △out
+  107   1          inc_out = pid->P + pid->I + pid->D;
+  108   1      
+  109   1          // 6. 累加到总输出：out(k) = out(k-1) + △out
+  110   1          pid->out = inc_out;
+  111   1      
+  112   1          // 7. 总输出限幅 (增量式通常只需要对最终输出限幅即可，无需单独对积分限幅)
+  113   1          if (pid->out > pid->max_out)
+  114   1              pid->out = pid->max_out;
+  115   1          if (pid->out < -pid->max_out)
+  116   1              pid->out = -pid->max_out;
+  117   1      
+  118   1          return pid->out;
+  119   1      }
+  120          
+  121          /**
+C251 COMPILER V5.60.0,  trank                                                              31/03/26  23:08:06  PAGE 3   
 
-  122   1      }
-*** WARNING C47 IN LINE 81 OF trank.c: 'inductance_err': unreferenced local variable
-*** WARNING C47 IN LINE 82 OF trank.c: 'pos_out': unreferenced local variable
-*** WARNING C47 IN LINE 84 OF trank.c: 'left_target': unreferenced local variable
-*** WARNING C47 IN LINE 85 OF trank.c: 'right_target': unreferenced local variable
-*** WARNING C47 IN LINE 86 OF trank.c: 'left_speed': unreferenced local variable
-*** WARNING C47 IN LINE 87 OF trank.c: 'right_speed': unreferenced local variable
-  123          
-  124          
-  125          
+  122           * @brief  双闭环循迹控制(核心函数)
+  123           * 流程：电感差比和 → 位置环 → 左右轮目标速度 → 速度环 → 电机PWM
+  124           */
+  125          void Dual_Loop_Control(void)
+  126          {
+  127   1      //    int16 inductance_err;  // 电感差比和误差
+  128   1      //    float pos_out;         // 位置环输出(速度差)
+  129   1      //    
+  130   1      //    float left_target;     // 左轮目标速度
+  131   1      //    float right_target;    // 右轮目标速度
+  132   1      //    float left_speed;      // 左轮实际速度(编码器读取)
+  133   1      //    float right_speed;     // 右轮实际速度
+  134   1      //    
+  135   1          int32 left_pwm;        // 左轮最终PWM
+  136   1          int32 right_pwm;       // 右轮最终PWM
+  137   1          
+  138   1          //===================== 1. 读取电感数据+计算误差 =====================//
+  139   1      //    uint16 adc[5];
+  140   1      //    Inductance_Read(adc);
+  141   1      //    // 调用原有差比和函数(输入L1/L2/L3/L4,输出-100~100)
+  142   1      //    inductance_err = Inductance_Count_Err(adc[1], adc[2], adc[3], adc[4]);
+  143   1      //    
+  144   1      //    //===================== 2. 位置环PID(循迹外环) =====================//
+  145   1      //    pos_out = PID_Calc(&pos_pid, 0, inductance_err);
+  146   1      //    
+  147   1      //    //===================== 3. 计算左右轮目标速度 =====================//
+  148   1      //    // 位置环输出=速度差：左轮减速、右轮加速(向右偏); 左轮加速、右轮减速(向左偏)
+  149   1      //    left_target  = BASE_SPEED - pos_out;
+  150   1      //    right_target = BASE_SPEED + pos_out;
+  151   1          
+  152   1          //===================== 4. 读取编码器实际速度 =====================//
+  153   1              speed_left =    encoder_get_count(TIM0_ENCOEDER);                       // 获取编码器计数
+  154   1          speed_right =       encoder_get_count(TIM3_ENCOEDER);               
+  155   1              
+  156   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
+  157   1          encoder_clear_count(TIM3_ENCOEDER);
+  158   1      
+  159   1       
+  160   1          real_left = real_left * 0.9 + speed_left * 0.1;
+  161   1          real_right = real_right * 0.9 + speed_right * 0.1;
+  162   1              
+  163   1         
+  164   1      //    //===================== 5. 速度环PID(稳速内环) =====================//
+  165   1          left_pwm = (int16)PID_Calc(&left_spid, left_spid.target, real_left);
+  166   1          right_pwm = (int16)PID_Calc(&right_spid, right_spid.target, real_right);
+  167   1              Oscilloscope_Display(real_left,speed_right,right_spid.target,left_pwm,right_pwm,left_spid.I,right_spid.I
+             -,NULL);
+  168   1      
+  169   1          //    //===================== 6. 输出到电机 =====================//
+  170   1          Motor_SetSpeed(left_pwm,right_pwm);
+  171   1      }
+  172          
+  173          
+  174          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1620     ------
+  code size            =      2651     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =       216     ------
+  xdata size           =       244     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
+C251 COMPILER V5.60.0,  trank                                                              31/03/26  23:08:06  PAGE 4   
+
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
@@ -169,4 +215,4 @@ Module Information          Static   Overlayable
 End of Module Information.
 
 
-C251 COMPILATION COMPLETE.  6 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

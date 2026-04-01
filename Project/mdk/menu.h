@@ -10,8 +10,8 @@ void Menu_Init(void);
 void Menu_Display(uint16 *inductance_data);
 void Send_Data_To_PC(uint16 *inductance_data);
 void Parameter_Debug_Init(void);
-void Parameter_Debug(float *param1, float *param2, uint32 *param3, uint32 *speed);
-void Oscilloscope_Display(int32 num1, int32 num2,int32 target);
+void Parameter_Debug(float *param1, float *param2,float *param3, float *param4, uint32 *target1, uint32 *target2);
+void Oscilloscope_Display(int32 num1, int32 num2,int32 num3,int32 num4, int32 num5,int32 num6,int32 num7,int32 num8);
 void Oscilloscope_Init(void);
 
 #endif // __MENU_H__

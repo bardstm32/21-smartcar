@@ -1,1 +1,1 @@
-"led.c" LARGE NOALIAS WARNINGLEVEL (1) OPTIMIZE (0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\led.lst) OBJECT(.\out_file\led.obj)
+"led.c" LARGE NOALIAS WARNINGLEVEL (0) OPTIMIZE (0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\led.lst) OBJECT(.\out_file\led.obj)
