@@ -6,19 +6,15 @@ void main()
 {
 	clock_init(SYSTEM_CLOCK_30M);
 	debug_init();
-	interrupt_global_disable(); // 全局中断禁用
 	// 此处编写用户代码 例如外设初始化代码等
 	ALL_init();
-	// gpio_init(IO_P33, GPO, 0, GPO_PUSH_PULL);
 	//  初始化无线转串口
 	//  此处编写用户代码 例如外设初始化代码等
 	PID_Init(&left_spid, 0.2, 0.0069f, 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
 	PID_Init(&right_spid, 0.2, 0.00675f , 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	interrupt_global_enable(); // 全局中断使能
 	while (1)
 	{
-		Motor_SetSpeed(2500, 2500);
-		// Parameter_Debug(&right_spid.Kp, &right_spid.Ki,&left_spid.Kp,&left_spid.Ki,&left_spid.target, &right_spid.target);
+		Parameter_Debug(&right_spid.Kp, &right_spid.Ki,&left_spid.Kp,&left_spid.Ki,&left_spid.target, &right_spid.target);
 		//		ips114_show_int16(64,0,real_right);
 		//		ips114_show_int16(64,16,real_left);
 		//		ips114_show_int16(64,32,right_spid.target);

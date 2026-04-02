@@ -36,14 +36,17 @@ typedef struct
     float max_i;   // 积分限幅
 } PID_TypeDef;
 //===================== 全局变量 =====================//
-extern PID_TypeDef pos_pid;   // 位置环PID(循迹)
+extern PID_TypeDef Turn_PID, Gyro_PID;   // 位置环PID(循迹)
 extern PID_TypeDef left_spid; // 左轮速度环PID
 extern PID_TypeDef right_spid;// 右轮速度环PID
 
 extern  volatile int32 real_left;
 extern volatile int32 real_right;
 
-
+extern double elemid;    // 赛道偏差
+extern double eleOut_0;  // 赛道偏差环输出值
+extern double eleOut_1;  // 偏航角速度环输出值
+extern int Gyro_Z;       // 实际偏航角速度
 //===================== 函数声明 =====================//
 void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, float max_i);
 float PID_Calc(PID_TypeDef *pid, float target, float measure);
