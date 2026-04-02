@@ -18,7 +18,7 @@ uint16 cnt = 0;
 void encoder_init()
 {	
 	tim1_irq_handler = pit_handler;
-	pit_ms_init(PIT_CH,10);
+	pit_ms_init(PIT_CH,2);
 	encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
 	encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
 

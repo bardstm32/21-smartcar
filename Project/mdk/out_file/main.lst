@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               01/04/26  15:45:30  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               02/04/26  14:46:26  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -17,34 +17,36 @@ stmt  level    source
     6          {
     7   1              clock_init(SYSTEM_CLOCK_30M);
     8   1              debug_init();
-    9   1              // 此处编写用户代码 例如外设初始化代码等
-   10   1              ALL_init();
-   11   1              //gpio_init(IO_P33, GPO, 0, GPO_PUSH_PULL);
-   12   1              // 初始化无线转串口
-   13   1              // 此处编写用户代码 例如外设初始化代码等
-   14   1              PID_Init(&left_spid,2.0f,0.07f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   15   1              PID_Init(&right_spid,0,0,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   16   1              while (1)
-   17   1              {
-   18   2      
-   19   2                      Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&left_spid.Kd,&right_spid.Ki,&left_spid.target, &right_spi
-             -d.target);
-   20   2      //              ips114_show_int16(64,0,real_right);
-   21   2      //              ips114_show_int16(64,16,real_left);
-   22   2      //              ips114_show_int16(64,32,right_spid.target);
-   23   2      //              ips114_show_int16(64,48,left_spid.target);              // 获取编码器计数                       // 清空编码器计数
-   24   2      //              ips114_show_float(64,64,right_spid.Kp,2,2);
-   25   2      //              ips114_show_float(64,80,right_spid.Ki,2,2);
-   26   2      //              ips114_show_float(64,96,left_spid.Kp,2,2);
-   27   2      //              ips114_show_float(64,112,left_spid.Ki,2,2);
-   28   2                                      
-   29   2              }
-   30   1      }
+    9   1              interrupt_global_disable(); // 全局中断禁用
+   10   1              // 此处编写用户代码 例如外设初始化代码等
+   11   1              ALL_init();
+   12   1              // gpio_init(IO_P33, GPO, 0, GPO_PUSH_PULL);
+   13   1              //  初始化无线转串口
+   14   1              //  此处编写用户代码 例如外设初始化代码等
+   15   1              PID_Init(&left_spid, 0.2, 0.0069f, 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   16   1              PID_Init(&right_spid, 0.2, 0.00675f , 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   17   1              interrupt_global_enable(); // 全局中断使能
+   18   1              while (1)
+   19   1              {
+   20   2                      Motor_SetSpeed(2500, 2500);
+   21   2                      // Parameter_Debug(&right_spid.Kp, &right_spid.Ki,&left_spid.Kp,&left_spid.Ki,&left_spid.target, &right
+             -_spid.target);
+   22   2                      //              ips114_show_int16(64,0,real_right);
+   23   2                      //              ips114_show_int16(64,16,real_left);
+   24   2                      //              ips114_show_int16(64,32,right_spid.target);
+   25   2                      //              ips114_show_int16(64,48,left_spid.target);              // 获取编码器计数                       // 清空编码器计
+             -数
+   26   2                      //              ips114_show_float(64,64,right_spid.Kp,2,2);
+   27   2                      //              ips114_show_float(64,80,right_spid.Ki,2,2);
+   28   2                      //              ips114_show_float(64,96,left_spid.Kp,2,2);
+   29   2                      //              ips114_show_float(64,112,left_spid.Ki,2,2);
+   30   2              }
+   31   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       311     ------
+  code size            =       251     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

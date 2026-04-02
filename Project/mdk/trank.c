@@ -11,7 +11,7 @@ PID_TypeDef right_spid;
 #define ENCODER_DIR_RIGHT                 	(TIM3_ENCOEDER)                         // 正交编码器对应使用的编码器接口 这里使用QTIMER1的ENCOEDER1
 #define ENCODER_DIR_DIR_RIGHT              	(IO_P53)            				 	// DIR 对应的引脚
 #define ENCODER_DIR_PULSE_RIGHT            	(TIM3_ENCOEDER_P04)            			// PULSE 对应的引脚
-
+#define MAX_INC 100 // 2ms 周期下限制单次增量
 volatile int32 speed_left = 0;
 volatile int32 speed_right = 0;
 
@@ -29,7 +29,7 @@ void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, flo
     pid->max_out = max_out;
     pid->max_i = max_i;
 
-    pid->target = 0;
+    pid->target = 800;
     pid->measure = 0;
     pid->err = 0;
     pid->last_err = 0;
@@ -77,18 +77,20 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
 // 公式: ΔU = Kp*(e(k) - e(k-1)) + Ki*e(k) + Kd*(e(k) - 2*e(k-1) + e(k-2))
 void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
 {
-	int16 inc_out;
+	float inc_out;
+	float speed_f;
+	
+	speed_f = 0.3f * current_speed + 0.7f * pid->last_f_speed;
+	pid->last_f_speed = speed_f;
     // 1. 计算当前误差
-    pid->err = pid->target - current_speed;
+    pid->err = pid->target - speed_f;
 
     // 2. 计算输出增量 (ΔU)
-    inc_out = (int16)(pid->Kp * (pid->err - pid->last_err) +
-                            pid->Ki * pid->err +
-                            pid->Kd * (pid->err - 2 * pid->last_err + pid->prev_err));
-
+    inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->Ki * pid->err);
+	if(inc_out > MAX_INC)  inc_out = MAX_INC;
+    if(inc_out < -MAX_INC) inc_out = -MAX_INC;
     // 3. 累加增量得到最终实际输出
     pid->out += inc_out;
-
     // 4. 输出限幅 (防止PWM跑飞)
     if (pid->out > pid->max_out)
         pid->out = pid->max_out;
@@ -138,17 +140,17 @@ void Dual_Loop_Control(void)
     encoder_clear_count(TIM3_ENCOEDER);
 
 	
-    real_left =  speed_left;
-    real_right = speed_right;
+    real_left = real_left*0.8 + speed_left*0.2;
+    real_right = real_right*0.8 +speed_right * 0.2;
 	
    
 //    //===================== 5. 速度环PID(稳速内环) =====================//
-    IncPID_Calc(&left_spid,real_left);
-    IncPID_Calc(&right_spid,real_right);
+    //IncPID_Calc(&left_spid,real_left);
+    //IncPID_Calc(&right_spid,real_right);
     Oscilloscope_Display(real_left, real_right, right_spid.target, left_spid.Kp, left_spid.Ki,  left_spid.out, NULL, NULL);
 
     //    //===================== 6. 输出到电机 =====================//
-    Motor_SetSpeed(left_spid.out, right_spid.out);
+    //Motor_SetSpeed(left_spid.out, right_spid.out);
 }
 
 
