@@ -1,0 +1,338 @@
+C251 COMPILER V5.60.0,  imu                                                                04/04/26  18:51:18  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE imu
+OBJECT MODULE PLACED IN .\out_file\imu.obj
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\..\Libraries\zf_device\imu.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE
+                    -(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries
+                    -\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\imu.lst) OBJECT(.\out_file\imu.obj) 
+
+stmt  level    source
+
+    1          #include "imu.h"
+    2          /*
+    3           * gyroscope.c
+    4           *
+    5           *  Created on: 2025年11月15日
+    6           *      Author: zheng
+    7           */
+    8          First_Complement first_complement;
+    9          gyro_param_t Gyro_Offset; // 陀螺仪零漂参数结构体
+   10          IMU_param_t IMU_Data;     // 去除零漂后的IMU数据结构体
+   11          extKalman_t Kalman1;
+   12          extKalman_t Kalman2;
+   13          extKalman_t Zero;
+   14          
+   15          float Pitch_Max = 0;
+   16          float Pitch_Min = 0;
+   17          float Roll_Max = 0;
+   18          float Roll_Min = 0;
+   19          float Max_Delta_Pitch = 0;
+   20          float Max_Delta_Roll = 0;
+   21          
+   22          float pitch; // 俯仰角
+   23          float roll;  // 横滚角
+   24          float yaw;   // 偏航角（-180~180）
+   25          
+   26          float gyrox; // X轴角速度
+   27          float gyroy; // Y轴角速度
+   28          float gyroz; // Z轴角速度
+   29          
+   30          void First_complement_Init()
+   31          {
+   32   1          float k = 0.12;
+   33   1          static float Pitch_Temp = 0;
+   34   1          static float Roll_Temp = 0;
+   35   1          static float Delta_Roll = 0;
+   36   1          static char Pitch_Flag = 0;
+   37   1          static char Roll_Flag = 0;
+   38   1      
+   39   1          Pitch_Temp = (atan(IMU_Data.acc_y / IMU_Data.acc_z)) * 180 / 3.1415926535f;
+   40   1          Roll_Temp = (atan(IMU_Data.acc_x / IMU_Data.acc_z)) * 180 / 3.1415926535f;
+   41   1      
+   42   1          Pitch_Temp = Pitch_Temp + IMU_Data.gyro_x * 0.005f;
+   43   1          Roll_Temp = Roll_Temp + IMU_Data.gyro_y * 0.005f;
+   44   1      
+   45   1          first_complement.angle.pitch = k * Pitch_Temp + (1 - k) * (first_complement.angle.pitch + IMU_Data.gy
+             -ro_x * 0.005f);
+   46   1          first_complement.angle.roll = k * Roll_Temp + (1 - k) * (first_complement.angle.roll + IMU_Data.gyro_
+             -y * 0.005f);
+   47   1      
+   48   1          if (Delta_Roll < 0.1 && Delta_Roll > -0.1)
+   49   1          {
+   50   2              first_complement.angle.roll = first_complement.angle.roll - Delta_Roll;
+   51   2          }
+   52   1      
+   53   1          first_complement.angle.roll = KalmanFilter(&Kalman1, first_complement.angle.roll);
+   54   1          first_complement.angle.pitch = KalmanFilter(&Kalman2, first_complement.angle.pitch);
+   55   1      
+C251 COMPILER V5.60.0,  imu                                                                04/04/26  18:51:18  PAGE 2   
+
+   56   1          // 修复2：Pitch/Roll极值统计逻辑搞反的问题（核心修复）
+   57   1          if (Pitch_Flag == 0)
+   58   1          {
+   59   2              Pitch_Min = first_complement.angle.pitch; // 原错误：赋值为roll，现修正为pitch
+   60   2              Pitch_Max = first_complement.angle.pitch;
+   61   2              Pitch_Flag = 1;
+   62   2          }
+   63   1      
+   64   1          if (Roll_Flag == 0)
+   65   1          {
+   66   2              Roll_Min = first_complement.angle.roll; // 原错误：赋值为pitch，现修正为roll
+   67   2              Roll_Max = first_complement.angle.roll;
+   68   2              Roll_Flag = 1;
+   69   2          }
+   70   1      
+   71   1          // 修复3：Pitch极值统计用pitch值（原错误用roll）
+   72   1          if (My_abs(Pitch_Min) > My_abs(first_complement.angle.pitch))
+   73   1          {
+   74   2              Pitch_Min = My_abs(first_complement.angle.pitch);
+   75   2          }
+   76   1          else if (My_abs(Pitch_Max) < My_abs(first_complement.angle.pitch))
+   77   1          {
+   78   2              Pitch_Max = My_abs(first_complement.angle.pitch);
+   79   2          }
+   80   1      
+   81   1          // 修复4：Roll极值统计用roll值（原错误用pitch）
+   82   1          if (My_abs(Roll_Min) > My_abs(first_complement.angle.roll))
+   83   1          {
+   84   2              Roll_Min = My_abs(first_complement.angle.roll);
+   85   2          }
+   86   1          else if (My_abs(Roll_Max) < My_abs(first_complement.angle.roll))
+   87   1          {
+   88   2              Roll_Max = My_abs(first_complement.angle.roll);
+   89   2          }
+   90   1          Max_Delta_Pitch = Pitch_Max - Pitch_Min;
+   91   1          Max_Delta_Roll = Roll_Max - Roll_Min;
+   92   1      }
+   93          
+   94          float gyro_Offset_flag = 0;
+   95          
+   96          
+   97          float IMU_gyro_Offset_Init()
+   98          {
+   99   1              uint16 i = 0;
+  100   1          Gyro_Offset.Xdata = 0;
+  101   1          Gyro_Offset.Ydata = 0;
+  102   1          Gyro_Offset.Zdata = 0;
+  103   1          for (i = 0; i < 100; i++)
+  104   1          {
+  105   2              Gyro_Offset.Xdata += imu660ra_gyro_x;
+  106   2              Gyro_Offset.Ydata += imu660ra_gyro_y;
+  107   2              Gyro_Offset.Zdata += imu660ra_gyro_z;
+  108   2              system_delay_ms(5);
+  109   2          }
+  110   1      
+  111   1          Gyro_Offset.Xdata /= 1000;
+  112   1          Gyro_Offset.Ydata /= 1000;
+  113   1          Gyro_Offset.Zdata /= 1000;
+  114   1      
+  115   1          return gyro_Offset_flag = 1;
+  116   1      }
+  117          
+  118          void IMU_GetValues()
+  119          {
+  120   1          imu660ra_get_gyro();
+  121   1          imu660ra_get_acc();
+C251 COMPILER V5.60.0,  imu                                                                04/04/26  18:51:18  PAGE 3   
+
+  122   1      
+  123   1          IMU_Data.gyro_x = ((float)imu660ra_gyro_x - Gyro_Offset.Xdata) * PI / 180 / 16.4f;
+  124   1          IMU_Data.gyro_y = ((float)imu660ra_gyro_y - Gyro_Offset.Ydata) * PI / 180 / 16.4f;
+  125   1          IMU_Data.gyro_z = ((float)imu660ra_gyro_z - Gyro_Offset.Zdata) * PI / 180 / 16.4f;
+  126   1      
+  127   1          IMU_Data.acc_x = (((float)imu660ra_acc_x) * 0.3f) + IMU_Data.acc_x * 0.7f;
+  128   1          IMU_Data.acc_y = (((float)imu660ra_acc_y) * 0.3f) + IMU_Data.acc_y * 0.7f;
+  129   1          IMU_Data.acc_z = (((float)imu660ra_acc_z) * 0.3f) + IMU_Data.acc_z * 0.7f;
+  130   1      }
+  131          
+  132          float Daty_Z = 0;
+  133          float Daty_X = 0;
+  134          float Daty_Y = 0;
+  135          
+  136          void IMU_YAW_integral()
+  137          {
+  138   1          if (IMU_Data.gyro_z < 0.015 && IMU_Data.gyro_z > -0.015)
+  139   1          {
+  140   2              Daty_Z -= 0;
+  141   2          }
+  142   1          else
+  143   1          {
+  144   2              IMU_Handle_180();
+  145   2              IMU_Handle_360();
+  146   2              IMU_Handle_0();
+  147   2          }
+  148   1      
+  149   1          if (IMU_Data.gyro_x < 0.015 && IMU_Data.gyro_x > -0.015)
+  150   1          {
+  151   2              Daty_X -= 0;
+  152   2          }
+  153   1          if (IMU_Data.gyro_y < 0.015 && IMU_Data.gyro_y > -0.015)
+  154   1          {
+  155   2              Daty_Y -= 0;
+  156   2          }
+  157   1      }
+  158          
+  159          void IMU_Handle_180()
+  160          {
+  161   1          Daty_Z -= RAD_TO_ANGLE(IMU_Data.gyro_z * 0.005);
+  162   1      
+  163   1          if ((Daty_Z > 0 && Daty_Z <= 180) || (Daty_Z < 0 && Daty_Z >= (-180)))
+  164   1          {
+  165   2              Daty_Z = +Daty_Z;
+  166   2          }
+  167   1          else if (Daty_Z > 180 && Daty_Z <= 360)
+  168   1          {
+  169   2              Daty_Z -= 360;
+  170   2          }
+  171   1          else if (Daty_Z < (-180) && Daty_Z >= (-360))
+  172   1          {
+  173   2              Daty_Z += 360;
+  174   2          }
+  175   1      }
+  176          
+  177          char Round = 0;
+  178          float yaw_limit_360 = 0;
+  179          
+  180          void IMU_Handle_360()
+  181          {
+  182   1          if (Round == 0)
+  183   1          {
+  184   2              yaw_limit_360 -= RAD_TO_ANGLE(IMU_Data.gyro_z * 0.005);
+  185   2              if (yaw_limit_360 > 360)
+  186   2              {
+  187   3                  yaw_limit_360 = 360;
+C251 COMPILER V5.60.0,  imu                                                                04/04/26  18:51:18  PAGE 4   
+
+  188   3                  Round = 1;
+  189   3              }
+  190   2              else if (yaw_limit_360 < -360)
+  191   2              {
+  192   3                  yaw_limit_360 = -360;
+  193   3                  Round = 1;
+  194   3              }
+  195   2          }
+  196   1          if (Round == 1)
+  197   1          {
+  198   2              if (yaw_limit_360 <= 360 && yaw_limit_360 >= -360)
+  199   2              {
+  200   3                  yaw_limit_360 += RAD_TO_ANGLE(IMU_Data.gyro_z * 0.005);
+  201   3                  if (yaw_limit_360 > 360)
+  202   3                  {
+  203   4                      yaw_limit_360 = 360;
+  204   4                      Round = 0;
+  205   4                  }
+  206   3              }
+  207   2              else if (yaw_limit_360 >= -360)
+  208   2              {
+  209   3                  yaw_limit_360 -= RAD_TO_ANGLE(IMU_Data.gyro_z * 0.005);
+  210   3                  if (yaw_limit_360 < -360)
+  211   3                  {
+  212   4      
+  213   4                      yaw_limit_360 = -360;
+  214   4                      Round = 0;
+  215   4                  }
+  216   3              }
+  217   2          }
+  218   1      }
+  219          
+  220          float yaw_total = 0;
+  221          
+  222          void IMU_Handle_0()
+  223          {
+  224   1          yaw_total += RAD_TO_ANGLE(IMU_Data.gyro_z * 0.005);
+  225   1      }
+  226          
+  227          float fast_sqrt(float num)
+  228          {
+  229   1          float halfx = 0.5f * num;
+  230   1          float y = num;
+  231   1          long i = *(long *)&y;
+  232   1          i = 0x5f375a86 - (i >> 1);
+  233   1      
+  234   1          y = *(float *)&i;
+  235   1          y = y * (1.5f - (halfx * y * y));
+  236   1          y = y * (1.5f - (halfx * y * y));
+  237   1          return y;
+  238   1      }
+  239          
+  240          float My_abs(float x)
+  241          {
+  242   1          return x < 0 ? -x : x;
+  243   1      }
+  244          
+  245          void KalmanCreate(extKalman_t *p, float T_Q, float T_R)
+  246          {
+  247   1          p->X_last = (float)0;
+  248   1          p->P_last = 0;
+  249   1          p->Q = T_Q;
+  250   1          p->R = T_R;
+  251   1          p->A = 1;
+  252   1          p->B = 0;
+  253   1          p->H = 1;
+C251 COMPILER V5.60.0,  imu                                                                04/04/26  18:51:18  PAGE 5   
+
+  254   1          p->X_mid = p->X_last;
+  255   1      }
+  256          
+  257          float KalmanFilter(extKalman_t *p, float dat)
+  258          {
+  259   1          p->X_mid = p->A * p->X_last;
+  260   1          p->P_mid = p->A * p->P_last + p->Q;
+  261   1          p->kg = p->P_mid / (p->P_mid + p->R);
+  262   1          p->X_now = p->X_mid + p->kg * (dat - p->X_mid);
+  263   1          p->P_now = (1 - p->kg) * p->P_mid;
+  264   1          p->P_last = p->P_now;
+  265   1          p->X_last = p->X_now;
+  266   1          return p->X_now;
+  267   1      }
+  268          
+  269          void gyro_init(void)
+  270          {
+  271   1          // imu660ra_init();
+  272   1          IMU_gyro_Offset_Init();
+  273   1          KalmanCreate(&Kalman1, 0.01f, 0.05f); // Roll卡尔曼初始化
+  274   1          KalmanCreate(&Kalman2, 0.01f, 0.05f); // Pitch卡尔曼初始化
+  275   1      }
+  276          
+  277          void gyro_proc(void)
+  278          {
+  279   1          IMU_GetValues();
+  280   1          IMU_YAW_integral();
+  281   1          First_complement_Init();
+  282   1      }
+  283          
+  284          void main_loop(void)
+  285          {
+  286   1          pitch = first_complement.angle.pitch;  // 俯仰角
+  287   1          roll = first_complement.angle.roll;   // 横滚角
+  288   1          yaw = Daty_Z;                         // 偏航角（-180~180）
+  289   1              first_complement.angle.pitch;
+  290   1          gyrox = IMU_Data.gyro_x; // X轴角速度
+  291   1          gyroy = IMU_Data.gyro_y; // Y轴角速度
+  292   1          gyroz = IMU_Data.gyro_z; // Z轴角速度
+  293   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      3974     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =       333     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =       153     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
