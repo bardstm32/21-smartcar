@@ -39,11 +39,12 @@
 
 static uint8 adc_resolution = {ADC_12BIT};
 
+//uint16 adc_value[4]={0};
+uint16 adc_average[5]={0};
 
 //-------------------------------------------------------------------------------------------------------------------
 // 函数简介     ADC转换N次，平均值滤波
 // 参数说明     ch              选择ADC通道
-// 参数说明     resolution      分辨率(8位 10位 12位)
 // 参数说明     count           转换次数
 // 返回参数     void
 // 使用示例     adc_mean_filter(ADC_IN0_A0, ADC_8BIT,5);  //采集A0端口返回8位分辨率的AD值，采集五次取平均值
@@ -51,17 +52,22 @@ static uint8 adc_resolution = {ADC_12BIT};
 uint16 adc_mean_filter_convert (adc_channel_enum ch, const uint8 count)
 {
     uint8 i;
-    uint32 sum;
-
+    uint16 sum;
+	uint16 min,max;
+	min=adc_average[0];
+	max=adc_average[0];
 	zf_assert(count);//断言次数不能为0
 	
     sum = 0;
     for(i=0; i<count; i++)
     {
-        sum += adc_convert(ch);
+        adc_average[i]= adc_convert(ch);
+		if(adc_average[i]<min)min=adc_average[i];
+		if(adc_average[i]>max)max=adc_average[i];
+		sum+=adc_average[i];
     }
 
-    sum = sum/count;
+    sum = (sum-min-max)/(count-2);
     return sum;
 }
 
@@ -130,4 +136,22 @@ void adc_init(adc_channel_enum ch, adc_resolution_enum resolution)
     ADCCFG |= 1 << 5;							//转换结果右对齐。 ADC_RES 保存结果的高 2 位， ADC_RESL 保存结果的低 8 位。
 	
 	adc_resolution = resolution;           // 记录ADC精度 将在采集时使用
+}
+
+/***************************电感采值************************************
+函数：  void ADC_Collect()   
+功能：  电感采值
+参数：  void
+说明：  8位ADC输出，0~255（2的8次方），5v电压平均分成255份，分辨率为5/255=0.196
+返回值；void
+日期：  
+作者：     
+***********************************************************************/
+void ADC_Collect()
+{
+//	adc_value[0]=adc_mean_filter_convert (ADC_CH8_P00, 5);
+//	
+//	adc_value[1]=adc_mean_filter_convert (ADC_CH9_P01, 5);
+//	adc_value[2]=adc_mean_filter_convert (ADC_CH13_P05, 5);
+//	adc_value[3]=adc_mean_filter_convert (ADC_CH14_P06, 5);
 }

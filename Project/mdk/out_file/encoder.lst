@@ -1,12 +1,11 @@
-C251 COMPILER V5.60.0,  encoder                                                            27/03/26  19:06:10  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            04/04/26  18:51:20  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
 OBJECT MODULE PLACED IN .\out_file\encoder.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\code_c\encoder.c LARGE NOALIAS WARNINGLEVEL(3) OPTIMIZ
-                    -E(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\librarie
-                    -s\zf_driver;..\user;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h) DEBUG PRINT(.\out_file\encoder.lst) OBJECT(.\
-                    -out_file\encoder.obj) 
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE encoder.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
+                    -(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\
+                    -code) DEBUG PRINT(.\out_file\encoder.lst) OBJECT(.\out_file\encoder.obj) 
 
 stmt  level    source
 
@@ -14,73 +13,46 @@ stmt  level    source
     2          
     3          #define PIT_CH                                  (TIM1_PIT ) 
     4          
-    5          #define ENCODER_DIR_LEFT                        (TIM0_ENCOEDER)                         // Õý½»±àÂëÆ÷¶ÔÓ¦Ê¹ÓÃµÄ
+    5          
+    6          void pit_handler        (void);
+    7          
+    8          #define ENCODER_DIR_LEFT                        (TIM0_ENCOEDER)                         // Õý½»±àÂëÆ÷¶ÔÓ¦Ê¹ÓÃµÄ
              -±àÂëÆ÷½Ó¿Ú ÕâÀïÊ¹ÓÃQTIMER1µÄENCOEDER1
-    6          #define ENCODER_DIR_DIR_LEFT                    (IO_P35)                                                // DIR ¶ÔÓ¦µÄÒý½Å
-    7          #define ENCODER_DIR_PULSE_LEFT                  (TIM0_ENCOEDER_P34)                             // PULSE ¶ÔÓ¦µÄÒý½Å
-    8          
-    9          #define ENCODER_DIR_RIGHT                       (TIM3_ENCOEDER)                         // Õý½»±àÂëÆ÷¶ÔÓ¦Ê¹ÓÃµ
+    9          #define ENCODER_DIR_DIR_LEFT                    (IO_P35)                                                // DIR ¶ÔÓ¦µÄÒý½Å
+   10          #define ENCODER_DIR_PULSE_LEFT                  (TIM0_ENCOEDER_P34)                             // PULSE ¶ÔÓ¦µÄÒý½Å
+   11          
+   12          #define ENCODER_DIR_RIGHT                       (TIM3_ENCOEDER)                         // Õý½»±àÂëÆ÷¶ÔÓ¦Ê¹ÓÃµ
              -Ä±àÂëÆ÷½Ó¿Ú ÕâÀïÊ¹ÓÃQTIMER1µÄENCOEDER1
-   10          #define ENCODER_DIR_DIR_RIGHT                   (IO_P53)                                                // DIR ¶ÔÓ¦µÄÒý½Å
-   11          #define ENCODER_DIR_PULSE_RIGHT                 (TIM3_ENCOEDER_P04)                             // PULSE ¶ÔÓ¦µÄÒý½Å
-   12          
-   13          void pit_handler (void);
-   14          
+   13          #define ENCODER_DIR_DIR_RIGHT                   (IO_P53)                                                // DIR ¶ÔÓ¦µÄÒý½Å
+   14          #define ENCODER_DIR_PULSE_RIGHT                 (TIM3_ENCOEDER_P04)                             // PULSE ¶ÔÓ¦µÄÒý½Å
    15          
-   16          int16 speed_left = 0;
-   17          int16 speed_right = 0;
-   18          int16 last_speed_left=0;
-   19          int16 last_speed_right=0;
-   20          int16 real_left=0;
-   21          int16 real_right=0;
-   22          uint8 imu_cnt = 0;
-   23          
-   24          void encoder_init()
-   25          {
-   26   1              tim1_irq_handler = pit_handler;
-   27   1              pit_ms_init(PIT_CH,1);
-   28   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
-   29   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
+   16          uint16 cnt = 0;
+   17                  
+   18          void encoder_init()
+   19          {       
+   20   1              tim1_irq_handler = pit_handler;
+   21   1              pit_ms_init(PIT_CH,2);
+   22   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
+   23   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
+   24   1      
+   25   1      }
+   26          
+   27          void pit_handler (void)
+   28          {       
+   29   1          Dual_Loop_Control();
    30   1      
    31   1      }
    32          
-   33          void pit_handler(void)
-   34          {
-   35   1              imu660ra_get_acc(); // »ñÈ¡ IMU660RA µÄ¼ÓËÙ¶È²âÁ¿ÊýÖµ
-   36   1              imu660ra_get_gyro();
-   37   1              imu_cnt++; 
-   38   1              if (imu_cnt >= 5)
-   39   1              {
-   40   2                      imu_cnt = 0;
-   41   2                      gyro_proc();
-   42   2              }
-   43   1              
-   44   1          speed_left = encoder_get_count(ENCODER_DIR_LEFT);                   // »ñÈ¡±àÂëÆ÷¼ÆÊý
-   45   1          speed_right = encoder_get_count(ENCODER_DIR_RIGHT);                 
-   46   1              
-   47   1          encoder_clear_count(ENCODER_DIR_LEFT);                          // Çå¿Õ±àÂëÆ÷¼ÆÊý
-   48   1          encoder_clear_count(ENCODER_DIR_RIGHT);     
-   49   1      
-   50   1              real_left  = last_speed_left * 0.9 + speed_left  * 0.1;
-   51   1              last_speed_left=speed_left;
-   52   1                      
-   53   1              real_right = last_speed_right * 0.9 + speed_right * 0.1;
-   54   1              last_speed_right=speed_right;
-C251 COMPILER V5.60.0,  encoder                                                            27/03/26  19:06:10  PAGE 2   
-
-   55   1              //PID_Inc_Calc(&Speed_PID_L,20,real_left);
-   56   1              //      Dual_Loop_Control();
-   57   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       287     ------
+  code size            =        75     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        13     ------
+  xdata size           =         2     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -90,7 +62,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        48     ------
+  hconst size          =         7     ------
 End of Module Information.
 
 

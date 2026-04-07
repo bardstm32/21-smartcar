@@ -7,14 +7,12 @@
             "intelliSenseMode": "${default}",
             "includePath": [
                 "D:/Keil_v5/C251/INC",
-                "c:/Users/LENOVO/Desktop/20 smartcar/Seekfree_STC32G12K128_Opensource_Library/libraries/zf_common",
-                "c:/Users/LENOVO/Desktop/20 smartcar/Seekfree_STC32G12K128_Opensource_Library/libraries/zf_components",
-                "c:/Users/LENOVO/Desktop/20 smartcar/Seekfree_STC32G12K128_Opensource_Library/libraries/zf_device",
-                "c:/Users/LENOVO/Desktop/20 smartcar/Seekfree_STC32G12K128_Opensource_Library/libraries/zf_driver",
-                "c:/Users/LENOVO/Desktop/20 smartcar/Seekfree_STC32G12K128_Opensource_Library/Project/user",
-                "c:/Users/LENOVO/Desktop/20 smartcar/Seekfree_STC32G12K128_Opensource_Library/Project/code",
-                "c:/Users/LENOVO/Desktop/20 smartcar/Seekfree_STC32G12K128_Opensource_Library/Libraries/code_c",
-                "c:/Users/LENOVO/Desktop/20 smartcar/Seekfree_STC32G12K128_Opensource_Library/Libraries/code_h"
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/libraries/zf_common",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/libraries/zf_components",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/libraries/zf_device",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/libraries/zf_driver",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/Project/user",
+                "c:/Users/LENOVO/Desktop/20 smartcar/21-smartcar/Project/code"
             ],
             "defines": [
                 "__C251__",

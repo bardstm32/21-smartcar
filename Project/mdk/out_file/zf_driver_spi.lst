@@ -1,12 +1,11 @@
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 1   
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_driver_spi
 OBJECT MODULE PLACED IN .\out_file\zf_driver_spi.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_driver\zf_driver_spi.c LARGE NOALIAS WARNINGLEVEL(3
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_driver\zf_driver_spi.c LARGE NOALIAS WARNINGLEVEL(0
                     -) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..
-                    -\libraries\zf_driver;..\user;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h) DEBUG PRINT(.\out_file\zf_driver_spi
-                    -.lst) OBJECT(.\out_file\zf_driver_spi.obj) 
+                    -\libraries\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\zf_driver_spi.lst) OBJECT(.\out_file\zf_driver_spi.obj) 
 
 stmt  level    source
 
@@ -66,9 +65,9 @@ stmt  level    source
    52                          TI = 0x0;                       \
    53                          SBUF = dat;                                     \
    54                          while (!TI)
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 2   
-
    55          
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 2   
+
    56          #define SPI2_WRITE_DAT(dat)             \
    57                          S2TI = 0x0;                     \
    58                          S2BUF = dat;                            \
@@ -134,9 +133,9 @@ stmt  level    source
   118   2                      case SPI_1:                 
   119   2                              TI = 0x0;                       
   120   2                              SBUF = dat;                                     
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 3   
-
   121   2                              while (!TI);
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 3   
+
   122   2                              ret = SBUF;
   123   2                              break;                  
   124   2                      case SPI_2:
@@ -202,9 +201,9 @@ stmt  level    source
   178   1              SPI_WRITE_DAT(spi_n, (uint8)(dat & 0x00FF));
   179   1      }
   180          
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 4   
-
   181          //-------------------------------------------------------------------------------------------------------
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 4   
+
              -------------
   182          // 函数简介      SPI 接口写 16bit 数组
   183          // 参数说明     spi_n           SPI 模块号 参照 zf_driver_spi.h 内 spi_index_enum 枚举体定义
@@ -270,9 +269,9 @@ stmt  level    source
   236          // 返回参数     void
   237          // 使用示例     spi_write_16bit_register(SPI_1,0x1011,0x0101);
   238          //-------------------------------------------------------------------------------------------------------
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 5   
-
              -------------
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 5   
+
   239          void spi_write_16bit_register (spi_index_enum spi_n, const uint16 register_name, const uint16 dat)
   240          {
   241   1              SPI_WRITE_DAT(spi_n, (uint8)((register_name & 0xFF00) >> 8));
@@ -338,9 +337,9 @@ stmt  level    source
   293          // 函数简介      SPI 接口读 16bit 数据
   294          // 参数说明     spi_n           SPI 模块号 参照 zf_driver_spi.h 内 spi_index_enum 枚举体定义
   295          // 参数说明     register_name   寄存器地址
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 6   
-
   296          // 返回参数     uint16        数据
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 6   
+
   297          // 使用示例     spi_read_16bit(SPI_1);
   298          //-------------------------------------------------------------------------------------------------------
              -------------
@@ -406,9 +405,9 @@ stmt  level    source
   352   1              SPI_WRITE_DAT(spi_n, register_name);
   353   1          while(len--)
   354   1          {
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 7   
-
   355   2              *dat++ = SPI_READ_DAT(spi_n, 0);
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 7   
+
   356   2          }
   357   1      }
   358          
@@ -474,9 +473,9 @@ stmt  level    source
   412   1          while(len--)
   413   1          {
   414   2              if(read_buffer != NULL)
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 8   
-
   415   2              {
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 8   
+
   416   3                  *read_buffer++ = SPI_READ_DAT(spi_n, *(write_buffer++));
   417   3              }
   418   2                      else
@@ -542,9 +541,9 @@ stmt  level    source
   471   1          {
   472   2              zf_assert(0);
   473   2              // SPI只能使用同一组引脚，不允许混用引脚
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 9   
-
   474   2          }
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 9   
+
   475   1          
   476   1          gpio_init(sck_pin  & 0xFF, GPO, 1, GPO_PUSH_PULL);
   477   1          gpio_init(mosi_pin & 0xFF, GPO, 1, GPO_PUSH_PULL);
@@ -610,9 +609,9 @@ stmt  level    source
   537   2              {
   538   3                  SPCTL |= 0x02;      // SPI输入时钟/16
   539   3              }
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 10  
-
   540   2              else if(spi_psc > 4)
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 10  
+
   541   2              {
   542   3                  SPCTL |= 0x01;      // SPI输入时钟/8
   543   3              }
@@ -678,9 +677,9 @@ stmt  level    source
   603   3                      P_SW3 |= (0x03 << 2);
   604   3                      break;
   605   3              }
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 11  
-
   606   2              
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 11  
+
   607   2              SCON = 0x10;            // 接收使能
   608   2              USARTCR1 = 0x10;        // 使能SPI模式，主机功能
   609   2              
@@ -746,9 +745,9 @@ stmt  level    source
   669   2              switch((sck_pin >> 8) & 0x03)
   670   2              {
   671   3                  case 0:
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 12  
-
   672   3                      P_SW3 |= (0x00 << 4);
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 12  
+
   673   3                      break;
   674   3                      
   675   3                  case 1:
@@ -814,9 +813,9 @@ stmt  level    source
   735   1      }
   736          
   737          
-C251 COMPILER V5.60.0,  zf_driver_spi                                                      27/03/26  18:56:01  PAGE 13  
-
   738          
+C251 COMPILER V5.60.0,  zf_driver_spi                                                      04/04/26  18:51:14  PAGE 13  
+
 
 
 Module Information          Static   Overlayable

@@ -36,12 +36,6 @@
 #ifndef __HEADFILE_H_
 #define __HEADFILE_H_
 
-
-#pragma warning disable = 115
-#pragma warning disable = 188
-#pragma warning disable = 138
-#pragma warning disable = 98
-
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
@@ -99,15 +93,18 @@
 
 //------逐飞科技产品组件层文件
 #include "seekfree_assistant.h"
+
 #include "seekfree_assistant_interface.h"
+
+#include "eeprom.h"
+#include "voltage_warning.h"
 #include "imu.h"
 #include "inductance.h"
-#include "motor.h"
-#include "buzzer.h"
-#include "led.h"
-#include "menu.h"
-#include "control.h"
+#include "all_init.h"
 #include "encoder.h"
-#include "voltage_warning.h"
-#include "init.h"
+#include "moto.h"
+#include "led.h"
+#include "trank.h"
+#include "inductance.h"
+#include "menu.h"
 #endif

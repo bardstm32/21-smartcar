@@ -1,506 +1,564 @@
-C251 COMPILER V5.60.0,  zf_driver_gpio                                                     27/03/26  18:56:00  PAGE 1   
+C251 COMPILER V5.60.0,  zf_driver_gpio                                                     04/04/26  18:51:13  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_driver_gpio
 OBJECT MODULE PLACED IN .\out_file\zf_driver_gpio.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_driver\zf_driver_gpio.c LARGE NOALIAS WARNINGLEVEL(
-                    -3) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\.
-                    -.\libraries\zf_driver;..\user;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h) DEBUG PRINT(.\out_file\zf_driver_gp
-                    -io.lst) OBJECT(.\out_file\zf_driver_gpio.obj) 
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_driver\zf_driver_gpio.c LARGE NOALIAS WARNINGLEVEL(
+                    -0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\.
+                    -.\libraries\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\zf_driver_gpio.lst) OBJECT(.\out_file\zf_driver_gpio.obj) 
 
 stmt  level    source
 
     1          /********************************************************************************************************
              -*************
-    2          * STC32G Opensourec Library 即（STC32G 开源库）是一个基于官方 SDK 接口的第三方开源库
-    3          * Copyright (c) 2022 SEEKFREE 逐飞科技
-    4          *
-    5          * 本文件是STC 开源库的一部分
-    6          *
-    7          * STC32G 开源库 是免费软件
-    8          * 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-    9          * 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
-   10          *
-   11          * 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-   12          * 甚至没有隐含的适销性或适合特定用途的保证
-   13          * 更多细节请参见 GPL
-   14          *
-   15          * 您应该在收到本开源库的同时收到一份 GPL 的副本
-   16          * 如果没有，请参阅<https://www.gnu.org/licenses/>
-   17          *
-   18          * 额外注明：
-   19          * 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-   20          * 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-   21          * 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-   22          * 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
-   23          *
-   24          * 文件名称          
-   25          * 公司名称          成都逐飞科技有限公司
-   26          * 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-   27          * 开发环境          MDK FOR C251
-   28          * 适用平台          STC32G
-   29          * 店铺链接          https://seekfree.taobao.com/
-   30          *
-   31          * 修改记录
-   32          * 日期              作者           备注
-   33          * 2024-08-01        大W            first version
-   34          * 2024-xx-xx        优化           精简重复逻辑，适配SFR特性
-   35          *********************************************************************************************************
-             -***********/
+    2           * STC32G Opensourec Library 即（STC32G 开源库）是一个基于官方 SDK 接口的第三方开源库
+    3           * Copyright (c) 2022 SEEKFREE 逐飞科技
+    4           *
+    5           * 本文件是STC 开源库的一部分
+    6           *
+    7           * STC32G 开源库 是免费软件
+    8           * 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
+    9           * 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
+   10           *
+   11           * 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
+   12           * 甚至没有隐含的适销性或适合特定用途的保证
+   13           * 更多细节请参见 GPL
+   14           *
+   15           * 您应该在收到本开源库的同时收到一份 GPL 的副本
+   16           * 如果没有，请参阅<https://www.gnu.org/licenses/>
+   17           *
+   18           * 额外注明：
+   19           * 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
+   20           * 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
+   21           * 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
+   22           * 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
+   23           *
+   24           * 文件名称
+   25           * 公司名称          成都逐飞科技有限公司
+   26           * 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
+   27           * 开发环境          MDK FOR C251
+   28           * 适用平台          STC32G
+   29           * 店铺链接          https://seekfree.taobao.com/
+   30           *
+   31           * 修改记录
+   32           * 日期              作者           备注
+   33           * 2024-08-01        大W            first version
+   34           * 2024-xx-xx        优化           精简重复逻辑，适配SFR特性
+   35           ********************************************************************************************************
+             -************/
    36          
    37          #include "zf_common_debug.h"
    38          #include "zf_driver_gpio.h"
    39          
-   40          
-   41          // 内部使用，用户无需关心。
-   42          static void gpio_set_mode(gpio_pin_enum pin, gpio_mode_enum mode)
-   43          {
-   44   1              #define PXPU(pin)  (*(unsigned char volatile far *)(0x7efe10 + (pin >> 4) - 1))
-   45   1      //      #define PXPD(pin)  (*(unsigned char volatile far *)(0x7efe40 + (pin >> 4 - 1)))
-   46   1              
-   47   1          if(GPI_FLOATING_IN == mode || GPIO_NO_PULL == mode)
-   48   1          {
-   49   2              PXPU(pin) &= ~(1 << (pin & 0x0F));
-   50   2      //        PXPD(pin) &= ~(1 << (pin & 0x0F));
-   51   2          }
-   52   1      //    else if(GPI_PULL_DOWN == mode)
-   53   1      //    {
-   54   1      //        PXPD(pin) |= (1 << (pin & 0x0F));
-C251 COMPILER V5.60.0,  zf_driver_gpio                                                     27/03/26  18:56:00  PAGE 2   
+   40          // 内部使用，用户无需关心。
+   41          static void gpio_set_mode(gpio_pin_enum pin, gpio_mode_enum mode)
+   42          {
+   43   1      #define PXPU(pin) (*(unsigned char volatile far *)(0x7efe10 + (pin >> 4 - 1)))
+   44   1          //  #define PXPD(pin)  (*(unsigned char volatile far *)(0x7efe40 + (pin >> 4 - 1)))
+   45   1      
+   46   1          if (GPI_FLOATING_IN == mode || GPIO_NO_PULL == mode)
+   47   1          {
+   48   2              PXPU(pin) &= ~(1 << (pin & 0x0F));
+   49   2              //        PXPD(pin) &= ~(1 << (pin & 0x0F));
+   50   2          }
+   51   1          //    else if(GPI_PULL_DOWN == mode)
+   52   1          //    {
+   53   1          //        PXPD(pin) |= (1 << (pin & 0x0F));
+   54   1          //    }
+   55   1          else if (GPI_PULL_UP == mode || GPO_PUSH_PULL == mode)
+C251 COMPILER V5.60.0,  zf_driver_gpio                                                     04/04/26  18:51:13  PAGE 2   
 
-   55   1      //    }
-   56   1          else if(GPI_PULL_UP == mode || GPO_PUSH_PULL == mode)
-   57   1          {
-   58   2              PXPU(pin) |= (1 << (pin & 0x0F));
-   59   2          }
-   60   1              else if(GPO_OPEN_DTAIN == mode)
-   61   1              {
-   62   2              // 开漏输出：操作对应端口的模式寄存器（PnM1/PnM0）
-   63   2                      switch(pin & 0xF0)
-   64   2                      {
-   65   3                              case IO_P00:
-   66   3                      P0M1 |= (1 << (pin & 0xF));
-   67   3                      P0M0 |= (1 << (pin & 0xF));
-   68   3                                      break;
-   69   3                              case IO_P10:
-   70   3                      P1M1 |= (1 << (pin & 0xF));
-   71   3                      P1M0 |= (1 << (pin & 0xF));
-   72   3                                      break;
-   73   3                              case IO_P20:
-   74   3                      P2M1 |= (1 << (pin & 0xF));
-   75   3                      P2M0 |= (1 << (pin & 0xF));
-   76   3                                      break;
-   77   3                              case IO_P30:
-   78   3                      P3M1 |= (1 << (pin & 0xF));
-   79   3                      P3M0 |= (1 << (pin & 0xF));
-   80   3                                      break;
-   81   3                              case IO_P40:
-   82   3                      P4M1 |= (1 << (pin & 0xF));
-   83   3                      P4M0 |= (1 << (pin & 0xF));
-   84   3                                      break;
-   85   3                              case IO_P50:
-   86   3                      P5M1 |= (1 << (pin & 0xF));
-   87   3                      P5M0 |= (1 << (pin & 0xF));
-   88   3                                      break;
-   89   3                              case IO_P60:
-   90   3                      P6M1 |= (1 << (pin & 0xF));
-   91   3                      P6M0 |= (1 << (pin & 0xF));
-   92   3                                      break;
-   93   3                              case IO_P70:
-   94   3                      P7M1 |= (1 << (pin & 0xF));
-   95   3                      P7M0 |= (1 << (pin & 0xF));
-   96   3                                      break;
-   97   3                              default:
-   98   3                                      break; // 无效引脚
-   99   3                      }
-  100   2              }
-  101   1              else
-  102   1              {
-  103   2                      // zf_assert(0); // 参数不匹配
-  104   2              }
-  105   1      }
-  106          
-  107          // 内部使用，用户无需关心。
-  108          void gpio_set_level_speed(gpio_pin_enum pin, gpio_speed_enum speed)
-  109          {
-  110   1          // 提前计算引脚位和端口标志
-  111   1          uint8 pin_bit = pin & 0x0F;
-  112   1          uint8 port_flag = pin & 0xF0;
-  113   1      
-  114   1          // 根据端口标志操作对应PnSR寄存器（速度配置）
-  115   1          switch(port_flag)
-  116   1          {
-  117   2              case IO_P00:
-  118   2                  // 快速模式：清除位；低速模式：置位
-  119   2                  (GPIO_SPEED_FAST == speed) ? (P0SR &= ~(1 << pin_bit)) : (P0SR |= (1 << pin_bit));
-  120   2                  break;
-C251 COMPILER V5.60.0,  zf_driver_gpio                                                     27/03/26  18:56:00  PAGE 3   
+   56   1          {
+   57   2              PXPU(pin) |= (1 << (pin & 0x0F));
+   58   2          }
+   59   1          else if (GPO_OPEN_DTAIN == mode)
+   60   1          {
+   61   2              // 开漏输出：操作对应端口的模式寄存器（PnM1/PnM0）
+   62   2              switch (pin & 0xF0)
+   63   2              {
+   64   3              case IO_P00:
+   65   3                  P0M1 |= (1 << (pin & 0xF));
+   66   3                  P0M0 |= (1 << (pin & 0xF));
+   67   3                  break;
+   68   3              case IO_P10:
+   69   3                  P1M1 |= (1 << (pin & 0xF));
+   70   3                  P1M0 |= (1 << (pin & 0xF));
+   71   3                  break;
+   72   3              case IO_P20:
+   73   3                  P2M1 |= (1 << (pin & 0xF));
+   74   3                  P2M0 |= (1 << (pin & 0xF));
+   75   3                  break;
+   76   3              case IO_P30:
+   77   3                  P3M1 |= (1 << (pin & 0xF));
+   78   3                  P3M0 |= (1 << (pin & 0xF));
+   79   3                  break;
+   80   3              case IO_P40:
+   81   3                  P4M1 |= (1 << (pin & 0xF));
+   82   3                  P4M0 |= (1 << (pin & 0xF));
+   83   3                  break;
+   84   3              case IO_P50:
+   85   3                  P5M1 |= (1 << (pin & 0xF));
+   86   3                  P5M0 |= (1 << (pin & 0xF));
+   87   3                  break;
+   88   3              case IO_P60:
+   89   3                  P6M1 |= (1 << (pin & 0xF));
+   90   3                  P6M0 |= (1 << (pin & 0xF));
+   91   3                  break;
+   92   3              case IO_P70:
+   93   3                  P7M1 |= (1 << (pin & 0xF));
+   94   3                  P7M0 |= (1 << (pin & 0xF));
+   95   3                  break;
+   96   3              default:
+   97   3                  break; // 无效引脚
+   98   3              }
+   99   2          }
+  100   1          else
+  101   1          {
+  102   2              // zf_assert(0); // 参数不匹配
+  103   2          }
+  104   1      }
+  105          
+  106          // 内部使用，用户无需关心。
+  107          void gpio_set_level_speed(gpio_pin_enum pin, gpio_speed_enum speed)
+  108          {
+  109   1          // 提前计算引脚位和端口标志
+  110   1          uint8 pin_bit = pin & 0x0F;
+  111   1          uint8 port_flag = pin & 0xF0;
+  112   1      
+  113   1          // 根据端口标志操作对应PnSR寄存器（速度配置）
+  114   1          switch (port_flag)
+  115   1          {
+  116   2          case IO_P00:
+  117   2              // 快速模式：清除位；低速模式：置位
+  118   2              (GPIO_SPEED_FAST == speed) ? (P0SR &= ~(1 << pin_bit)) : (P0SR |= (1 << pin_bit));
+  119   2              break;
+  120   2          case IO_P10:
+  121   2              (GPIO_SPEED_FAST == speed) ? (P1SR &= ~(1 << pin_bit)) : (P1SR |= (1 << pin_bit));
+C251 COMPILER V5.60.0,  zf_driver_gpio                                                     04/04/26  18:51:13  PAGE 3   
 
-  121   2              case IO_P10:
-  122   2                  (GPIO_SPEED_FAST == speed) ? (P1SR &= ~(1 << pin_bit)) : (P1SR |= (1 << pin_bit));
-  123   2                  break;
-  124   2              case IO_P20:
-  125   2                  (GPIO_SPEED_FAST == speed) ? (P2SR &= ~(1 << pin_bit)) : (P2SR |= (1 << pin_bit));
-  126   2                  break;
-  127   2              case IO_P30:
-  128   2                  (GPIO_SPEED_FAST == speed) ? (P3SR &= ~(1 << pin_bit)) : (P3SR |= (1 << pin_bit));
-  129   2                  break;
-  130   2              case IO_P40:
-  131   2                  (GPIO_SPEED_FAST == speed) ? (P4SR &= ~(1 << pin_bit)) : (P4SR |= (1 << pin_bit));
-  132   2                  break;
-  133   2              case IO_P50:
-  134   2                  (GPIO_SPEED_FAST == speed) ? (P5SR &= ~(1 << pin_bit)) : (P5SR |= (1 << pin_bit));
-  135   2                  break;
-  136   2              case IO_P60:
-  137   2                  (GPIO_SPEED_FAST == speed) ? (P6SR &= ~(1 << pin_bit)) : (P6SR |= (1 << pin_bit));
-  138   2                  break;
-  139   2              case IO_P70:
-  140   2                  (GPIO_SPEED_FAST == speed) ? (P7SR &= ~(1 << pin_bit)) : (P7SR |= (1 << pin_bit));
-  141   2                  break;
-  142   2              default:
-  143   2                  // zf_assert(0); // 无效引脚
-  144   2                  break;
-  145   2          }
-  146   1      }
-  147          
-  148          
-  149          // 内部使用，用户无需关心。
-  150          static void gpio_set_dir(gpio_pin_enum pin, gpio_dir_enum dir)
-  151          {
-  152   1          switch(pin & 0xF0)
-  153   1          {
-  154   2              case IO_P00:
-  155   2              {
-  156   3                  if(GPIO == dir || GPI == dir)
-  157   3                  {
-  158   4                      P0M1 &= ~(1 << (pin & 0xF));
-  159   4                      P0M0 &= ~(1 << (pin & 0xF));
-  160   4                  }
-  161   3      //            else if(GPO_OPEN_DTAIN == dir)
-  162   3      //            {
-  163   3      //                P0M1 |= (1 << (pin & 0xF));
-  164   3      //                P0M0 |= (1 << (pin & 0xF));
-  165   3      //            }
-  166   3                  else if(GPO == dir)
-  167   3                  {
-  168   4                      P0M1 &= ~(1 << (pin & 0xF));
-  169   4                      P0M0 |= (1 << (pin & 0xF));
-  170   4                  }
-  171   3              }
-  172   2              break;
-  173   2              
-  174   2              case IO_P10:
-  175   2              {
-  176   3                  if(GPIO == dir || GPI == dir)
-  177   3                  {
-  178   4                      P1M1 &= ~(1 << (pin & 0xF));
-  179   4                      P1M0 &= ~(1 << (pin & 0xF));
-  180   4                  }
-  181   3      //            else if(GPO_OPEN_DTAIN == dir)
-  182   3      //            {
-  183   3      //                P1M1 |= (1 << (pin & 0xF));
-  184   3      //                P1M0 |= (1 << (pin & 0xF));
-  185   3      //            }
-  186   3                  else if(GPO == dir)
-C251 COMPILER V5.60.0,  zf_driver_gpio                                                     27/03/26  18:56:00  PAGE 4   
+  122   2              break;
+  123   2          case IO_P20:
+  124   2              (GPIO_SPEED_FAST == speed) ? (P2SR &= ~(1 << pin_bit)) : (P2SR |= (1 << pin_bit));
+  125   2              break;
+  126   2          case IO_P30:
+  127   2              (GPIO_SPEED_FAST == speed) ? (P3SR &= ~(1 << pin_bit)) : (P3SR |= (1 << pin_bit));
+  128   2              break;
+  129   2          case IO_P40:
+  130   2              (GPIO_SPEED_FAST == speed) ? (P4SR &= ~(1 << pin_bit)) : (P4SR |= (1 << pin_bit));
+  131   2              break;
+  132   2          case IO_P50:
+  133   2              (GPIO_SPEED_FAST == speed) ? (P5SR &= ~(1 << pin_bit)) : (P5SR |= (1 << pin_bit));
+  134   2              break;
+  135   2          case IO_P60:
+  136   2              (GPIO_SPEED_FAST == speed) ? (P6SR &= ~(1 << pin_bit)) : (P6SR |= (1 << pin_bit));
+  137   2              break;
+  138   2          case IO_P70:
+  139   2              (GPIO_SPEED_FAST == speed) ? (P7SR &= ~(1 << pin_bit)) : (P7SR |= (1 << pin_bit));
+  140   2              break;
+  141   2          default:
+  142   2              // zf_assert(0); // 无效引脚
+  143   2              break;
+  144   2          }
+  145   1      }
+  146          
+  147          // 内部使用，用户无需关心。
+  148          static void gpio_set_dir(gpio_pin_enum pin, gpio_dir_enum dir)
+  149          {
+  150   1          switch (pin & 0xF0)
+  151   1          {
+  152   2          case IO_P00:
+  153   2          {
+  154   3              if (GPIO == dir || GPI == dir)
+  155   3              {
+  156   4                  P0M1 &= ~(1 << (pin & 0xF));
+  157   4                  P0M0 &= ~(1 << (pin & 0xF));
+  158   4              }
+  159   3              //            else if(GPO_OPEN_DTAIN == dir)
+  160   3              //            {
+  161   3              //                P0M1 |= (1 << (pin & 0xF));
+  162   3              //                P0M0 |= (1 << (pin & 0xF));
+  163   3              //            }
+  164   3              else if (GPO == dir)
+  165   3              {
+  166   4                  P0M1 &= ~(1 << (pin & 0xF));
+  167   4                  P0M0 |= (1 << (pin & 0xF));
+  168   4              }
+  169   3          }
+  170   2          break;
+  171   2      
+  172   2          case IO_P10:
+  173   2          {
+  174   3              if (GPIO == dir || GPI == dir)
+  175   3              {
+  176   4                  P1M1 &= ~(1 << (pin & 0xF));
+  177   4                  P1M0 &= ~(1 << (pin & 0xF));
+  178   4              }
+  179   3              //            else if(GPO_OPEN_DTAIN == dir)
+  180   3              //            {
+  181   3              //                P1M1 |= (1 << (pin & 0xF));
+  182   3              //                P1M0 |= (1 << (pin & 0xF));
+  183   3              //            }
+  184   3              else if (GPO == dir)
+  185   3              {
+  186   4                  P1M1 &= ~(1 << (pin & 0xF));
+  187   4                  P1M0 |= (1 << (pin & 0xF));
+C251 COMPILER V5.60.0,  zf_driver_gpio                                                     04/04/26  18:51:13  PAGE 4   
 
-  187   3                  {
-  188   4                      P1M1 &= ~(1 << (pin & 0xF));
-  189   4                      P1M0 |= (1 << (pin & 0xF));
-  190   4                  }
-  191   3              }
-  192   2              break;
-  193   2              
-  194   2              case IO_P20:
-  195   2              {
-  196   3                  if(GPIO == dir || GPI == dir)
-  197   3                  {
-  198   4                      P2M1 &= ~(1 << (pin & 0xF));
-  199   4                      P2M0 &= ~(1 << (pin & 0xF));
-  200   4                  }
-  201   3      //            else if(GPO_OPEN_DTAIN == dir)
-  202   3      //            {
-  203   3      //                P2M1 |= (1 << (pin & 0xF));
-  204   3      //                P2M0 |= (1 << (pin & 0xF));
-  205   3      //            }
-  206   3                  else if(GPO == dir)
-  207   3                  {
-  208   4                      P2M1 &= ~(1 << (pin & 0xF));
-  209   4                      P2M0 |= (1 << (pin & 0xF));
-  210   4                  }
-  211   3              }
-  212   2              break;
-  213   2              
-  214   2              case IO_P30:
-  215   2              {
-  216   3                  if(GPIO == dir || GPI == dir)
-  217   3                  {
-  218   4                      P3M1 &= ~(1 << (pin & 0xF));
-  219   4                      P3M0 &= ~(1 << (pin & 0xF));
-  220   4                  }
-  221   3      //            else if(GPO_OPEN_DTAIN == dir)
-  222   3      //            {
-  223   3      //                P3M1 |= (1 << (pin & 0xF));
-  224   3      //                P3M0 |= (1 << (pin & 0xF));
-  225   3      //            }
-  226   3                  else if(GPO == dir)
-  227   3                  {
-  228   4                      P3M1 &= ~(1 << (pin & 0xF));
-  229   4                      P3M0 |= (1 << (pin & 0xF));
-  230   4                  }
-  231   3              }
-  232   2              break;
-  233   2              
-  234   2              case IO_P40:
-  235   2              {
-  236   3                  if(GPIO == dir || GPI == dir)
-  237   3                  {
-  238   4                      P4M1 &= ~(1 << (pin & 0xF));
-  239   4                      P4M0 &= ~(1 << (pin & 0xF));
-  240   4                  }
-  241   3      //            else if(GPO_OPEN_DTAIN == dir)
-  242   3      //            {
-  243   3      //                P4M1 |= (1 << (pin & 0xF));
-  244   3      //                P4M0 |= (1 << (pin & 0xF));
-  245   3      //            }
-  246   3                  else if(GPO == dir)
-  247   3                  {
-  248   4                      P4M1 &= ~(1 << (pin & 0xF));
-  249   4                      P4M0 |= (1 << (pin & 0xF));
-  250   4                  }
-  251   3              }
-  252   2              break;
-C251 COMPILER V5.60.0,  zf_driver_gpio                                                     27/03/26  18:56:00  PAGE 5   
+  188   4              }
+  189   3          }
+  190   2          break;
+  191   2      
+  192   2          case IO_P20:
+  193   2          {
+  194   3              if (GPIO == dir || GPI == dir)
+  195   3              {
+  196   4                  P2M1 &= ~(1 << (pin & 0xF));
+  197   4                  P2M0 &= ~(1 << (pin & 0xF));
+  198   4              }
+  199   3              //            else if(GPO_OPEN_DTAIN == dir)
+  200   3              //            {
+  201   3              //                P2M1 |= (1 << (pin & 0xF));
+  202   3              //                P2M0 |= (1 << (pin & 0xF));
+  203   3              //            }
+  204   3              else if (GPO == dir)
+  205   3              {
+  206   4                  P2M1 &= ~(1 << (pin & 0xF));
+  207   4                  P2M0 |= (1 << (pin & 0xF));
+  208   4              }
+  209   3          }
+  210   2          break;
+  211   2      
+  212   2          case IO_P30:
+  213   2          {
+  214   3              if (GPIO == dir || GPI == dir)
+  215   3              {
+  216   4                  P3M1 &= ~(1 << (pin & 0xF));
+  217   4                  P3M0 &= ~(1 << (pin & 0xF));
+  218   4              }
+  219   3              //            else if(GPO_OPEN_DTAIN == dir)
+  220   3              //            {
+  221   3              //                P3M1 |= (1 << (pin & 0xF));
+  222   3              //                P3M0 |= (1 << (pin & 0xF));
+  223   3              //            }
+  224   3              else if (GPO == dir)
+  225   3              {
+  226   4                  P3M1 &= ~(1 << (pin & 0xF));
+  227   4                  P3M0 |= (1 << (pin & 0xF));
+  228   4              }
+  229   3          }
+  230   2          break;
+  231   2      
+  232   2          case IO_P40:
+  233   2          {
+  234   3              if (GPIO == dir || GPI == dir)
+  235   3              {
+  236   4                  P4M1 &= ~(1 << (pin & 0xF));
+  237   4                  P4M0 &= ~(1 << (pin & 0xF));
+  238   4              }
+  239   3              //            else if(GPO_OPEN_DTAIN == dir)
+  240   3              //            {
+  241   3              //                P4M1 |= (1 << (pin & 0xF));
+  242   3              //                P4M0 |= (1 << (pin & 0xF));
+  243   3              //            }
+  244   3              else if (GPO == dir)
+  245   3              {
+  246   4                  P4M1 &= ~(1 << (pin & 0xF));
+  247   4                  P4M0 |= (1 << (pin & 0xF));
+  248   4              }
+  249   3          }
+  250   2          break;
+  251   2      
+  252   2          case IO_P50:
+  253   2          {
+C251 COMPILER V5.60.0,  zf_driver_gpio                                                     04/04/26  18:51:13  PAGE 5   
 
-  253   2              
-  254   2              case IO_P50:
-  255   2              {
-  256   3                  if(GPIO == dir || GPI == dir)
-  257   3                  {
-  258   4                      P5M1 &= ~(1 << (pin & 0xF));
-  259   4                      P5M0 &= ~(1 << (pin & 0xF));
-  260   4                  }
-  261   3      //            else if(GPO_OPEN_DTAIN == dir)
-  262   3      //            {
-  263   3      //                P5M1 |= (1 << (pin & 0xF));
-  264   3      //                P5M0 |= (1 << (pin & 0xF));
-  265   3      //            }
-  266   3                  else if(GPO == dir)
-  267   3                  {
-  268   4                      P5M1 &= ~(1 << (pin & 0xF));
-  269   4                      P5M0 |= (1 << (pin & 0xF));
-  270   4                  }
-  271   3              }
-  272   2              break;
-  273   2                      
-  274   2                      case IO_P60:
-  275   2              {
-  276   3                  if(GPIO == dir || GPI == dir)
-  277   3                  {
-  278   4                      P6M1 &= ~(1 << (pin & 0xF));
-  279   4                      P6M0 &= ~(1 << (pin & 0xF));
-  280   4                  }
-  281   3      //            else if(GPO_OPEN_DTAIN == dir)
-  282   3      //            {
-  283   3      //                P6M1 |= (1 << (pin & 0xF));
-  284   3      //                P6M0 |= (1 << (pin & 0xF));
-  285   3      //            }
-  286   3                  else if(GPO == dir)
-  287   3                  {
-  288   4                      P6M1 &= ~(1 << (pin & 0xF));
-  289   4                      P6M0 |= (1 << (pin & 0xF));
-  290   4                  }
-  291   3              }
-  292   2              break;
-  293   2                      
-  294   2                      case IO_P70:
-  295   2              {
-  296   3                  if(GPIO == dir || GPI == dir)
-  297   3                  {
-  298   4                      P7M1 &= ~(1 << (pin & 0xF));
-  299   4                      P7M0 &= ~(1 << (pin & 0xF));
-  300   4                  }
-  301   3      //            else if(GPO_OPEN_DTAIN == dir)
-  302   3      //            {
-  303   3      //                P7M1 |= (1 << (pin & 0xF));
-  304   3      //                P7M0 |= (1 << (pin & 0xF));
-  305   3      //            }
-  306   3                  else if(GPO == dir)
-  307   3                  {
-  308   4                      P7M1 &= ~(1 << (pin & 0xF));
-  309   4                      P7M0 |= (1 << (pin & 0xF));
-  310   4                  }
-  311   3      
-  312   3              }
-  313   2              break;
-  314   2              
-  315   2              default:
-  316   2              {
-  317   3                              zf_assert(0);
-  318   3                              // 没有这个引脚
-C251 COMPILER V5.60.0,  zf_driver_gpio                                                     27/03/26  18:56:00  PAGE 6   
+  254   3              if (GPIO == dir || GPI == dir)
+  255   3              {
+  256   4                  P5M1 &= ~(1 << (pin & 0xF));
+  257   4                  P5M0 &= ~(1 << (pin & 0xF));
+  258   4              }
+  259   3              //            else if(GPO_OPEN_DTAIN == dir)
+  260   3              //            {
+  261   3              //                P5M1 |= (1 << (pin & 0xF));
+  262   3              //                P5M0 |= (1 << (pin & 0xF));
+  263   3              //            }
+  264   3              else if (GPO == dir)
+  265   3              {
+  266   4                  P5M1 &= ~(1 << (pin & 0xF));
+  267   4                  P5M0 |= (1 << (pin & 0xF));
+  268   4              }
+  269   3          }
+  270   2          break;
+  271   2      
+  272   2          case IO_P60:
+  273   2          {
+  274   3              if (GPIO == dir || GPI == dir)
+  275   3              {
+  276   4                  P6M1 &= ~(1 << (pin & 0xF));
+  277   4                  P6M0 &= ~(1 << (pin & 0xF));
+  278   4              }
+  279   3              //            else if(GPO_OPEN_DTAIN == dir)
+  280   3              //            {
+  281   3              //                P6M1 |= (1 << (pin & 0xF));
+  282   3              //                P6M0 |= (1 << (pin & 0xF));
+  283   3              //            }
+  284   3              else if (GPO == dir)
+  285   3              {
+  286   4                  P6M1 &= ~(1 << (pin & 0xF));
+  287   4                  P6M0 |= (1 << (pin & 0xF));
+  288   4              }
+  289   3          }
+  290   2          break;
+  291   2      
+  292   2          case IO_P70:
+  293   2          {
+  294   3              if (GPIO == dir || GPI == dir)
+  295   3              {
+  296   4                  P7M1 &= ~(1 << (pin & 0xF));
+  297   4                  P7M0 &= ~(1 << (pin & 0xF));
+  298   4              }
+  299   3              //            else if(GPO_OPEN_DTAIN == dir)
+  300   3              //            {
+  301   3              //                P7M1 |= (1 << (pin & 0xF));
+  302   3              //                P7M0 |= (1 << (pin & 0xF));
+  303   3              //            }
+  304   3              else if (GPO == dir)
+  305   3              {
+  306   4                  P7M1 &= ~(1 << (pin & 0xF));
+  307   4                  P7M0 |= (1 << (pin & 0xF));
+  308   4              }
+  309   3          }
+  310   2          break;
+  311   2      
+  312   2          default:
+  313   2          {
+  314   3              zf_assert(0);
+  315   3              // 没有这个引脚
+  316   3          }
+  317   2          break;
+  318   2          }
+  319   1      }
+C251 COMPILER V5.60.0,  zf_driver_gpio                                                     04/04/26  18:51:13  PAGE 6   
 
-  319   3              } break;
-  320   2          }
-  321   1      }
-  322          
-  323          //-------------------------------------------------------------------------------------------------------
+  320          
+  321          //-------------------------------------------------------------------------------------------------------
              -------------
-  324          // 函数简介     GPIO状态获取
-  325          // 参数说明     pin         选择的引脚 (可选择范围由 zf_driver_gpio.h 内gpio_pin_enum枚举值确定)
-  326          // 返回参数     uint8       0：低电平 1：高电平
-  327          // 使用示例     uint8 status = gpio_get_level(IO_P00);//获取P00引脚电平
-  328          //-------------------------------------------------------------------------------------------------------
+  322          // 函数简介     GPIO状态获取
+  323          // 参数说明     pin         选择的引脚 (可选择范围由 zf_driver_gpio.h 内gpio_pin_enum枚举值确定)
+  324          // 返回参数     uint8       0：低电平 1：高电平
+  325          // 使用示例     uint8 status = gpio_get_level(IO_P00);//获取P00引脚电平
+  326          //-------------------------------------------------------------------------------------------------------
              -------------
-  329          uint8 gpio_get_level(gpio_pin_enum pin)
-  330          {
-  331   1          uint8 pin_bit = pin & 0x0F;
-  332   1          uint8 port_flag = pin & 0xF0;
-  333   1          uint8 status = 0;
-  334   1      
-  335   1          // 根据端口标志读取对应Pn寄存器
-  336   1          switch(port_flag)
-  337   1          {
-  338   2              case IO_P00: status = P0 & (1 << pin_bit); break;
-  339   2              case IO_P10: status = P1 & (1 << pin_bit); break;
-  340   2              case IO_P20: status = P2 & (1 << pin_bit); break;
-  341   2              case IO_P30: status = P3 & (1 << pin_bit); break;
-  342   2              case IO_P40: status = P4 & (1 << pin_bit); break;
-  343   2              case IO_P50: status = P5 & (1 << pin_bit); break;
-  344   2              case IO_P60: status = P6 & (1 << pin_bit); break;
-  345   2              case IO_P70: status = P7 & (1 << pin_bit); break;
-  346   2              default: break; // 无效引脚
-  347   2          }
-  348   1          
-  349   1          return status ? 1 : 0; // 转换为0/1返回
-  350   1      }
-  351          
-  352          //-------------------------------------------------------------------------------------------------------
-             -------------
-  353          // 函数简介     GPIO输出设置
-  354          // 参数说明     pin         引脚号选择的引脚 (可选择范围由 common.h 内GPIO_PIN_enum枚举值确定)
-  355          // 参数说明     dat         引脚的电平状态，输出时有效 0：低电平 1：高电平
-  356          // 返回参数     void
-  357          // 使用示例     gpio_set_level(D0, 0);//D0输出低电平
-  358          //-------------------------------------------------------------------------------------------------------
-             -------------
-  359          void gpio_set_level(gpio_pin_enum pin, uint8 dat)
-  360          {
-  361   1          uint8 pin_bit = pin & 0x0F;
-  362   1          uint8 port_flag = pin & 0xF0;
+  327          uint8 gpio_get_level(gpio_pin_enum pin)
+  328          {
+  329   1          uint8 pin_bit = pin & 0x0F;
+  330   1          uint8 port_flag = pin & 0xF0;
+  331   1          uint8 status = 0;
+  332   1      
+  333   1          // 根据端口标志读取对应Pn寄存器
+  334   1          switch (port_flag)
+  335   1          {
+  336   2          case IO_P00:
+  337   2              status = P0 & (1 << pin_bit);
+  338   2              break;
+  339   2          case IO_P10:
+  340   2              status = P1 & (1 << pin_bit);
+  341   2              break;
+  342   2          case IO_P20:
+  343   2              status = P2 & (1 << pin_bit);
+  344   2              break;
+  345   2          case IO_P30:
+  346   2              status = P3 & (1 << pin_bit);
+  347   2              break;
+  348   2          case IO_P40:
+  349   2              status = P4 & (1 << pin_bit);
+  350   2              break;
+  351   2          case IO_P50:
+  352   2              status = P5 & (1 << pin_bit);
+  353   2              break;
+  354   2          case IO_P60:
+  355   2              status = P6 & (1 << pin_bit);
+  356   2              break;
+  357   2          case IO_P70:
+  358   2              status = P7 & (1 << pin_bit);
+  359   2              break;
+  360   2          default:
+  361   2              break; // 无效引脚
+  362   2          }
   363   1      
-  364   1          // 三元运算符精简置位/清零逻辑
-  365   1          switch(port_flag)
-  366   1          {
-  367   2              case IO_P00: dat ? (P0 |= (1 << pin_bit)) : (P0 &= ~(1 << pin_bit)); break;
-  368   2              case IO_P10: dat ? (P1 |= (1 << pin_bit)) : (P1 &= ~(1 << pin_bit)); break;
-  369   2              case IO_P20: dat ? (P2 |= (1 << pin_bit)) : (P2 &= ~(1 << pin_bit)); break;
-  370   2              case IO_P30: dat ? (P3 |= (1 << pin_bit)) : (P3 &= ~(1 << pin_bit)); break;
-  371   2              case IO_P40: dat ? (P4 |= (1 << pin_bit)) : (P4 &= ~(1 << pin_bit)); break;
-  372   2              case IO_P50: dat ? (P5 |= (1 << pin_bit)) : (P5 &= ~(1 << pin_bit)); break;
-  373   2              case IO_P60: dat ? (P6 |= (1 << pin_bit)) : (P6 &= ~(1 << pin_bit)); break;
-  374   2              case IO_P70: dat ? (P7 |= (1 << pin_bit)) : (P7 &= ~(1 << pin_bit)); break;
-  375   2              default: break; // 无效引脚
-  376   2          }
-  377   1      }
-  378          
-  379          //-------------------------------------------------------------------------------------------------------
+  364   1          return status ? 1 : 0; // 转换为0/1返回
+  365   1      }
+  366          
+  367          //-------------------------------------------------------------------------------------------------------
              -------------
-C251 COMPILER V5.60.0,  zf_driver_gpio                                                     27/03/26  18:56:00  PAGE 7   
+  368          // 函数简介     GPIO输出设置
+  369          // 参数说明     pin         引脚号选择的引脚 (可选择范围由 common.h 内GPIO_PIN_enum枚举值确定)
+  370          // 参数说明     dat         引脚的电平状态，输出时有效 0：低电平 1：高电平
+  371          // 返回参数     void
+  372          // 使用示例     gpio_set_level(D0, 0);//D0输出低电平
+  373          //-------------------------------------------------------------------------------------------------------
+             -------------
+  374          void gpio_set_level(gpio_pin_enum pin, uint8 dat)
+  375          {
+  376   1          uint8 pin_bit = pin & 0x0F;
+  377   1          uint8 port_flag = pin & 0xF0;
+  378   1      
+  379   1          // 三元运算符精简置位/清零逻辑
+  380   1          switch (port_flag)
+  381   1          {
+C251 COMPILER V5.60.0,  zf_driver_gpio                                                     04/04/26  18:51:13  PAGE 7   
 
-  380          // 函数简介     GPIO电平翻转
-  381          // 参数说明     pin         引脚号选择的引脚
-  382          // 返回参数     void
-  383          // 使用示例     gpio_toggle_level(D0);//翻转D0电平
-  384          //-------------------------------------------------------------------------------------------------------
+  382   2          case IO_P00:
+  383   2              dat ? (P0 |= (1 << pin_bit)) : (P0 &= ~(1 << pin_bit));
+  384   2              break;
+  385   2          case IO_P10:
+  386   2              dat ? (P1 |= (1 << pin_bit)) : (P1 &= ~(1 << pin_bit));
+  387   2              break;
+  388   2          case IO_P20:
+  389   2              dat ? (P2 |= (1 << pin_bit)) : (P2 &= ~(1 << pin_bit));
+  390   2              break;
+  391   2          case IO_P30:
+  392   2              dat ? (P3 |= (1 << pin_bit)) : (P3 &= ~(1 << pin_bit));
+  393   2              break;
+  394   2          case IO_P40:
+  395   2              dat ? (P4 |= (1 << pin_bit)) : (P4 &= ~(1 << pin_bit));
+  396   2              break;
+  397   2          case IO_P50:
+  398   2              dat ? (P5 |= (1 << pin_bit)) : (P5 &= ~(1 << pin_bit));
+  399   2              break;
+  400   2          case IO_P60:
+  401   2              dat ? (P6 |= (1 << pin_bit)) : (P6 &= ~(1 << pin_bit));
+  402   2              break;
+  403   2          case IO_P70:
+  404   2              dat ? (P7 |= (1 << pin_bit)) : (P7 &= ~(1 << pin_bit));
+  405   2              break;
+  406   2          default:
+  407   2              break; // 无效引脚
+  408   2          }
+  409   1      }
+  410          
+  411          //-------------------------------------------------------------------------------------------------------
              -------------
-  385          void gpio_toggle_level(gpio_pin_enum pin)
-  386          {
-  387   1          // 直接调用现有函数，逻辑清晰
-  388   1          gpio_set_level(pin, !gpio_get_level(pin));
-  389   1      }
-  390          
-  391          //-------------------------------------------------------------------------------------------------------
+  412          // 函数简介     GPIO电平翻转
+  413          // 参数说明     pin         引脚号选择的引脚
+  414          // 返回参数     void
+  415          // 使用示例     gpio_toggle_level(D0);//翻转D0电平
+  416          //-------------------------------------------------------------------------------------------------------
              -------------
-  392          // 函数简介     GPIO设置高阻输入
-  393          // 参数说明     pin         引脚号选择的引脚
-  394          // 返回参数     void
-  395          // 使用示例     
-  396          //-------------------------------------------------------------------------------------------------------
+  417          void gpio_toggle_level(gpio_pin_enum pin)
+  418          {
+  419   1          // 直接调用现有函数，逻辑清晰
+  420   1          gpio_set_level(pin, !gpio_get_level(pin));
+  421   1      }
+  422          
+  423          //-------------------------------------------------------------------------------------------------------
              -------------
-  397          void gpio_set_impedance(gpio_pin_enum pin)
-  398          {
-  399   1          uint8 pin_bit = pin & 0x0F;
-  400   1          uint8 port_flag = pin & 0xF0;
-  401   1      
-  402   1          // 统一高阻输入配置（PnM1置位，PnM0清零）
-  403   1          switch(port_flag)
-  404   1          {
-  405   2              case IO_P00: P0M1 |= (1 << pin_bit); P0M0 &= ~(1 << pin_bit); break;
-  406   2              case IO_P10: P1M1 |= (1 << pin_bit); P1M0 &= ~(1 << pin_bit); break;
-  407   2              case IO_P20: P2M1 |= (1 << pin_bit); P2M0 &= ~(1 << pin_bit); break;
-  408   2              case IO_P30: P3M1 |= (1 << pin_bit); P3M0 &= ~(1 << pin_bit); break;
-  409   2              case IO_P40: P4M1 |= (1 << pin_bit); P4M0 &= ~(1 << pin_bit); break;
-  410   2              case IO_P50: P5M1 |= (1 << pin_bit); P5M0 &= ~(1 << pin_bit); break;
-  411   2              case IO_P60: P6M1 |= (1 << pin_bit); P6M0 &= ~(1 << pin_bit); break;
-  412   2              case IO_P70: P7M1 |= (1 << pin_bit); P7M0 &= ~(1 << pin_bit); break;
-  413   2              default: break; // 无效引脚
-  414   2          }
-  415   1      }
-  416          
-  417          //-------------------------------------------------------------------------------------------------------
+  424          // 函数简介     GPIO设置高阻输入
+  425          // 参数说明     pin         引脚号选择的引脚
+  426          // 返回参数     void
+  427          // 使用示例
+  428          //-------------------------------------------------------------------------------------------------------
              -------------
-  418          // 函数简介     GPIO初始化
-  419          // 参数说明     pin         选择的引脚
-  420          // 参数说明     dir         引脚的方向   输出：GPO   输入：GPI
-  421          // 参数说明     dat         引脚初始化时设置的电平状态，输出时有效
-  422          // 参数说明     mode        引脚模式（上下拉/开漏等）
-  423          // 返回参数     void
-  424          // 使用示例     gpio_init(D0, GPO, 1, GPO_PUSH_PULL);//D0初始化为输出、高电平、推挽模式
-  425          //-------------------------------------------------------------------------------------------------------
-             -------------
-  426          void gpio_init(gpio_pin_enum pin, gpio_dir_enum dir, const uint8 dat, gpio_mode_enum mode)
-  427          {
-  428   1              zf_assert(dir == (mode >> 4));
-  429   1      
-  430   1              if(dir == GPIO)
-  431   1              {
-  432   2                      gpio_set_dir(pin, GPIO);
-  433   2                      gpio_set_mode(pin, mode);
-  434   2              }
-  435   1              else if(dir == GPI)
-  436   1              {
-  437   2                      if(mode == GPI_IMPEDANCE)
-  438   2                      {
-  439   3                              gpio_set_impedance(pin);
-  440   3                      }
-C251 COMPILER V5.60.0,  zf_driver_gpio                                                     27/03/26  18:56:00  PAGE 8   
+  429          void gpio_set_impedance(gpio_pin_enum pin)
+  430          {
+  431   1          uint8 pin_bit = pin & 0x0F;
+  432   1          uint8 port_flag = pin & 0xF0;
+  433   1      
+  434   1          // 统一高阻输入配置（PnM1置位，PnM0清零）
+  435   1          switch (port_flag)
+  436   1          {
+  437   2          case IO_P00:
+  438   2              P0M1 |= (1 << pin_bit);
+  439   2              P0M0 &= ~(1 << pin_bit);
+  440   2              break;
+  441   2          case IO_P10:
+  442   2              P1M1 |= (1 << pin_bit);
+  443   2              P1M0 &= ~(1 << pin_bit);
+C251 COMPILER V5.60.0,  zf_driver_gpio                                                     04/04/26  18:51:13  PAGE 8   
 
-  441   2                      else
-  442   2                      {
-  443   3                              gpio_set_dir(pin, GPI);
-  444   3                              gpio_set_mode(pin, mode);
-  445   3                      }
-  446   2              }
-  447   1              else if(dir == GPO)
-  448   1              {
-  449   2                      if(GPO_PUSH_PULL == mode)
-  450   2                      {
-  451   3                              gpio_set_dir(pin, GPO);
-  452   3                              gpio_set_mode(pin, GPI_PULL_UP);
-  453   3                      }
-  454   2                      else if(GPO_OPEN_DTAIN == mode)
-  455   2                      {
-  456   3                              gpio_set_mode(pin, GPO_OPEN_DTAIN);
-  457   3                      }
-  458   2              }
-  459   1              gpio_set_level(pin, dat);
-  460   1      }
+  444   2              break;
+  445   2          case IO_P20:
+  446   2              P2M1 |= (1 << pin_bit);
+  447   2              P2M0 &= ~(1 << pin_bit);
+  448   2              break;
+  449   2          case IO_P30:
+  450   2              P3M1 |= (1 << pin_bit);
+  451   2              P3M0 &= ~(1 << pin_bit);
+  452   2              break;
+  453   2          case IO_P40:
+  454   2              P4M1 |= (1 << pin_bit);
+  455   2              P4M0 &= ~(1 << pin_bit);
+  456   2              break;
+  457   2          case IO_P50:
+  458   2              P5M1 |= (1 << pin_bit);
+  459   2              P5M0 &= ~(1 << pin_bit);
+  460   2              break;
+  461   2          case IO_P60:
+  462   2              P6M1 |= (1 << pin_bit);
+  463   2              P6M0 &= ~(1 << pin_bit);
+  464   2              break;
+  465   2          case IO_P70:
+  466   2              P7M1 |= (1 << pin_bit);
+  467   2              P7M0 &= ~(1 << pin_bit);
+  468   2              break;
+  469   2          default:
+  470   2              break; // 无效引脚
+  471   2          }
+  472   1      }
+  473          
+  474          //-------------------------------------------------------------------------------------------------------
+             -------------
+  475          // 函数简介     GPIO初始化
+  476          // 参数说明     pin         选择的引脚
+  477          // 参数说明     dir         引脚的方向   输出：GPO   输入：GPI
+  478          // 参数说明     dat         引脚初始化时设置的电平状态，输出时有效
+  479          // 参数说明     mode        引脚模式（上下拉/开漏等）
+  480          // 返回参数     void
+  481          // 使用示例     gpio_init(D0, GPO, 1, GPO_PUSH_PULL);//D0初始化为输出、高电平、推挽模式
+  482          //-------------------------------------------------------------------------------------------------------
+             -------------
+  483          void gpio_init(gpio_pin_enum pin, gpio_dir_enum dir, const uint8 dat, gpio_mode_enum mode)
+  484          {
+  485   1          zf_assert(dir == (mode >> 4));
+  486   1      
+  487   1          if (dir == GPIO)
+  488   1          {
+  489   2              gpio_set_dir(pin, GPIO);
+  490   2              gpio_set_mode(pin, mode);
+  491   2          }
+  492   1          else if (dir == GPI)
+  493   1          {
+  494   2              if (mode == GPI_IMPEDANCE)
+  495   2              {
+  496   3                  gpio_set_impedance(pin);
+  497   3              }
+  498   2              else
+  499   2              {
+  500   3                  gpio_set_dir(pin, GPI);
+  501   3                  gpio_set_mode(pin, mode);
+  502   3              }
+  503   2          }
+  504   1          else if (dir == GPO)
+  505   1          {
+  506   2              if (GPO_PUSH_PULL == mode)
+  507   2              {
+C251 COMPILER V5.60.0,  zf_driver_gpio                                                     04/04/26  18:51:13  PAGE 9   
+
+  508   3                  gpio_set_dir(pin, GPO);
+  509   3                  gpio_set_mode(pin, GPI_PULL_UP);
+  510   3              }
+  511   2              else if (GPO_OPEN_DTAIN == mode)
+  512   2              {
+  513   3                  gpio_set_mode(pin, GPO_OPEN_DTAIN);
+  514   3              }
+  515   2          }
+  516   1          gpio_set_level(pin, dat);
+  517   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      4546     ------
+  code size            =      4542     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

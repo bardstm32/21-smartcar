@@ -1,12 +1,12 @@
-C251 COMPILER V5.60.0,  zf_driver_encoder                                                  27/03/26  18:56:00  PAGE 1   
+C251 COMPILER V5.60.0,  zf_driver_encoder                                                  04/04/26  18:51:13  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_driver_encoder
 OBJECT MODULE PLACED IN .\out_file\zf_driver_encoder.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_driver\zf_driver_encoder.c LARGE NOALIAS WARNINGLEV
-                    -EL(3) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;.
-                    -.\..\libraries\zf_driver;..\user;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h) DEBUG PRINT(.\out_file\zf_driver
-                    -_encoder.lst) OBJECT(.\out_file\zf_driver_encoder.obj) 
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_driver\zf_driver_encoder.c LARGE NOALIAS WARNINGLEV
+                    -EL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;.
+                    -.\..\libraries\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\zf_driver_encoder.lst) OBJECT(.\out_file\zf_driver_enco
+                    -der.obj) 
 
 stmt  level    source
 
@@ -66,7 +66,7 @@ stmt  level    source
    50   1          switch(encoder_n)
    51   1          {
    52   2              case TIM0_ENCOEDER:
-C251 COMPILER V5.60.0,  zf_driver_encoder                                                  27/03/26  18:56:00  PAGE 2   
+C251 COMPILER V5.60.0,  zf_driver_encoder                                                  04/04/26  18:51:13  PAGE 2   
 
    53   2              {
    54   3                  dat = (uint16)TH0 << 8;
@@ -134,7 +134,7 @@ stmt  level    source
   114   3                  TR1 = 1;
   115   3                  break;
   116   3              }
-C251 COMPILER V5.60.0,  zf_driver_encoder                                                  27/03/26  18:56:00  PAGE 3   
+C251 COMPILER V5.60.0,  zf_driver_encoder                                                  04/04/26  18:51:13  PAGE 3   
 
   117   2              case TIM2_ENCOEDER:
   118   2              {
@@ -202,7 +202,7 @@ stmt  level    source
   177   2              case TIM1_ENCOEDER:
   178   2              {
   179   3                  TL1 = 0x00;
-C251 COMPILER V5.60.0,  zf_driver_encoder                                                  27/03/26  18:56:00  PAGE 4   
+C251 COMPILER V5.60.0,  zf_driver_encoder                                                  04/04/26  18:51:13  PAGE 4   
 
   180   3                  TH1 = 0x00;
   181   3                  TMOD |= 0x40; // 外部计数模式

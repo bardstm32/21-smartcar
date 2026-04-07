@@ -1,14 +1,17 @@
 #include "zf_common_headfile.h"
-int16 int_data[4];
+uint16 adc[4]={0};
 void main()
 {
-	Car_Init();
-	LED_On(LED1);
+	clock_init(SYSTEM_CLOCK_30M);
+	debug_init();
+	ALL_init();
+//	PID_Init( &left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+//	PID_Init(&right_spid, 0.41, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init( &left_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&right_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+
 	while (1)
 	{
-		Menu_Display(int_data);
-		voltage_warning_task(11.4f); // 设置目标电压为3.7V
-		//motor_L(30);
+	//Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_spid.target);
 	}
 }
-

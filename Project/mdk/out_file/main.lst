@@ -1,39 +1,59 @@
-C251 COMPILER V5.60.0,  main                                                               27/03/26  19:39:18  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               04/04/26  18:51:19  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
 OBJECT MODULE PLACED IN .\out_file\main.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(3) OPTIMIZE(0,SIZE) BROWSE I
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE I
                     -NCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\use
-                    -r;..\code;..\..\Libraries\code_c;..\..\Libraries\code_h) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
+                    -r;..\code) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
 
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          int16 int_data[4];
+    2          uint16 adc[10]={0};
     3          void main()
     4          {
-    5   1              Car_Init();
-    6   1              LED_On(LED1);
-    7   1              while (1)
-    8   1              {
-    9   2                      Menu_Display(int_data);
-*** WARNING C91 IN LINE 9 OF ..\user\main.c: '&': pointer to different objects
-   10   2                      voltage_warning_task(11.4f); // è®¾ç½®ç›®æ ‡ç”µåŽ‹ä¸º3.7V
-   11   2                      //motor_L(30);
-   12   2              }
-   13   1      }
-   14          
+    5   1              clock_init(SYSTEM_CLOCK_30M);
+    6   1              debug_init();
+    7   1              
+    8   1              ALL_init();
+    9   1              PID_Init(&left_spid, 0.2, 0.0069f, 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   10   1              PID_Init(&right_spid, 0.2, 0.00675f , 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              while (1)
+   12   1              {
+   13   2      //              Parameter_Debug(&right_spid.Kp, &right_spid.Ki,&left_spid.Kp,&left_spid.Ki,&left_spid.target, &right_
+             -spid.target);
+   14   2                      //              ips114_show_int16(64,0,real_right);
+   15   2                      //              ips114_show_int16(64,16,real_left);
+   16   2                      //              ips114_show_int16(64,32,right_spid.target);
+   17   2                      //              ips114_show_int16(64,48,left_spid.target);              // »ñÈ¡±àÂëÆ÷¼ÆÊý                       // Çå¿Õ±àÂëÆ÷¼Æ
+             -Êý
+   18   2                      //              ips114_show_float(64,64,right_spid.Kp,2,2);
+   19   2                      //              ips114_show_float(64,80,right_spid.Ki,2,2);
+   20   2                      //              ips114_show_float(64,96,left_spid.Kp,2,2);
+   21   2                      //              ips114_show_float(64,112,left_spid.Ki,2,2);
+   22   2                      Inductance_Read(adc);
+   23   2                      adc[5]=adc_convert(L4);
+   24   2                      adc[6]=adc_convert(L3);
+   25   2                      ips114_show_uint16(0,0,adc[1]);
+   26   2                      ips114_show_uint16(0,16,adc[2]);
+   27   2                      ips114_show_uint16(0,32,adc[3]);
+   28   2                      ips114_show_uint16(0,48,adc[4]);
+   29   2                      ips114_show_uint16(0,64,adc[5]);
+   30   2                      ips114_show_uint16(0,80,adc[6]);
+   31   2      
+   32   2              }
+   33   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        79     ------
+  code size            =       359     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =         8     ------
+  xdata size           =        20     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -43,8 +63,8 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =         2     ------
+  hconst size          =        27     ------
 End of Module Information.
 
 
-C251 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

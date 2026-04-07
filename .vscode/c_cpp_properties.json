@@ -12,9 +12,7 @@
                 "libraries/zf_device",
                 "libraries/zf_driver",
                 "Project/user",
-                "Project/code",
-                "Libraries/code_c",
-                "Libraries/code_h"
+                "Project/code"
             ],
             "defines": [
                 "__C251__",

@@ -1,0 +1,35 @@
+C251 COMPILER V5.60.0,  firmware_stc32                                                     01/04/26  13:07:48  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE firmware_stc32
+OBJECT MODULE PLACED IN .\out_file\firmware_stc32.obj
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE firmware_stc32.c LARGE NOALIAS WARNINGLEVEL(1) OPTIMIZE(0,SIZE) BROWSE
+                    - INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\u
+                    -ser;..\code) DEBUG PRINT(.\out_file\firmware_stc32.lst) OBJECT(.\out_file\firmware_stc32.obj) 
+
+stmt  level    source
+
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =    ------     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =    ------     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
