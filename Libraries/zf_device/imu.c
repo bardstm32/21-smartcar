@@ -284,9 +284,8 @@ void gyro_proc(void)
 void main_loop(void)
 {
     pitch = first_complement.angle.pitch;  // 俯仰角
-    roll = first_complement.angle.roll;   // 横滚角
+    roll = first_complement.angle.pitch;   // 横滚角
     yaw = Daty_Z;                         // 偏航角（-180~180）
-	first_complement.angle.pitch;
     gyrox = IMU_Data.gyro_x; // X轴角速度
     gyroy = IMU_Data.gyro_y; // Y轴角速度
     gyroz = IMU_Data.gyro_z; // Z轴角速度

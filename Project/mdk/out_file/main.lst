@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               11/04/26  22:21:28  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               11/04/26  22:58:43  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -16,17 +16,39 @@ stmt  level    source
     5   1              clock_init(SYSTEM_CLOCK_30M);
     6   1              debug_init();
     7   1              ALL_init();
-    8   1              PID_Init( &left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+    8   1              PID_Init(&left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
     9   1              PID_Init(&right_spid, 0.41, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   10   1              PID_Init( &left_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   10   1              PID_Init(&left_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    11   1              PID_Init(&right_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    12   1      
    13   1              while (1)
-   14   1              
-   15   1              Parameter_Debug(&left_spid.Kp,&left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_spid
-             -.target);
-   16   1              }
-   17          }
-*** ERROR C25 IN LINE 17 OF ..\user\main.c: syntax error near '}'
+   14   1              {
+   15   2                      Parameter_Debug(&left_spid.Kp,&left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_spi
+             -d.target);
+   16   2              }
+   17   1      }
+   18                  
 
-C251 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       495     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =         8     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        15     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

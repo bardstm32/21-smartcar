@@ -92,10 +92,6 @@ void Dir_Control()
         // 限幅保护，确保输出结果在 -100 ~ 100 范围内
         eleOut_0 = range_protect(eleOut_0, -100.0, 100.0);
     }
-    // 内环（偏航角速度环）,具体正负号根据实际情况确定
-    eleOut_1 = PID_Calc(&Gyro_PID, (double)Gyro_Z, eleOut_0);
-    // 限幅保护，确保输出结果在 -100 ~ 100 范围内
-    eleOut_1 = range_protect(eleOut_1, -100.0, 100.0);
 }
 
 void Calculate_Differential_Drive() // 差速计算

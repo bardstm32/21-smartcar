@@ -26,13 +26,16 @@ Project File Date:  04/11/2026
 
 <h2>Output:</h2>
 Build target 'STC32G'
-compiling main.c...
-..\user\main.c(17): error C25: syntax error near '}'
-compiling encoder.c...
 compiling trank.c...
-compiling element.c...
-Target not created.
-Build Time Elapsed:  00:00:02
+linking...
+*** WARNING L25: DATA TYPES DIFFERENT
+    SYMBOL:  PID_Init
+    MODULE:  .\out_file\main.obj (main)
+   DEFINED:  .\out_file\trank.obj (trank)
+Program Size: data=8.4 edata+hdata=2060 xdata=8121 const=4193 code=41128
+creating hex file from ".\out_file\SEEKFREE"...
+".\out_file\SEEKFREE" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

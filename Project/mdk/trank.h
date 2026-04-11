@@ -37,7 +37,7 @@ typedef struct
 	float inc_out;	
 } PID_TypeDef;
 //===================== 全局变量 =====================//
-extern PID_TypeDef Turn_PID, Gyro_PID;   // 位置环PID(循迹)
+extern PID_TypeDef Turn_PID;   // 位置环PID(循迹)
 extern PID_TypeDef left_spid; // 左轮速度环PID
 extern PID_TypeDef right_spid;// 右轮速度环PID
 

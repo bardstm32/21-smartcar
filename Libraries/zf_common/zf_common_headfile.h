@@ -107,4 +107,5 @@
 #include "trank.h"
 #include "inductance.h"
 #include "menu.h"
+#include "imu.h"
 #endif
