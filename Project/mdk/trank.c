@@ -88,7 +88,7 @@ void Dir_Control()
     if (++t >= 2)
     {
         // 外环（赛道偏差环）,具体正负号根据实际情况确定
-        eleOut_0 = PID_Calc(&Turn_PID, eleValue, elemid);
+        eleOut_0 = PID_Calc(&Turn_PID, eleValue, elemid) - 0.005 * Gyro_Z; // 加入偏航角速度前馈项，提升响应速度
         // 限幅保护，确保输出结果在 -100 ~ 100 范围内
         eleOut_0 = range_protect(eleOut_0, -100.0, 100.0);
     }

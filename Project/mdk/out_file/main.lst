@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               11/04/26  12:42:40  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               11/04/26  22:21:28  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -10,83 +10,23 @@ COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS W
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          //uint16 adc[4]={0};
-    3          //void main()
-    4          //{
-    5          //      clock_init(SYSTEM_CLOCK_30M);
-    6          //      debug_init();
-    7          //      ALL_init();
-    8          ////    PID_Init( &left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-    9          ////    PID_Init(&right_spid, 0.41, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   10          //      PID_Init( &left_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   11          //      PID_Init(&right_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   12          
-   13          //      while (1)
-   14          //      {
-   15          //              printf("x:%d y:%d z:%d\r\n", imu660ra_acc_x, imu660ra_acc_y, imu660ra_acc_z);
-   16          //              // Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &le
-             -ft_spid.target);
-   17          //      }
-   18          //}
-   19          unsigned int imu_cnt = 0;
-   20          void TIM0_handler(void);
-   21          void main()
-   22          {
-   23   1          clock_init(SYSTEM_CLOCK_30M);
-   24   1              debug_init();
-   25   1      
-   26   1              while (1)
-   27   1              {
-   28   2                      if (imu660ra_init()){}
-   29   2                      else
-   30   2                              break;
-   31   2                      printf("\r\nIMU660RA init error."); // IMU660RA 初始化失败
-   32   2              }
-   33   1              gyro_init();
-   34   1              pit_ms_init(TIM0_PIT, 1);
-   35   1              // 此处编写用户代码 例如外设初始化代码等
-   36   1              tim0_irq_handler = TIM0_handler;
-   37   1              while (1)
-   38   1              {
-   39   2                      printf("pitch:%f,yaw:%f,roll:%f\r\n", first_complement.angle.pitch, Daty_Z, first_complement.angle.roll
-             -);
-   40   2              }
-   41   1      }
-   42          
-   43          void TIM0_handler(void)
-   44          {
-   45   1              imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
-   46   1              imu660ra_get_gyro();
-   47   1              imu_cnt++; 
-   48   1              if (imu_cnt >= 5)
-   49   1              {
-   50   2                      imu_cnt = 0;
-   51   2                      gyro_proc();
-   52   2              }
-   53   1      }
+    2          uint16 adc[4]={0};
+    3          void main()
+    4          {
+    5   1              clock_init(SYSTEM_CLOCK_30M);
+    6   1              debug_init();
+    7   1              ALL_init();
+    8   1              PID_Init( &left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+    9   1              PID_Init(&right_spid, 0.41, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   10   1              PID_Init( &left_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              PID_Init(&right_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   12   1      
+   13   1              while (1)
+   14   1              
+   15   1              Parameter_Debug(&left_spid.Kp,&left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_spid
+             -.target);
+   16   1              }
+   17          }
+*** ERROR C25 IN LINE 17 OF ..\user\main.c: syntax error near '}'
 
-
-C251 COMPILER V5.60.0,  main                                                               11/04/26  12:42:40  PAGE 2   
-
-Module Information          Static   Overlayable
-------------------------------------------------
-  code size            =       241     ------
-  ecode size           =    ------     ------
-  data size            =    ------     ------
-  idata size           =    ------     ------
-  pdata size           =    ------     ------
-  xdata size           =         2     ------
-  xdata-const size     =    ------     ------
-  edata size           =    ------     ------
-  bit size             =    ------     ------
-  ebit size            =    ------     ------
-  bitaddressable size  =    ------     ------
-  ebitaddressable size =    ------     ------
-  far data size        =    ------     ------
-  huge data size       =    ------     ------
-  const size           =    ------     ------
-  hconst size          =        58     ------
-End of Module Information.
-
-
-C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)
