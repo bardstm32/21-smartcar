@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  trank                                                              04/04/26  18:51:20  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              11/04/26  12:26:47  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
 OBJECT MODULE PLACED IN .\out_file\trank.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
                     -.\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\co
                     -de) DEBUG PRINT(.\out_file\trank.lst) OBJECT(.\out_file\trank.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53          /**
    54           * @brief  通用位置式PID计算
    55           */
-C251 COMPILER V5.60.0,  trank                                                              04/04/26  18:51:20  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              11/04/26  12:26:47  PAGE 2   
 
    56          float PID_Calc(PID_TypeDef *pid, float target, float measure)
    57          {
@@ -134,7 +134,7 @@ stmt  level    source
   119          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
   120          {
   121   1              float speed_f;
-C251 COMPILER V5.60.0,  trank                                                              04/04/26  18:51:20  PAGE 3   
+C251 COMPILER V5.60.0,  trank                                                              11/04/26  12:26:47  PAGE 3   
 
   122   1              
   123   1              speed_f = 0.25f * current_speed + 0.75f * pid->last_f_speed;
@@ -202,7 +202,7 @@ stmt  level    source
   184   1          IncPID_Calc(&right_spid,real_right);
   185   1              
   186   1              Oscilloscope_Display(real_left, real_right, left_spid.target,left_spid.inc_out,left_spid.out,right_spid.
-C251 COMPILER V5.60.0,  trank                                                              04/04/26  18:51:20  PAGE 4   
+C251 COMPILER V5.60.0,  trank                                                              11/04/26  12:26:47  PAGE 4   
 
              -out);
   187   1          //    //===================== 6. 输出到电机 =====================//

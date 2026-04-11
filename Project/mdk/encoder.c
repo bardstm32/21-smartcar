@@ -27,6 +27,5 @@ void encoder_init()
 void pit_handler (void)
 {	
     Dual_Loop_Control();
-
 }
 
