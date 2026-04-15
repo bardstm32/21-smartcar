@@ -76,17 +76,17 @@ int Median_Average_Filter(int *arr, int times)
  * @param min_value 最小值
  * @return          归一化后的值，范围在[1.0, 100.0]之间
  */
-uint8 ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
+double ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
 {
-    uint16 temp;
+    double temp;
     // 公式：(值 - 最小值) * 100 / (最大值 - 最小值)
-    temp = (adc_val - adc_min) * 100 / (adc_max - adc_min);
+    temp = (adc_val* 100.0f)/ adc_max;
     // 限幅，防止越界
     if (temp > 100)
         temp = 100;
     if (temp < 0)
         temp = 0;
-    return (uint8)temp;
+    return temp;
 }
 
 /* Inductance_Count_Err - 差比和计算（按公式修改版）
@@ -148,10 +148,10 @@ void Inductance_Read(uint16 *inductance_norm_data)
     {
         // 使用Median_Average_Filter函数进行滤波处理
         inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
-    }
-
-    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 270, 0);
-    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 125, 0);
-    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 117, 0);
-    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 270, 0);
+    } 
+		 
+    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 2480, 0);
+    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 2480, 0);
+    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 2480, 0);
+    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 2480, 0);
 }

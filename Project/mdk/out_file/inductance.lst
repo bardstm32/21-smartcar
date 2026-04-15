@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  inductance                                                         11/04/26  22:58:45  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         15/04/26  21:28:42  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
 OBJECT MODULE PLACED IN .\out_file\inductance.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
                     -DIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;
                     -..\code) DEBUG PRINT(.\out_file\inductance.lst) OBJECT(.\out_file\inductance.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          int min = arr[0], max = arr[0], sum = 0, i = 0;
    54   1      
    55   1          // 遍历数组，更新最小值、最大值，并计算累加和
-C251 COMPILER V5.60.0,  inductance                                                         11/04/26  22:58:45  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         15/04/26  21:28:42  PAGE 2   
 
    56   1          for (i = 0; i < times; i++)
    57   1          {
@@ -91,17 +91,17 @@ stmt  level    source
    76           * @param min_value 最小值
    77           * @return          归一化后的值，范围在[1.0, 100.0]之间
    78           */
-   79          uint8 ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
+   79          double ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
    80          {
-   81   1          uint16 temp;
+   81   1          double temp;
    82   1          // 公式：(值 - 最小值) * 100 / (最大值 - 最小值)
-   83   1          temp = (adc_val - adc_min) * 100 / (adc_max - adc_min);
+   83   1          temp = (adc_val* 100.0f)/ adc_max;
    84   1          // 限幅，防止越界
    85   1          if (temp > 100)
    86   1              temp = 100;
    87   1          if (temp < 0)
    88   1              temp = 0;
-   89   1          return (uint8)temp;
+   89   1          return temp;
    90   1      }
    91          
    92          /* Inductance_Count_Err - 差比和计算（按公式修改版）
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          // 使用range_protect函数确保结果在[-100.0, 100.0]范围内
   120   1          scaled_err = range_protect(scaled_err, -100, 100);
   121   1          // 返回电感误差值
-C251 COMPILER V5.60.0,  inductance                                                         11/04/26  22:58:45  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         15/04/26  21:28:42  PAGE 3   
 
   122   1          return scaled_err;
   123   1      }
@@ -165,18 +165,18 @@ stmt  level    source
   148   1          {
   149   2              // 使用Median_Average_Filter函数进行滤波处理
   150   2              inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
-  151   2          }
-  152   1      
-  153   1          inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 270, 0);
-  154   1          inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 125, 0);
-  155   1          inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 117, 0);
-  156   1          inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 270, 0);
+  151   2          } 
+  152   1                       
+  153   1          inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 2480, 0);
+  154   1          inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 2480, 0);
+  155   1          inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 2480, 0);
+  156   1          inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 2480, 0);
   157   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1234     ------
+  code size            =      1272     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

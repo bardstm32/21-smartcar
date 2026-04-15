@@ -49,8 +49,7 @@
 ".\out_file\led.obj",
 ".\out_file\trank.obj",
 ".\out_file\inductance.obj",
-".\out_file\menu.obj",
-".\out_file\element.obj" 
+".\out_file\menu.obj" 
 TO ".\out_file\SEEKFREE" 
 PRINT(".\out_file\SEEKFREE.map") CASE DISABLEWARNING (57,16) 
 REMOVEUNUSED 

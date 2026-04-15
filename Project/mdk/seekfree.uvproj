@@ -872,16 +872,6 @@
               <FileType>5</FileType>
               <FilePath>.\menu.h</FilePath>
             </File>
-            <File>
-              <FileName>element.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\element.c</FilePath>
-            </File>
-            <File>
-              <FileName>element.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\element.h</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>

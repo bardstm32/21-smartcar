@@ -18,7 +18,7 @@
 int8 range_protect(int8 value, int8 min_value, int8 max_value);
 void Inductance_Init(void);
 int Median_Average_Filter(int *arr, int times);
-double Adc_Normalize(int value, double max_value, double min_value);
+double ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min);
 int8 Inductance_Count_Err(uint16 L, uint16 LM, uint16 RM, uint16 R); 
 void Inductance_Read(uint16 *inductance_filter_data);
 

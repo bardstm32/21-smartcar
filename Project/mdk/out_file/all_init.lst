@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  all_init                                                           11/04/26  22:58:44  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           15/04/26  21:25:57  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
 OBJECT MODULE PLACED IN .\out_file\all_init.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDI
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDI
                     -R(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..
                     -\code) DEBUG PRINT(.\out_file\all_init.lst) OBJECT(.\out_file\all_init.obj) 
 
@@ -14,17 +14,17 @@ stmt  level    source
     3          {
     4   1              imu660ra_init();
     5   1              gyro_init();
-    6   1              pwm_init(PWMA_CH1P_P60, 25000,0);
-    7   1              pwm_init(PWMA_CH2P_P62, 25000,0);
-    8   1              ips114_init();
-    9   1              wireless_uart_init();
-   10   1              encoder_init();
-   11   1              LED_Init();
-   12   1              Oscilloscope_Init();
-   13   1              Parameter_Debug_Init();
-   14   1              Inductance_Init();
-   15   1              gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
-   16   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+    6   1              pwm_init(PWMA_CH1P_P60, 12500,0);
+    7   1              pwm_init(PWMA_CH2P_P62, 12500,0);
+    8   1              gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+    9   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+   10   1              ips114_init();
+   11   1              wireless_uart_init();
+   12   1              encoder_init();
+   13   1              LED_Init();
+   14   1              Oscilloscope_Init();
+   15   1              Parameter_Debug_Init();
+   16   1              Inductance_Init();
    17   1      
    18   1              //Menu_Init();
    19   1      }
