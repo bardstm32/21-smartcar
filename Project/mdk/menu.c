@@ -98,7 +98,7 @@ void Parameter_Debug_Init(void)
 
 // 参数调试函数
 // 从无线串口接收数据以更新参数值
-void Parameter_Debug(float *param1, float *param2,float *param3, float *param4, uint32 *target1, uint32 *target2)
+void Parameter_Debug(float *param1, float *param2,float *param3, float *param4, int32 *target1, int32 *target2)
 {
     uint8 i; // 循环计数器
     seekfree_assistant_data_analysis(); // 分析接收到的数据
@@ -121,7 +121,7 @@ void Oscilloscope_Init(void)
 
 // 示波器数据发送函数
 // 将两个通道的数据打包并通过无线串口发送到电脑端
-void Oscilloscope_Display(int32 num1, int32 num2,int32 num3,float num4,int32 num5,int32 num6)
+void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6)
 {
     seekfree_assistant_oscilloscope_data.dat[0] = num1; // 设置第一个通道的数据
     seekfree_assistant_oscilloscope_data.dat[1] = num2; // 设置第二个通道的数据

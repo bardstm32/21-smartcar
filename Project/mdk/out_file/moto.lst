@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  moto                                                               16/04/26  13:33:07  PAGE 1   
+C251 COMPILER V5.60.0,  moto                                                               16/04/26  20:31:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE moto
@@ -44,7 +44,7 @@ stmt  level    source
    33          {
    34   1        uint16 sum = inductance_norm_data[1] + inductance_norm_data[2] + inductance_norm_data[3] + inductance_n
              -orm_data[4];
-   35   1        if (sum < 30) // 如果四个电感的ADC值之和低于20，立即停止电机
+   35   1        if (sum < 40) // 如果四个电感的ADC值之和低于20，立即停止电机
    36   1        {
    37   2                Motor_SetSpeed(0,0);
    38   2           interrupt_global_disable(); 
@@ -67,7 +67,7 @@ Module Information          Static   Overlayable
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
-C251 COMPILER V5.60.0,  moto                                                               16/04/26  13:33:07  PAGE 2   
+C251 COMPILER V5.60.0,  moto                                                               16/04/26  20:31:00  PAGE 2   
 
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------

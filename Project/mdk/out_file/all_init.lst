@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  all_init                                                           16/04/26  13:33:07  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           16/04/26  20:31:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
@@ -14,8 +14,8 @@ stmt  level    source
     3          {
     4   1              imu660ra_init();
     5   1              gyro_init();
-    6   1              pwm_init(PWMA_CH1P_P60, 12500,0);
-    7   1              pwm_init(PWMA_CH2P_P62, 12500,0);
+    6   1              pwm_init(PWMA_CH1P_P60, 25000,0);
+    7   1              pwm_init(PWMA_CH2P_P62, 25000,0);
     8   1              gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
     9   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
    10   1              ips114_init();

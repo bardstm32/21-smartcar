@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            16/04/26  13:33:07  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            16/04/26  20:31:00  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -40,7 +40,7 @@ stmt  level    source
    27          
    28          void pit_handler (void)
    29          {       
-   30   1              Dual_Loop_Control();
+   30   1      //      Dual_Loop_Control();
    31   1      //      imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
    32   1      //      imu660ra_get_gyro();
    33   1      //      gyro_proc();
@@ -49,7 +49,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        75     ------
+  code size            =        72     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
