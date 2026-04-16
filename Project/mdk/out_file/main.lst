@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               16/04/26  13:09:35  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               16/04/26  14:20:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -10,35 +10,32 @@ COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS W
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          uint16 adc[5] = {0};
-    3          uint16 adc1[5] = {0};
-    4          uint16 t;
-    5          void main()
-    6          {
-    7   1              clock_init(SYSTEM_CLOCK_30M);
-    8   1              debug_init();
-    9   1              ALL_init();
-   10   1              //      PID_Init( &left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   11   1              //      PID_Init(&right_spid, 0.41, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   12   1              PID_Init(&Turn_PID, 5, 0, 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   13   1              PID_Init(&left_spid, 1.20, 0.4f, 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   14   1              PID_Init(&right_spid, 1.20, 0.4f, 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   15   1              while (1)
-   16   1              {
-   17   2                      //Parameter_Debug(&Turn_PID.Kp, &Turn_PID.Ki,&Turn_PID.Kp,&right_spid.Ki,&right_spid.target, &left_spid
-             -.target);
-   18   2              }
-   19   1      }
+    2          
+    3          uint16 t;
+    4          void main()
+    5          {
+    6   1              clock_init(SYSTEM_CLOCK_30M);
+    7   1              debug_init();
+    8   1              ALL_init();
+    9   1              PID_Init(&left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   10   1              PID_Init(&right_spid, 0.41, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              PID_Init(&Turn_PID, 3, 0, 0.5, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   12   1              while (1)
+   13   1              {
+   14   2                      Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_sp
+             -id.target);
+   15   2              }
+   16   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       311     ------
+  code size            =       406     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        22     ------
+  xdata size           =         2     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -48,7 +45,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        32     ------
+  hconst size          =         2     ------
 End of Module Information.
 
 
