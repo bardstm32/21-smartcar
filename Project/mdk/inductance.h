@@ -15,11 +15,12 @@
 #define Cur_value 7.0f // 电感误差计算中的Cur_value缩放因子
 
 
-int8 range_protect(int8 value, int8 min_value, int8 max_value);
+int16 range_protect_int(int16 value, int16 min_value, int16 max_value);
+float range_protect_float(float value, float min_value, float max_value);
 void Inductance_Init(void);
 int Median_Average_Filter(int *arr, int times);
 double ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min);
-int8 Inductance_Count_Err(uint16 L, uint16 LM, uint16 RM, uint16 R); 
+float Inductance_Count_Err(int16 L, int16 LM, int16 RM, int16 R);
 void Inductance_Read(uint16 *inductance_filter_data);
 
 #endif // __INDUCTANCE_H__

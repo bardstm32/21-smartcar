@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  encoder                                                            15/04/26  21:25:57  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            16/04/26  13:09:35  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
 OBJECT MODULE PLACED IN .\out_file\encoder.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE encoder.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE encoder.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
                     -(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\
                     -code) DEBUG PRINT(.\out_file\encoder.lst) OBJECT(.\out_file\encoder.obj) 
 
@@ -31,8 +31,8 @@ stmt  level    source
    18          void encoder_init()
    19          {       
    20   1              tim1_irq_handler = pit_handler;
-   21   1              tim4_irq_handler = pit_handler4;
-   22   1              pit_ms_init(PIT_CH,10);
+   21   1      //tim4_irq_handler = pit_handler4;
+   22   1              pit_ms_init(PIT_CH,2);
    23   1      //      pit_ms_init(PIT_CH4,10);
    24   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
    25   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
@@ -40,23 +40,16 @@ stmt  level    source
    27          
    28          void pit_handler (void)
    29          {       
-   30   1      //      Dual_Loop_Control();
+   30   1              Dual_Loop_Control();
    31   1      //      imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
    32   1      //      imu660ra_get_gyro();
    33   1      //      gyro_proc();
    34   1      }
-   35          
-   36          void pit_handler4 (void)
-   37          {       
-   38   1      
-   39   1      
-   40   1      
-   41   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        88     ------
+  code size            =        75     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -67,8 +60,6 @@ Module Information          Static   Overlayable
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
-C251 COMPILER V5.60.0,  encoder                                                            15/04/26  21:25:57  PAGE 2   
-
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------

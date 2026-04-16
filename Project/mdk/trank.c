@@ -85,33 +85,31 @@ void Dir_Control()
 	if(++t>=2)
 	{
 		// 外环（赛道偏差环）,具体正负号根据实际情况确定
-		eleOut_0 = PID_Calc(&Turn_PID, eleValue, elemid);
+		eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
 		// 限幅保护，确保输出结果在 -100 ~ 100 范围内
-		eleOut_0 = range_protect(eleOut_0, -100.0, 100.0);
+		eleOut_0 = range_protect_int(eleOut_0, -10000.0, 10000.0);
 	}
-		// 内环（偏航角速度环）,具体正负号根据实际情况确定
-		eleOut_1 = PID_Calc(&Gyro_PID, (double)Gyro_Z, eleOut_0);
-		// 限幅保护，确保输出结果在 -100 ~ 100 范围内
-		eleOut_1 = range_protect(eleOut_1, -100.0, 100.0);
 }
 
-void Calculate_Differential_Drive() // 差速计算
+void Calculate_Differential_Drive(PID_TypeDef *pid1,PID_TypeDef *pid2) // 差速计算
 {
 	float k = 0; // 差速比例系数
-	k = eleOut_0 * 0.01; // 将 -100 ~ 100 缩放成 -1 ~ 1
-	k = range_protect(k, -0.65, 0.65); // 限制到 -0.65 ~ 0.65，实现差速限幅
+	k = eleOut_0 * 0.0001f; // 将 -100 ~ 100 缩放成 -1 ~ 1
+	k = range_protect_float(k, -0.65, 0.65); // 限制到 -0.65 ~ 0.65，实现差速限幅
 	// 计算左右轮目标速度
-	if(k >= 0) // 左转
+	if(k > 0) // 左转
 	{
-		left_spid.target = BASE_SPEED * (1 - k);
-		right_spid.target  = BASE_SPEED * (1 + k*0.2); // 加少减多
+		pid1->target = BASE_SPEED * (1 - k);
+		pid2->target  = BASE_SPEED * (1 + k*0.2); // 加少减多
 	}
-	else // 右转
+	if(k < 0) // 右转
 	{
-		k *= -1; // 取相反数
-		left_spid.target = BASE_SPEED * (1 + k*0.2); // 加少减多
-		right_spid.target = BASE_SPEED * (1 - k);
+		k = -k; // 取相反数
+		pid1->target = BASE_SPEED * (1 + k*0.2); // 加少减多
+		pid2->target = BASE_SPEED * (1 - k);
 	}
+	Oscilloscope_Display(pid1->target,pid2->target,eleOut_0,k , adc_inductance[2], adc_inductance[3]);
+
 }
 
 // 增量式PID计算函数
@@ -147,45 +145,33 @@ void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
  */
 void Dual_Loop_Control(void)
 {
-//    int16 inductance_err;  // 电感差比和误差
-//    float pos_out;         // 位置环输出(速度差)
-
     float left_speed;      // 左轮实际速度(编码器读取)
     float right_speed;     // 右轮实际速度
-//    
-//    int32 left_pwm;        // 左轮最终PWM
-//    int32 right_pwm;       // 右轮最终PWM
-
-    //===================== 1. 读取电感数据+计算误差 =====================//
-//    Inductance_Read(adc_inductance);
-   // 调用原有差比和函数(输入L1/L2/L3/L4,输出-100~100)
-//    inductance_err = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
     
-//    //===================== 2. 位置环PID(循迹外环) =====================//
-//    pos_out = PID_Calc(&pos_pid, 0, inductance_err);
-//    
-//    //===================== 3. 计算左右轮目标速度 =====================//
-//    // 位置环输出=速度差：左轮减速、右轮加速(向右偏); 左轮加速、右轮减速(向左偏)
-//    left_target  = BASE_SPEED - pos_out;
-//    right_target = BASE_SPEED + pos_out;
-    
-    //===================== 4. 读取编码器实际速度 =====================//
-	speed_left = 	encoder_get_count(TIM0_ENCOEDER);                  	// 获取编码器计数
-    speed_right = 	encoder_get_count(TIM3_ENCOEDER);              	
+    Inductance_Read(adc_inductance);
 	
-    encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
-    encoder_clear_count(TIM3_ENCOEDER);
+	//Motor_Protect(adc_inductance);
+    elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
+    Dir_Control();
+    Calculate_Differential_Drive(&left_spid,&right_spid);
 
-    real_left = real_left*0.8 + speed_left*0.2;
-    real_right = real_right*0.8 +speed_right * 0.2;
 
-//    //===================== 5. 速度环PID(稳速内环) =====================//
-    IncPID_Calc(&left_spid,real_left);
-    IncPID_Calc(&right_spid,real_right);
-	
-	Oscilloscope_Display(1000, 0, 0,0,0,0);
+//    speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
+//    speed_right = 	encoder_get_count(TIM3_ENCOEDER);              	
+//	
+//    encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
+//    encoder_clear_count(TIM3_ENCOEDER);
+
+//    real_left = real_left*0.8 + speed_left*0.2;
+//    real_right = real_right*0.8 +speed_right * 0.2;
+
+////    //===================== 5. 速度环PID(稳速内环) =====================//
+//    IncPID_Calc(&left_spid,real_left);
+//    IncPID_Calc(&right_spid,real_right);
+
+    //Oscilloscope_Display(left_spid.target, right_spid.target,elemid,adc_inductance[1], adc_inductance[2], adc_inductance[3]);
     //    //===================== 6. 输出到电机 =====================//
-//    Motor_SetSpeed(-2000,-2000);
+    //Motor_SetSpeed(left_spid.target, right_spid.target);
 }
 
 

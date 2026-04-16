@@ -21,10 +21,16 @@
  * @param max_value 最大值
  * @return          限制在[min_value, max_value]之间的值
  */
-int8 range_protect(int8 value, int8 min_value, int8 max_value)
+int16 range_protect_int(int16 value, int16 min_value, int16 max_value)
 {
     return (value > max_value) ? max_value : ((value < min_value) ? min_value : value);
 }
+
+float range_protect_float(float value, float min_value, float max_value)
+{
+    return (value > max_value) ? max_value : ((value < min_value) ? min_value : value);
+}
+
 
 /**
  * Inductance_Init - 初始化电感传感器
@@ -97,27 +103,16 @@ double ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
  * @param R  电感值R（对应公式中b2）
  * @return   电感误差值，范围在[-100, 100]之间
  */
-int8 Inductance_Count_Err(uint16 L, uint16 LM, uint16 RM, uint16 R)
+float Inductance_Count_Err(int16 L, int16 LM, int16 RM, int16 R)
 {
-    int8 scaled_err;
-    // 1. 计算分子：√(a12+a22) - √(b12+b22)
-    float sqrt_a = sqrt((float)L * L + (float)LM * LM);
-    float sqrt_b = sqrt((float)R * R + (float)RM * RM);
-    float numerator = sqrt_a - sqrt_b;
-    float denominator = sqrt_a + sqrt_b;
+    float scaled_err;
+	float numerator,denominator;
+    numerator = ((L - R) + (LM - RM))*10000.0f;
+    denominator = L+R+LM+RM+1;
 
-    // 2. 计算并钳制结果
-    if (denominator == 0.0f)
-    {
-        // 避免除零错误，直接返回0或根据需求处理
-        scaled_err = 0;
-    }
-    else
-    {
-        scaled_err = ((int16)numerator / (int16)denominator) * 100;
-    }
+    scaled_err = numerator / denominator;
     // 使用range_protect函数确保结果在[-100.0, 100.0]范围内
-    scaled_err = range_protect(scaled_err, -100, 100);
+    scaled_err = range_protect_int(scaled_err, -10000, 10000);
     // 返回电感误差值
     return scaled_err;
 }
@@ -150,8 +145,8 @@ void Inductance_Read(uint16 *inductance_norm_data)
         inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
     } 
 		 
-    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 2480, 0);
-    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 2480, 0);
-    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 2480, 0);
-    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 2480, 0);
+    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 2470, 0);
+    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 2470, 0);
+    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 2470, 0);
+    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 2470, 0);
 }

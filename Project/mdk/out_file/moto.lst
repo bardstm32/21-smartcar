@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  moto                                                               15/04/26  21:25:57  PAGE 1   
+C251 COMPILER V5.60.0,  moto                                                               16/04/26  13:09:36  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE moto
 OBJECT MODULE PLACED IN .\out_file\moto.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE moto.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE moto.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..
                     -\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\cod
                     -e) DEBUG PRINT(.\out_file\moto.lst) OBJECT(.\out_file\moto.obj) 
 
@@ -44,16 +44,21 @@ stmt  level    source
    33          {
    34   1        uint16 sum = inductance_norm_data[1] + inductance_norm_data[2] + inductance_norm_data[3] + inductance_n
              -orm_data[4];
-   35   1        if (sum < 20) // 如果四个电感的ADC值之和低于20，立即停止电机
+   35   1        if (sum < 30) // 如果四个电感的ADC值之和低于20，立即停止电机
    36   1        {
-   37   2          Motor_SetSpeed(0, 0); // 停止电机
-   38   2        }
-   39   1      }
+   37   2                Motor_SetSpeed(0,0);
+   38   2           interrupt_global_disable(); 
+   39   2        }
+   40   1        else
+   41   1        {
+   42   2              interrupt_global_enable(); 
+   43   2        }
+   44   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       286     ------
+  code size            =       294     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -62,13 +67,13 @@ Module Information          Static   Overlayable
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
+C251 COMPILER V5.60.0,  moto                                                               16/04/26  13:09:36  PAGE 2   
+
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------
-C251 COMPILER V5.60.0,  moto                                                               15/04/26  21:25:57  PAGE 2   
-
   const size           =    ------     ------
   hconst size          =    ------     ------
 End of Module Information.

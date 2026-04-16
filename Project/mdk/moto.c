@@ -32,8 +32,13 @@ void Motor_SetSpeed(int16 speed_left, int16 speed_right)
 void Motor_Protect(uint16 *inductance_norm_data)
 {
   uint16 sum = inductance_norm_data[1] + inductance_norm_data[2] + inductance_norm_data[3] + inductance_norm_data[4];
-  if (sum < 20) // 如果四个电感的ADC值之和低于20，立即停止电机
+  if (sum < 30) // 如果四个电感的ADC值之和低于20，立即停止电机
   {
-    Motor_SetSpeed(0, 0); // 停止电机
+	  Motor_SetSpeed(0,0);
+     interrupt_global_disable(); 
+  }
+  else
+  {
+	interrupt_global_enable(); 
   }
 }

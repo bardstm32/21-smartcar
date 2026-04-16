@@ -1,59 +1,39 @@
-C251 COMPILER V5.60.0,  main                                                               15/04/26  21:28:41  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               16/04/26  13:09:35  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
 OBJECT MODULE PLACED IN .\out_file\main.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE I
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE I
                     -NCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\use
                     -r;..\code) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
 
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          uint16 adc[5]={0};
-    3          uint16 adc1[5]={0};
+    2          uint16 adc[5] = {0};
+    3          uint16 adc1[5] = {0};
     4          uint16 t;
     5          void main()
     6          {
     7   1              clock_init(SYSTEM_CLOCK_30M);
     8   1              debug_init();
     9   1              ALL_init();
-   10   1      //      PID_Init( &left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   11   1      //      PID_Init(&right_spid, 0.41, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   12   1              PID_Init( &left_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   13   1              PID_Init(&right_spid, 1.20, 0.4f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   14   1              while (1)
-   15   1              {
-   16   2                      
-   17   2              
-   18   2                       ips114_show_uint16( 0,0,adc[1]);       
-   19   2                       ips114_show_uint16( 0,16,adc[2]);
-   20   2                       ips114_show_uint16( 0,32,adc[3]);
-   21   2                       ips114_show_uint16( 0,48,adc[4]);
-   22   2                      
-   23   2                      Inductance_Read(adc);
-   24   2                      
-   25   2                      
-   26   2                      
-   27   2      
-   28   2                      
-   29   2      //               ips114_show_uint16( 0,64,adc_convert(L1));     
-   30   2      //               ips114_show_uint16( 0,80,adc_convert(L2));
-   31   2      //               ips114_show_uint16( 0,96,adc_convert(L3));
-   32   2      //               ips114_show_uint16( 0,112,adc_convert(L4));
-   33   2      
-   34   2      
-   35   2      
-   36   2                      
-   37   2                      //Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_
-             -spid.target);
-   38   2              }
-   39   1      }
+   10   1              //      PID_Init( &left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              //      PID_Init(&right_spid, 0.41, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   12   1              PID_Init(&Turn_PID, 5, 0, 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   13   1              PID_Init(&left_spid, 1.20, 0.4f, 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   14   1              PID_Init(&right_spid, 1.20, 0.4f, 0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   15   1              while (1)
+   16   1              {
+   17   2                      //Parameter_Debug(&Turn_PID.Kp, &Turn_PID.Ki,&Turn_PID.Kp,&right_spid.Ki,&right_spid.target, &left_spid
+             -.target);
+   18   2              }
+   19   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       303     ------
+  code size            =       311     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -67,8 +47,6 @@ Module Information          Static   Overlayable
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------
-C251 COMPILER V5.60.0,  main                                                               15/04/26  21:28:41  PAGE 2   
-
   const size           =    ------     ------
   hconst size          =        32     ------
 End of Module Information.
