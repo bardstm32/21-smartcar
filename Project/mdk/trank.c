@@ -87,7 +87,7 @@ void Dir_Control()
 		// 外环（赛道偏差环）,具体正负号根据实际情况确定
 		eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
 		// 限幅保护，确保输出结果在 -100 ~ 100 范围内
-		eleOut_0 = range_protect_int(eleOut_0, -10000.0, 10000.0);
+		eleOut_0 = range_protect_int(eleOut_0, -10000.0f, 10000.0f);
 	}
 }
 

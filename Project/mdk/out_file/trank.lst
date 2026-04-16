@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  13:28:48  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              16/04/26  13:33:07  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
 OBJECT MODULE PLACED IN .\out_file\trank.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
                     -.\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\co
                     -de) DEBUG PRINT(.\out_file\trank.lst) OBJECT(.\out_file\trank.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53          /**
    54           * @brief  通用位置式PID计算
    55           */
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  13:28:48  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              16/04/26  13:33:07  PAGE 2   
 
    56          float PID_Calc(PID_TypeDef *pid, float target, float measure)
    57          {
@@ -134,7 +134,7 @@ stmt  level    source
   119   1              float speed_f;
   120   1              
   121   1              speed_f = 0.25f * current_speed + 0.75f * pid->last_f_speed;
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  13:28:48  PAGE 3   
+C251 COMPILER V5.60.0,  trank                                                              16/04/26  13:33:07  PAGE 3   
 
   122   1              pid->last_f_speed = speed_f;
   123   1          // 1. 计算当前误差
@@ -203,7 +203,7 @@ Module Information          Static   Overlayable
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  13:28:48  PAGE 4   
+C251 COMPILER V5.60.0,  trank                                                              16/04/26  13:33:07  PAGE 4   
 
   pdata size           =    ------     ------
   xdata size           =       356     ------
