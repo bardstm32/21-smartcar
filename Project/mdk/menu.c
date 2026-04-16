@@ -108,7 +108,7 @@ void Parameter_Debug(float *param1, float *param2,float *param3, float *param4, 
     *param3 = seekfree_assistant_parameter[2] * 0.01f; // 更新参数3
 	*param4 = seekfree_assistant_parameter[3] * 0.001f; // 更新参数3
     *target1 = seekfree_assistant_parameter[4]; // 更新速度参数
-	*target2 = *target1;
+	*target2 = seekfree_assistant_parameter[5];
            
 }
 
