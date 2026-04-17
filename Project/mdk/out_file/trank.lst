@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              17/04/26  13:54:37  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
 OBJECT MODULE PLACED IN .\out_file\trank.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
                     -.\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\co
                     -de) DEBUG PRINT(.\out_file\trank.lst) OBJECT(.\out_file\trank.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53          
    54          /**
    55           * @brief  通用位置式PID计算
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              17/04/26  13:54:37  PAGE 2   
 
    56           */
    57          float PID_Calc(PID_TypeDef *pid, float target, float measure)
@@ -112,7 +112,7 @@ stmt  level    source
    97          {
    98   1              float k = 0; // 差速比例系数
    99   1              k = eleOut_0 * 0.0001f; // 缩放成 -1 ~ 1
-  100   1              k = range_protect_float(k, -0.65, 0.65); // 限制到 -0.65 ~ 0.65，实现差速限幅
+  100   1              k = range_protect_float(k, -0.70, 0.70); // 限制到 -0.65 ~ 0.65，实现差速限幅
   101   1              // 计算左右轮目标速度
   102   1              if(k > 0) // 左转
   103   1              {
@@ -130,87 +130,81 @@ stmt  level    source
   115          // 公式: ΔU = Kp*(e(k) - e(k-1)) + Ki*e(k)
   116          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
   117          {
-  118   1          
-  119   1      
-  120   1      //      float speed_f;
-  121   1      //      speed_f = 0.25f * current_speed + 0.75f * pid->last_f_speed;
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 3   
+  118   1          // 1. 计算当前误差
+  119   1          pid->err = pid->target - current_speed;
+  120   1              pid->I=pid->Ki * pid->err;      
+  121   1      
+C251 COMPILER V5.60.0,  trank                                                              17/04/26  13:54:37  PAGE 3   
 
-  122   1      //      pid->last_f_speed = speed_f;
-  123   1          // 1. 计算当前误差
-  124   1          pid->err = pid->target - current_speed;
-  125   1              pid->I=pid->Ki * pid->err;      
-  126   1      
-  127   1          // 2. 计算输出增量 (ΔU)
-  128   1         pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
-  129   1      //      if(pid->inc_out > MAX_INC)  pid->inc_out = MAX_INC;
-  130   1      //    if(pid->inc_out < -MAX_INC) pid->inc_out = -MAX_INC;
-  131   1          // 3. 累加增量得到最终实际输出
-  132   1          pid->out += pid->inc_out;
-  133   1          // 4. 输出限幅 (防止PWM跑飞)
-  134   1          if (pid->out > pid->max_out)
-  135   1              pid->out = pid->max_out;
-  136   1          if (pid->out < -pid->max_out)
-  137   1              pid->out = -pid->max_out;
-  138   1              pid->last_err=pid->err;
-  139   1      }
-  140          
-  141          /**
-  142           * @brief  双闭环循迹控制(核心函数)
-  143           * 流程：电感差比和 → 位置环 → 左右轮目标速度 → 速度环 → 电机PWM
-  144           */
-  145          void Dual_Loop_Control(void)
-  146          {
-  147   1          float left_speed;      // 左轮实际速度(编码器读取)
-  148   1          float right_speed;     // 右轮实际速度
-  149   1          
-  150   1      //    Inductance_Read(adc_inductance);
+  122   1          // 2. 计算输出增量 (ΔU)
+  123   1         pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
+  124   1      
+  125   1          // 3. 累加增量得到最终实际输出
+  126   1          pid->out += pid->inc_out;
+  127   1          // 4. 输出限幅 (防止PWM跑飞)
+  128   1          if (pid->out > pid->max_out)
+  129   1              pid->out = pid->max_out;
+  130   1          if (pid->out < -pid->max_out)
+  131   1              pid->out = -pid->max_out;
+  132   1              pid->last_err=pid->err;
+  133   1      }
+  134          
+  135          /**
+  136           * @brief  双闭环循迹控制(核心函数)
+  137           * 流程：电感差比和 → 位置环 → 左右轮目标速度 → 速度环 → 电机PWM
+  138           */
+  139          void Dual_Loop_Control(void)
+  140          {
+  141   1          float left_speed;      // 左轮实际速度(编码器读取)
+  142   1          float right_speed;     // 右轮实际速度
+  143   1          
+  144   1          Inductance_Read(adc_inductance);
+  145   1      
+  146   1              Motor_Protect(adc_inductance);
+  147   1          elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance
+             -[4]);
+  148   1          Dir_Control();
+  149   1          Calculate_Differential_Drive(&left_spid,&right_spid);
+  150   1      
   151   1      
-  152   1      //      Motor_Protect(adc_inductance);
-  153   1      //    elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductan
-             -ce[4]);
-  154   1      //    Dir_Control();
-  155   1      //    Calculate_Differential_Drive(&left_spid,&right_spid);
-  156   1      
+  152   1          speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
+  153   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
+  154   1              
+  155   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
+  156   1          encoder_clear_count(TIM3_ENCOEDER);
   157   1      
-  158   1          speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
-  159   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
-  160   1              
-  161   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
-  162   1          encoder_clear_count(TIM3_ENCOEDER);
-  163   1      
-  164   1      
+  158   1      
+  159   1      
+  160   1      //    real_left = real_left*0.4 + speed_left*0.6;
+  161   1      //    real_right = real_right*0.4 +speed_right * 0.6;
+  162   1      //    //===================== 5. 速度环PID(稳速内环) =====================//
+  163   1          IncPID_Calc(&left_spid,speed_left);
+  164   1          IncPID_Calc(&right_spid,speed_right);
   165   1      
-  166   1      //    real_left = real_left*0.4 + speed_left*0.6;
-  167   1      //    real_right = real_right*0.4 +speed_right * 0.6;
-  168   1      //    //===================== 5. 速度环PID(稳速内环) =====================//
-  169   1          IncPID_Calc(&left_spid,speed_left);
-  170   1          IncPID_Calc(&right_spid,speed_right);
-  171   1      
-  172   1          Oscilloscope_Display(left_spid.out,right_spid.out,left_spid.target,right_spid.target,speed_left,speed
+  166   1          Oscilloscope_Display(left_spid.out,right_spid.out,left_spid.target,right_spid.target,speed_left,speed
              -_right);
-  173   1          //    //===================== 6. 输出到电机 =====================//
-  174   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
-  175   1      }
-  176          
-  177          
-  178          
-  179          
-  180          
+  167   1          //    //===================== 6. 输出到电机 =====================//
+  168   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
+  169   1      }
+  170          
+  171          
+  172          
+  173          
+  174          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      2359     ------
+  code size            =      2440     ------
   ecode size           =    ------     ------
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 4   
-
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =       356     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
+C251 COMPILER V5.60.0,  trank                                                              17/04/26  13:54:37  PAGE 4   
+
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------

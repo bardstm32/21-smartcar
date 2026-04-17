@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  main                                                               16/04/26  23:33:18  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               17/04/26  14:03:43  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
 OBJECT MODULE PLACED IN .\out_file\main.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE I
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE I
                     -NCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\use
                     -r;..\code) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
 
@@ -19,27 +19,21 @@ stmt  level    source
     8   1              ALL_init();
     9   1              PID_Init(&left_spid, 3.2, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    10   1              PID_Init(&right_spid, 3.0, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   11   1              PID_Init(&Turn_PID, 3, 0, 0.5, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   12   1      //      P77=1;
-   13   1      //      system_delay_ms(2);
-   14   1      //      P77=0;
-   15   1      //      system_delay_us(10);
-   16   1      //      P77=1;
-   17   1              
-   18   1              while (1)
-   19   1              {
-   20   2                  Oscilloscope_Display(left_spid.out,right_spid.out,left_spid.target,right_spid.target);
-   21   2      
-   22   2                      //printf("%f\r\n",first_complement.angle.pitch);
-   23   2      //              Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_
+   11   1              PID_Init(&Turn_PID, 0.8, 0, 2.2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   12   1      
+   13   1              while (1)
+   14   1              {
+   15   2      
+   16   2                      //printf("%f\r\n",first_complement.angle.pitch);
+   17   2      //              Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_
              -spid.target);
-   24   2              }
-   25   1      }
+   18   2              }
+   19   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       386     ------
+  code size            =       317     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

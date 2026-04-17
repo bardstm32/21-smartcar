@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  inductance                                                         16/04/26  23:25:28  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         17/04/26  13:39:03  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
 OBJECT MODULE PLACED IN .\out_file\inductance.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
                     -DIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;
                     -..\code) DEBUG PRINT(.\out_file\inductance.lst) OBJECT(.\out_file\inductance.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53           * @param times 需要处理的数组元素个数
    54           * @return      去掉一个最大值和一个最小值后的数组元素平均值
    55           */
-C251 COMPILER V5.60.0,  inductance                                                         16/04/26  23:25:28  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         17/04/26  13:39:03  PAGE 2   
 
    56          int Median_Average_Filter(int *arr, int times)
    57          {
@@ -134,7 +134,7 @@ stmt  level    source
   119          
   120          /**
   121           * Inductance_Read - 读取并滤波电感值
-C251 COMPILER V5.60.0,  inductance                                                         16/04/26  23:25:28  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         17/04/26  13:39:03  PAGE 3   
 
   122           * 该函数用于读取四个电感传感器的原始值，并使用Median_Average_Filter函数进行滤波处理。
   123           * @param inductance_filter_data 用于存储滤波后的电感值的数组

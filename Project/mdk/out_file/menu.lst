@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  menu                                                               16/04/26  23:25:28  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               17/04/26  13:39:03  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
 OBJECT MODULE PLACED IN .\out_file\menu.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE menu.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE menu.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..
                     -\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\cod
                     -e) DEBUG PRINT(.\out_file\menu.lst) OBJECT(.\out_file\menu.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    50   1          gyro_buffer[0] = IMU_Data.gyro_z; // 将偏航角速度存储到缓冲区
    51   1      
    52   1          // 2. 显示当前偏航角度 (来自 Daty_Z)
-C251 COMPILER V5.60.0,  menu                                                               16/04/26  23:25:28  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               17/04/26  13:39:03  PAGE 2   
 
    53   1          // 偏航角范围大致在 -180 到 180 之间，整数位预留4位(包含负号)，小数位2位
    54   1          ips114_show_float(64, 16, Daty_Z, 4, 2); // 显示偏航角度
@@ -134,7 +134,7 @@ stmt  level    source
   112   1                 
   113   1      }
   114          
-C251 COMPILER V5.60.0,  menu                                                               16/04/26  23:25:28  PAGE 3   
+C251 COMPILER V5.60.0,  menu                                                               17/04/26  13:39:03  PAGE 3   
 
   115          // 示波器初始化函数
   116          // 初始化用于发送示波器数据的无线串口功能

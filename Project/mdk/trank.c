@@ -97,7 +97,7 @@ void Calculate_Differential_Drive(PID_TypeDef *pid1,PID_TypeDef *pid2) // 差速计
 {
 	float k = 0; // 差速比例系数
 	k = eleOut_0 * 0.0001f; // 缩放成 -1 ~ 1
-	k = range_protect_float(k, -0.65, 0.65); // 限制到 -0.65 ~ 0.65，实现差速限幅
+	k = range_protect_float(k, -0.70, 0.70); // 限制到 -0.65 ~ 0.65，实现差速限幅
 	// 计算左右轮目标速度
 	if(k > 0) // 左转
 	{
@@ -115,19 +115,13 @@ void Calculate_Differential_Drive(PID_TypeDef *pid1,PID_TypeDef *pid2) // 差速计
 // 公式: ΔU = Kp*(e(k) - e(k-1)) + Ki*e(k)
 void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
 {
-    
-
-//	float speed_f;
-//	speed_f = 0.25f * current_speed + 0.75f * pid->last_f_speed;
-//	pid->last_f_speed = speed_f;
     // 1. 计算当前误差
     pid->err = pid->target - current_speed;
 	pid->I=pid->Ki * pid->err;	
 
     // 2. 计算输出增量 (ΔU)
    pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
-//	if(pid->inc_out > MAX_INC)  pid->inc_out = MAX_INC;
-//    if(pid->inc_out < -MAX_INC) pid->inc_out = -MAX_INC;
+
     // 3. 累加增量得到最终实际输出
     pid->out += pid->inc_out;
     // 4. 输出限幅 (防止PWM跑飞)
@@ -147,12 +141,12 @@ void Dual_Loop_Control(void)
     float left_speed;      // 左轮实际速度(编码器读取)
     float right_speed;     // 右轮实际速度
     
-//    Inductance_Read(adc_inductance);
+    Inductance_Read(adc_inductance);
 
-//	Motor_Protect(adc_inductance);
-//    elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
-//    Dir_Control();
-//    Calculate_Differential_Drive(&left_spid,&right_spid);
+	Motor_Protect(adc_inductance);
+    elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
+    Dir_Control();
+    Calculate_Differential_Drive(&left_spid,&right_spid);
 
 
     speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数

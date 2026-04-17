@@ -19,7 +19,7 @@ void encoder_init()
 {	
 	tim1_irq_handler = pit_handler;
 //tim4_irq_handler = pit_handler4;
-//	pit_ms_init(PIT_CH,5);
+	pit_ms_init(PIT_CH,2);
 //	pit_ms_init(PIT_CH4,10);
 	encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
 	encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
