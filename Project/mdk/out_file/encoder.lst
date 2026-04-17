@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            16/04/26  20:31:00  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            16/04/26  23:33:03  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -32,7 +32,7 @@ stmt  level    source
    19          {       
    20   1              tim1_irq_handler = pit_handler;
    21   1      //tim4_irq_handler = pit_handler4;
-   22   1              pit_ms_init(PIT_CH,2);
+   22   1      //      pit_ms_init(PIT_CH,5);
    23   1      //      pit_ms_init(PIT_CH4,10);
    24   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
    25   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
@@ -40,16 +40,18 @@ stmt  level    source
    27          
    28          void pit_handler (void)
    29          {       
-   30   1      //      Dual_Loop_Control();
-   31   1      //      imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
-   32   1      //      imu660ra_get_gyro();
-   33   1      //      gyro_proc();
-   34   1      }
+   30   1      
+   31   1      
+   32   1              Dual_Loop_Control();
+   33   1      //      imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
+   34   1      //      imu660ra_get_gyro();
+   35   1      //      gyro_proc();
+   36   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        72     ------
+  code size            =        43     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -65,6 +67,8 @@ Module Information          Static   Overlayable
   huge data size       =    ------     ------
   const size           =    ------     ------
   hconst size          =         7     ------
+C251 COMPILER V5.60.0,  encoder                                                            16/04/26  23:33:03  PAGE 2   
+
 End of Module Information.
 
 

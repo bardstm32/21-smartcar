@@ -7,6 +7,7 @@ void ALL_init()
 	pwm_init(PWMA_CH2P_P62, 25000,0);
 	gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 	gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+	gpio_init(IO_P77, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 	ips114_init();
 	wireless_uart_init();
 	encoder_init();

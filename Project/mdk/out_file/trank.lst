@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  20:31:01  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
@@ -24,7 +24,7 @@ stmt  level    source
              -Ä±àÂëÆ÷½Ó¿Ú ÕâÀïÊ¹ÓÃQTIMER1µÄENCOEDER1
    12          #define ENCODER_DIR_DIR_RIGHT                   (IO_P53)                                                // DIR ¶ÔÓ¦µÄÒý½Å
    13          #define ENCODER_DIR_PULSE_RIGHT                 (TIM3_ENCOEDER_P04)                             // PULSE ¶ÔÓ¦µÄÒý½Å
-   14          #define MAX_INC 200           // 2ms ÖÜÆÚÏÂÏÞÖÆµ¥´ÎÔöÁ¿
+   14          #define MAX_INC 150.0           // 2ms ÖÜÆÚÏÂÏÞÖÆµ¥´ÎÔöÁ¿
    15          volatile int32 speed_left = 0;
    16          volatile int32 speed_right = 0;
    17          volatile uint16 adc_inductance[5] = {0};
@@ -44,7 +44,7 @@ stmt  level    source
    31          /**
    32           * @brief  PID³õÊ¼»¯(Í¨ÓÃ)
    33           */
-   34          void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, int16 max_out, int16 max_i)
+   34          void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, float max_i)
    35          {
    36   1          pid->Kp = kp;
    37   1          pid->Ki = ki;
@@ -66,7 +66,7 @@ stmt  level    source
    53          
    54          /**
    55           * @brief  Í¨ÓÃÎ»ÖÃÊ½PID¼ÆËã
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  20:31:01  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 2   
 
    56           */
    57          float PID_Calc(PID_TypeDef *pid, float target, float measure)
@@ -130,82 +130,85 @@ stmt  level    source
   115          // ¹«Ê½: ¦¤U = Kp*(e(k) - e(k-1)) + Ki*e(k)
   116          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
   117          {
-  118   1              
-  119   1              pid->last_f_speed = current_speed;
-  120   1          // 1. ¼ÆËãµ±Ç°Îó²î
-  121   1          pid->err = pid->target - current_speed;
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  20:31:01  PAGE 3   
+  118   1          
+  119   1      
+  120   1      //      float speed_f;
+  121   1      //      speed_f = 0.25f * current_speed + 0.75f * pid->last_f_speed;
+C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 3   
 
-  122   1              pid->I=pid->Ki * pid->err;           
-  123   1          // 2. ¼ÆËãÊä³öÔöÁ¿ (¦¤U)
-  124   1         pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
-  125   1              if(pid->inc_out > MAX_INC)  pid->inc_out = MAX_INC;
-  126   1          if(pid->inc_out < -MAX_INC) pid->inc_out = -MAX_INC;
-  127   1          // 3. ÀÛ¼ÓÔöÁ¿µÃµ½×îÖÕÊµ¼ÊÊä³ö
-  128   1          pid->out += pid->inc_out;
-  129   1          // 4. Êä³öÏÞ·ù (·ÀÖ¹PWMÅÜ·É)
-  130   1          if (pid->out > pid->max_out)
-  131   1              pid->out = pid->max_out;
-  132   1          if (pid->out < -pid->max_out)
-  133   1              pid->out = -pid->max_out;
-  134   1          // 5. ±£´æÀúÊ·Îó²î£¬¹©ÏÂÒ»´Î¼ÆËãÊ¹ÓÃ
-  135   1          pid->prev_err = pid->last_err;
-  136   1          pid->last_err = pid->err;
-  137   1      }
-  138          
-  139          /**
-  140           * @brief  Ë«±Õ»·Ñ­¼£¿ØÖÆ(ºËÐÄº¯Êý)
-  141           * Á÷³Ì£ºµç¸Ð²î±ÈºÍ ¡ú Î»ÖÃ»· ¡ú ×óÓÒÂÖÄ¿±êËÙ¶È ¡ú ËÙ¶È»· ¡ú µç»úPWM
-  142           */
-  143          void Dual_Loop_Control(void)
-  144          {
-  145   1          float left_speed;      // ×óÂÖÊµ¼ÊËÙ¶È(±àÂëÆ÷¶ÁÈ¡)
-  146   1          float right_speed;     // ÓÒÂÖÊµ¼ÊËÙ¶È
-  147   1          
-  148   1      //    Inductance_Read(adc_inductance);
-  149   1      
-  150   1      //      Motor_Protect(adc_inductance);
-  151   1      //    elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductan
+  122   1      //      pid->last_f_speed = speed_f;
+  123   1          // 1. ¼ÆËãµ±Ç°Îó²î
+  124   1          pid->err = pid->target - current_speed;
+  125   1              pid->I=pid->Ki * pid->err;      
+  126   1      
+  127   1          // 2. ¼ÆËãÊä³öÔöÁ¿ (¦¤U)
+  128   1         pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
+  129   1      //      if(pid->inc_out > MAX_INC)  pid->inc_out = MAX_INC;
+  130   1      //    if(pid->inc_out < -MAX_INC) pid->inc_out = -MAX_INC;
+  131   1          // 3. ÀÛ¼ÓÔöÁ¿µÃµ½×îÖÕÊµ¼ÊÊä³ö
+  132   1          pid->out += pid->inc_out;
+  133   1          // 4. Êä³öÏÞ·ù (·ÀÖ¹PWMÅÜ·É)
+  134   1          if (pid->out > pid->max_out)
+  135   1              pid->out = pid->max_out;
+  136   1          if (pid->out < -pid->max_out)
+  137   1              pid->out = -pid->max_out;
+  138   1              pid->last_err=pid->err;
+  139   1      }
+  140          
+  141          /**
+  142           * @brief  Ë«±Õ»·Ñ­¼£¿ØÖÆ(ºËÐÄº¯Êý)
+  143           * Á÷³Ì£ºµç¸Ð²î±ÈºÍ ¡ú Î»ÖÃ»· ¡ú ×óÓÒÂÖÄ¿±êËÙ¶È ¡ú ËÙ¶È»· ¡ú µç»úPWM
+  144           */
+  145          void Dual_Loop_Control(void)
+  146          {
+  147   1          float left_speed;      // ×óÂÖÊµ¼ÊËÙ¶È(±àÂëÆ÷¶ÁÈ¡)
+  148   1          float right_speed;     // ÓÒÂÖÊµ¼ÊËÙ¶È
+  149   1          
+  150   1      //    Inductance_Read(adc_inductance);
+  151   1      
+  152   1      //      Motor_Protect(adc_inductance);
+  153   1      //    elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductan
              -ce[4]);
-  152   1      //    Dir_Control();
-  153   1      //    Calculate_Differential_Drive(&left_spid,&right_spid);
-  154   1      
-  155   1      
-  156   1          speed_left = encoder_get_count(TIM0_ENCOEDER); // »ñÈ¡±àÂëÆ÷¼ÆÊý
-  157   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
-  158   1              
-  159   1          encoder_clear_count(TIM0_ENCOEDER);                          // Çå¿Õ±àÂëÆ÷¼ÆÊý
-  160   1          encoder_clear_count(TIM3_ENCOEDER);
-  161   1      
-  162   1          real_left = real_left*0.8 + speed_left*0.2;
-  163   1          real_right = real_right*0.8 +speed_right * 0.2;
+  154   1      //    Dir_Control();
+  155   1      //    Calculate_Differential_Drive(&left_spid,&right_spid);
+  156   1      
+  157   1      
+  158   1          speed_left = encoder_get_count(TIM0_ENCOEDER); // »ñÈ¡±àÂëÆ÷¼ÆÊý
+  159   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
+  160   1              
+  161   1          encoder_clear_count(TIM0_ENCOEDER);                          // Çå¿Õ±àÂëÆ÷¼ÆÊý
+  162   1          encoder_clear_count(TIM3_ENCOEDER);
+  163   1      
   164   1      
-  165   1      //    //===================== 5. ËÙ¶È»·PID(ÎÈËÙÄÚ»·) =====================//
-  166   1          IncPID_Calc(&left_spid,real_left);
-  167   1          IncPID_Calc(&right_spid,real_right);
-  168   1      
-  169   1          Oscilloscope_Display(left_spid.out,right_spid.out,left_spid.target,right_spid.target,real_left,real_r
-             -ight);
-  170   1          //    //===================== 6. Êä³öµ½µç»ú =====================//
-  171   1          Motor_SetSpeed(left_spid.out, right_spid.out);
-  172   1      }
-  173          
-  174          
-  175          
+  165   1      
+  166   1      //    real_left = real_left*0.4 + speed_left*0.6;
+  167   1      //    real_right = real_right*0.4 +speed_right * 0.6;
+  168   1      //    //===================== 5. ËÙ¶È»·PID(ÎÈËÙÄÚ»·) =====================//
+  169   1          IncPID_Calc(&left_spid,speed_left);
+  170   1          IncPID_Calc(&right_spid,speed_right);
+  171   1      
+  172   1          Oscilloscope_Display(left_spid.out,right_spid.out,left_spid.target,right_spid.target,speed_left,speed
+             -_right);
+  173   1          //    //===================== 6. Êä³öµ½µç»ú =====================//
+  174   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
+  175   1      }
   176          
   177          
+  178          
+  179          
+  180          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      2679     ------
+  code size            =      2359     ------
   ecode size           =    ------     ------
+C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 4   
+
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  20:31:01  PAGE 4   
-
-  xdata size           =       352     ------
+  xdata size           =       356     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------

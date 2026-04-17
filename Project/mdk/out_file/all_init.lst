@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  all_init                                                           16/04/26  20:31:00  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           16/04/26  23:25:27  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
@@ -18,21 +18,22 @@ stmt  level    source
     7   1              pwm_init(PWMA_CH2P_P62, 25000,0);
     8   1              gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
     9   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
-   10   1              ips114_init();
-   11   1              wireless_uart_init();
-   12   1              encoder_init();
-   13   1              LED_Init();
-   14   1              Oscilloscope_Init();
-   15   1              Parameter_Debug_Init();
-   16   1              Inductance_Init();
-   17   1      
-   18   1              //Menu_Init();
-   19   1      }
+   10   1              gpio_init(IO_P77, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+   11   1              ips114_init();
+   12   1              wireless_uart_init();
+   13   1              encoder_init();
+   14   1              LED_Init();
+   15   1              Oscilloscope_Init();
+   16   1              Parameter_Debug_Init();
+   17   1              Inductance_Init();
+   18   1      
+   19   1              //Menu_Init();
+   20   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       108     ------
+  code size            =       125     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

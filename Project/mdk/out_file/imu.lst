@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  imu                                                                16/04/26  20:30:59  PAGE 1   
+C251 COMPILER V5.60.0,  imu                                                                16/04/26  23:25:26  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE imu
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          first_complement.angle.roll = KalmanFilter(&Kalman1, first_complement.angle.roll);
    54   1          first_complement.angle.pitch = KalmanFilter(&Kalman2, first_complement.angle.pitch);
    55   1      
-C251 COMPILER V5.60.0,  imu                                                                16/04/26  20:30:59  PAGE 2   
+C251 COMPILER V5.60.0,  imu                                                                16/04/26  23:25:26  PAGE 2   
 
    56   1          // 修复2：Pitch/Roll极值统计逻辑搞反的问题（核心修复）
    57   1          if (Pitch_Flag == 0)
@@ -134,7 +134,7 @@ stmt  level    source
   119          {
   120   1          imu660ra_get_gyro();
   121   1          imu660ra_get_acc();
-C251 COMPILER V5.60.0,  imu                                                                16/04/26  20:30:59  PAGE 3   
+C251 COMPILER V5.60.0,  imu                                                                16/04/26  23:25:26  PAGE 3   
 
   122   1      
   123   1          IMU_Data.gyro_x = ((float)imu660ra_gyro_x - Gyro_Offset.Xdata) * PI / 180 / 16.4f;
@@ -202,7 +202,7 @@ stmt  level    source
   185   2              if (yaw_limit_360 > 360)
   186   2              {
   187   3                  yaw_limit_360 = 360;
-C251 COMPILER V5.60.0,  imu                                                                16/04/26  20:30:59  PAGE 4   
+C251 COMPILER V5.60.0,  imu                                                                16/04/26  23:25:26  PAGE 4   
 
   188   3                  Round = 1;
   189   3              }
@@ -270,7 +270,7 @@ stmt  level    source
   251   1          p->A = 1;
   252   1          p->B = 0;
   253   1          p->H = 1;
-C251 COMPILER V5.60.0,  imu                                                                16/04/26  20:30:59  PAGE 5   
+C251 COMPILER V5.60.0,  imu                                                                16/04/26  23:25:26  PAGE 5   
 
   254   1          p->X_mid = p->X_last;
   255   1      }

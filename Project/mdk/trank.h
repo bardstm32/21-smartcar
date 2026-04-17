@@ -2,7 +2,7 @@
 #define __TRANK_H
 
 //===================== 全局宏定义 =====================//
-#define PWM_MAX             5000   // 电机PWM最大限幅
+#define PWM_MAX             5000.0f   // 电机PWM最大限幅
 #define BASE_SPEED          200.f    // 基础直行速度(可调)
 
 // 位置环(循迹外环)参数限幅

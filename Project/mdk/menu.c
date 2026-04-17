@@ -103,10 +103,10 @@ void Parameter_Debug(float *param1, float *param2,float *param3, float *param4, 
     uint8 i; // 循环计数器
     seekfree_assistant_data_analysis(); // 分析接收到的数据
     seekfree_assistant_parameter_update_flag[i] = 0; // 重置更新标志
-    *param1 = seekfree_assistant_parameter[0] * 0.01f; // 更新参数1
-    *param2 = seekfree_assistant_parameter[1] * 0.001f; // 更新参数2
-    *param3 = seekfree_assistant_parameter[2] * 0.01f; // 更新参数3
-	*param4 = seekfree_assistant_parameter[3] * 0.001f; // 更新参数3
+    *param1 = seekfree_assistant_parameter[0] * 0.1f; // 更新参数1
+    *param2 = seekfree_assistant_parameter[1] * 0.01f; // 更新参数2
+    *param3 = seekfree_assistant_parameter[2] * 0.1f; // 更新参数3
+	*param4 = seekfree_assistant_parameter[3] * 0.01f; // 更新参数3
     *target1 = seekfree_assistant_parameter[4]; // 更新速度参数
 	*target2 = *target1;
            

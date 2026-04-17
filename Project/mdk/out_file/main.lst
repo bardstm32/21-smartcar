@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               16/04/26  20:41:08  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               16/04/26  23:33:18  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -17,24 +17,29 @@ stmt  level    source
     6   1              clock_init(SYSTEM_CLOCK_30M);
     7   1              debug_init();
     8   1              ALL_init();
-    9   1              PID_Init(&left_spid, 0.53, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   10   1              PID_Init(&right_spid, 0.41, 0.023f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+    9   1              PID_Init(&left_spid, 3.2, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   10   1              PID_Init(&right_spid, 3.0, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    11   1              PID_Init(&Turn_PID, 3, 0, 0.5, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   12   1              while (1)
-   13   1              {
-   14   2                      IncPID_Calc(&left_spid,t);
-   15   2                      printf("%f\r\n",left_spid.out);
-   16   2                      system_delay_ms(2);
-   17   2                      t=30;
-   18   2      //              Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_
+   12   1      //      P77=1;
+   13   1      //      system_delay_ms(2);
+   14   1      //      P77=0;
+   15   1      //      system_delay_us(10);
+   16   1      //      P77=1;
+   17   1              
+   18   1              while (1)
+   19   1              {
+   20   2                  Oscilloscope_Display(left_spid.out,right_spid.out,left_spid.target,right_spid.target);
+   21   2      
+   22   2                      //printf("%f\r\n",first_complement.angle.pitch);
+   23   2      //              Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_
              -spid.target);
-   19   2              }
-   20   1      }
+   24   2              }
+   25   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       380     ------
+  code size            =       386     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -49,7 +54,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        14     ------
+  hconst size          =         9     ------
 End of Module Information.
 
 

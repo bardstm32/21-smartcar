@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               16/04/26  20:31:01  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               16/04/26  23:25:28  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -66,7 +66,7 @@ stmt  level    source
    50   1          gyro_buffer[0] = IMU_Data.gyro_z; // 将偏航角速度存储到缓冲区
    51   1      
    52   1          // 2. 显示当前偏航角度 (来自 Daty_Z)
-C251 COMPILER V5.60.0,  menu                                                               16/04/26  20:31:01  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               16/04/26  23:25:28  PAGE 2   
 
    53   1          // 偏航角范围大致在 -180 到 180 之间，整数位预留4位(包含负号)，小数位2位
    54   1          ips114_show_float(64, 16, Daty_Z, 4, 2); // 显示偏航角度
@@ -125,16 +125,16 @@ stmt  level    source
   103   1          uint8 i; // 循环计数器
   104   1          seekfree_assistant_data_analysis(); // 分析接收到的数据
   105   1          seekfree_assistant_parameter_update_flag[i] = 0; // 重置更新标志
-  106   1          *param1 = seekfree_assistant_parameter[0] * 0.01f; // 更新参数1
-  107   1          *param2 = seekfree_assistant_parameter[1] * 0.001f; // 更新参数2
-  108   1          *param3 = seekfree_assistant_parameter[2] * 0.01f; // 更新参数3
-  109   1              *param4 = seekfree_assistant_parameter[3] * 0.001f; // 更新参数3
+  106   1          *param1 = seekfree_assistant_parameter[0] * 0.1f; // 更新参数1
+  107   1          *param2 = seekfree_assistant_parameter[1] * 0.01f; // 更新参数2
+  108   1          *param3 = seekfree_assistant_parameter[2] * 0.1f; // 更新参数3
+  109   1              *param4 = seekfree_assistant_parameter[3] * 0.01f; // 更新参数3
   110   1          *target1 = seekfree_assistant_parameter[4]; // 更新速度参数
   111   1              *target2 = *target1;
   112   1                 
   113   1      }
   114          
-C251 COMPILER V5.60.0,  menu                                                               16/04/26  20:31:01  PAGE 3   
+C251 COMPILER V5.60.0,  menu                                                               16/04/26  23:25:28  PAGE 3   
 
   115          // 示波器初始化函数
   116          // 初始化用于发送示波器数据的无线串口功能
