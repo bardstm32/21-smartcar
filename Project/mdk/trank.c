@@ -83,13 +83,12 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
 void Dir_Control()
 {
 	static int t = 0;
-	if(++t>=2)
+	if(++t>=3)
 	{
 		// 外环（赛道偏差环）,具体正负号根据实际情况确定
 		eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
 		// 限幅保护，确保输出结果在 -100 ~ 100 范围内
 		eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
-
 	}
 }
 
@@ -97,17 +96,17 @@ void Calculate_Differential_Drive(PID_TypeDef *pid1,PID_TypeDef *pid2) // 差速计
 {
 	float k = 0; // 差速比例系数
 	k = eleOut_0 * 0.0001f; // 缩放成 -1 ~ 1
-	k = range_protect_float(k, -0.70, 0.70); // 限制到 -0.65 ~ 0.65，实现差速限幅
+	k = range_protect_float(k, -0.80, 0.80); // 限制到 -0.65 ~ 0.65，实现差速限幅
 	// 计算左右轮目标速度
-	if(k > 0) // 左转
+	if(k < 0) // 左转
 	{
-		pid1->target = BASE_SPEED * (1 + k*0.2);
+		pid1->target = BASE_SPEED * (1 + (k*0.5));
 		pid2->target  = BASE_SPEED * (1 - k); // 加少减多
 	}
-	if(k < 0) // 右转
+	if(k > 0) // 右转
 	{
 		pid1->target = BASE_SPEED * (1 + k); // 加少减多
-		pid2->target = BASE_SPEED * (1 - (k*0.2));
+		pid2->target = BASE_SPEED * (1 - (k*0.5));
 	}
 }
 
@@ -143,7 +142,7 @@ void Dual_Loop_Control(void)
     
     Inductance_Read(adc_inductance);
 
-	Motor_Protect(adc_inductance);
+	//Motor_Protect(adc_inductance);
     elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
     Dir_Control();
     Calculate_Differential_Drive(&left_spid,&right_spid);
@@ -163,7 +162,7 @@ void Dual_Loop_Control(void)
     IncPID_Calc(&left_spid,speed_left);
     IncPID_Calc(&right_spid,speed_right);
 
-    Oscilloscope_Display(left_spid.out,right_spid.out,left_spid.target,right_spid.target,speed_left,speed_right);
+    Oscilloscope_Display(left_spid.out,right_spid.out,speed_left,speed_right,adc_inductance[1],adc_inductance[2],adc_inductance[3],adc_inductance[4]);
     //    //===================== 6. 输出到电机 =====================//
     Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
 }

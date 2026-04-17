@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               17/04/26  14:03:43  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               17/04/26  16:35:26  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -19,21 +19,20 @@ stmt  level    source
     8   1              ALL_init();
     9   1              PID_Init(&left_spid, 3.2, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    10   1              PID_Init(&right_spid, 3.0, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   11   1              PID_Init(&Turn_PID, 0.8, 0, 2.2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              PID_Init(&Turn_PID, 1.0, 0, 2.5, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    12   1      
    13   1              while (1)
    14   1              {
    15   2      
    16   2                      //printf("%f\r\n",first_complement.angle.pitch);
-   17   2      //              Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_
-             -spid.target);
+   17   2                      Parameter_Debug(&Turn_PID.Kp, &Turn_PID.Kd);
    18   2              }
    19   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       317     ------
+  code size            =       332     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

@@ -103,9 +103,9 @@ void Parameter_Debug(float *param1, float *param2,float *param3, float *param4, 
     uint8 i; // 循环计数器
     seekfree_assistant_data_analysis(); // 分析接收到的数据
     seekfree_assistant_parameter_update_flag[i] = 0; // 重置更新标志
-    *param1 = seekfree_assistant_parameter[0] * 0.1f; // 更新参数1
+    *param1 = seekfree_assistant_parameter[0] * 0.01f; // 更新参数1
     *param2 = seekfree_assistant_parameter[1] * 0.01f; // 更新参数2
-    *param3 = seekfree_assistant_parameter[2] * 0.1f; // 更新参数3
+    *param3 = seekfree_assistant_parameter[2] * 0.01f; // 更新参数3
 	*param4 = seekfree_assistant_parameter[3] * 0.01f; // 更新参数3
     *target1 = seekfree_assistant_parameter[4]; // 更新速度参数
 	*target2 = *target1;
@@ -121,7 +121,7 @@ void Oscilloscope_Init(void)
 
 // 示波器数据发送函数
 // 将两个通道的数据打包并通过无线串口发送到电脑端
-void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6)
+void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6,int32 num7,int32 num8)
 {
     seekfree_assistant_oscilloscope_data.dat[0] = num1; // 设置第一个通道的数据
     seekfree_assistant_oscilloscope_data.dat[1] = num2; // 设置第二个通道的数据
@@ -129,8 +129,8 @@ void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num
 	seekfree_assistant_oscilloscope_data.dat[3] = num4; // 设置第二个通道的数据
     seekfree_assistant_oscilloscope_data.dat[4] = num5; // 设置第二个通道的数据
 	seekfree_assistant_oscilloscope_data.dat[5] = num6; // 设置第二个通道的数据
-//	seekfree_assistant_oscilloscope_data.dat[6] = num7; // 设置第二个通道的数据
-//    seekfree_assistant_oscilloscope_data.dat[7] = num8; // 设置第二个通道的数据
-    seekfree_assistant_oscilloscope_data.channel_num =6; // 设置发送的通道数量为2
+	seekfree_assistant_oscilloscope_data.dat[6] = num7; // 设置第二个通道的数据
+    seekfree_assistant_oscilloscope_data.dat[7] = num8; // 设置第二个通道的数据
+    seekfree_assistant_oscilloscope_data.channel_num =8; // 设置发送的通道数量为2
     seekfree_assistant_oscilloscope_send(&seekfree_assistant_oscilloscope_data); // 发送示波器数据至电脑
 }
