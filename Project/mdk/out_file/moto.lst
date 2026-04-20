@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  moto                                                               17/04/26  16:11:50  PAGE 1   
+C251 COMPILER V5.60.0,  moto                                                               20/04/26  21:52:08  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE moto
@@ -10,55 +10,55 @@ COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE moto.c LARGE NOALIAS WARNINGLE
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          uint16  ABS(int16 P)
+    2          uint16 ABS(int16 P)
     3          {
-    4   1              if(P>0)
-    5   1                      return P;
-    6   1              else
-    7   1                      return -P;
+    4   1        if (P > 0)
+    5   1          return P;
+    6   1        else
+    7   1          return -P;
     8   1      }
     9          
    10          void Motor_SetSpeed(int16 speed_left, int16 speed_right)
-   11          {    
-   12   1          // 左轮方向控制
-   13   1          if(speed_left > 0) {
-   14   2             gpio_set_level(IO_P61, 0);    
-   15   2          } else if(speed_left < 0) {
-   16   2             gpio_set_level(IO_P61, 1);    
-   17   2          } 
-   18   1      
-   19   1          // 右轮方向控制 - 注意反转了方向
-   20   1          if(speed_right < 0) {
-   21   2                      gpio_set_level(IO_P63, 0);   
-   22   2      
-   23   2          } else if(speed_right > 0) {
-   24   2                      gpio_set_level(IO_P63,1);    
-   25   2          }
-   26   1          // 设置PWM值
-   27   1              pwm_set_duty(PWMA_CH1P_P60,ABS(speed_left));
-   28   1              pwm_set_duty(PWMA_CH2P_P62,ABS(speed_right));
-   29   1               
-   30   1      }
-   31          
-   32          void Motor_Protect(uint16 *inductance_norm_data)
-   33          {
-   34   1        uint16 sum = inductance_norm_data[1] + inductance_norm_data[2] + inductance_norm_data[3] + inductance_n
+   11          {
+   12   1        // 左轮方向控制
+   13   1        if (speed_left > 0)
+   14   1        {
+   15   2          gpio_set_level(IO_P61, 0);
+   16   2        }
+   17   1        else if (speed_left < 0)
+   18   1        {
+   19   2          gpio_set_level(IO_P61, 1);
+   20   2        }
+   21   1      
+   22   1        // 右轮方向控制 - 注意反转了方向
+   23   1        if (speed_right < 0)
+   24   1        {
+   25   2          gpio_set_level(IO_P63, 0);
+   26   2        }
+   27   1        else if (speed_right > 0)
+   28   1        {
+   29   2          gpio_set_level(IO_P63, 1);
+   30   2        }
+   31   1        // 设置PWM值
+   32   1        pwm_set_duty(PWMA_CH1P_P60, ABS(speed_left));
+   33   1        pwm_set_duty(PWMA_CH2P_P62, ABS(speed_right));
+   34   1      }
+   35          
+   36          void Motor_Protect(uint16 *inductance_norm_data)
+   37          {
+   38   1        uint16 sum = inductance_norm_data[1] + inductance_norm_data[2] + inductance_norm_data[3] + inductance_n
              -orm_data[4];
-   35   1        if (sum < 50) // 如果四个电感的ADC值之和低于20，立即停止电机
-   36   1        {
-   37   2               Motor_SetSpeed(0,0);
-   38   2           interrupt_global_disable(); 
-   39   2        }
-   40   1        else
-   41   1        {
-   42   2              interrupt_global_enable(); 
+   39   1        if (sum < 30) // 如果四个电感的ADC值之和低于20，立即停止电机
+   40   1        {
+   41   2          Motor_SetSpeed(0, 0);
+   42   2          interrupt_global_disable();
    43   2        }
    44   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       294     ------
+  code size            =       289     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -67,7 +67,7 @@ Module Information          Static   Overlayable
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
-C251 COMPILER V5.60.0,  moto                                                               17/04/26  16:11:50  PAGE 2   
+C251 COMPILER V5.60.0,  moto                                                               20/04/26  21:52:08  PAGE 2   
 
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------

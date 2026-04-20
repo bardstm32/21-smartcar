@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               17/04/26  16:21:25  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               20/04/26  21:52:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -66,7 +66,7 @@ stmt  level    source
    50   1          gyro_buffer[0] = IMU_Data.gyro_z; // 将偏航角速度存储到缓冲区
    51   1      
    52   1          // 2. 显示当前偏航角度 (来自 Daty_Z)
-C251 COMPILER V5.60.0,  menu                                                               17/04/26  16:21:25  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               20/04/26  21:52:09  PAGE 2   
 
    53   1          // 偏航角范围大致在 -180 到 180 之间，整数位预留4位(包含负号)，小数位2位
    54   1          ips114_show_float(64, 16, Daty_Z, 4, 2); // 显示偏航角度
@@ -79,8 +79,8 @@ stmt  level    source
    60   1          ips114_show_uint16(96, 32, inductance_data[1]); // L2 数值
    61   1          ips114_show_uint16(24, 48, inductance_data[2]); // L3 数值
    62   1          ips114_show_uint16(96, 48, inductance_data[3]); // L4 数值
-   63   1          ips114_show_int16(88, 64, real_left);           // 左编码器数值
-   64   1          ips114_show_int16(88, 80, real_right);          // 右编码数值
+   63   1          ips114_show_int16(88, 64, speed_left);           // 左编码器数值
+   64   1          ips114_show_int16(88, 80, speed_right);          // 右编码数值
    65   1      
    66   1          //    Send_Data_To_PC(inductance_data); // 将数据通过无线串口发送到电脑端
    67   1      }
@@ -134,7 +134,7 @@ stmt  level    source
   112   1                 
   113   1      }
   114          
-C251 COMPILER V5.60.0,  menu                                                               17/04/26  16:21:25  PAGE 3   
+C251 COMPILER V5.60.0,  menu                                                               20/04/26  21:52:09  PAGE 3   
 
   115          // 示波器初始化函数
   116          // 初始化用于发送示波器数据的无线串口功能
@@ -145,7 +145,7 @@ stmt  level    source
   121          
   122          // 示波器数据发送函数
   123          // 将两个通道的数据打包并通过无线串口发送到电脑端
-  124          void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6,int32 num7,i
+  124          void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6,float num7,i
              -nt32 num8)
   125          {
   126   1          seekfree_assistant_oscilloscope_data.dat[0] = num1; // 设置第一个通道的数据
@@ -164,7 +164,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1081     ------
+  code size            =      1076     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

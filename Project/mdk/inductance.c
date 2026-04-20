@@ -108,7 +108,7 @@ float Inductance_Count_Err(int16 L, int16 LM, int16 RM, int16 R)
     float scaled_err;
 	float numerator,denominator;
     numerator = ((L - R) + (LM - RM))*10000.0f;
-    denominator = L+R+LM+RM+1;
+    denominator = (L+R)+My_abs((LM-RM));
 
     scaled_err = numerator / denominator;
     // 使用range_protect函数确保结果在[-100.0, 100.0]范围内

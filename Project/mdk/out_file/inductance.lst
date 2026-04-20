@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  inductance                                                         17/04/26  16:11:51  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         20/04/26  21:52:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
@@ -66,7 +66,7 @@ stmt  level    source
    53           * @param times 需要处理的数组元素个数
    54           * @return      去掉一个最大值和一个最小值后的数组元素平均值
    55           */
-C251 COMPILER V5.60.0,  inductance                                                         17/04/26  16:11:51  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         20/04/26  21:52:09  PAGE 2   
 
    56          int Median_Average_Filter(int *arr, int times)
    57          {
@@ -123,7 +123,7 @@ stmt  level    source
   108   1          float scaled_err;
   109   1              float numerator,denominator;
   110   1          numerator = ((L - R) + (LM - RM))*10000.0f;
-  111   1          denominator = L+R+LM+RM+1;
+  111   1          denominator = (L+R)+My_abs((LM-RM));
   112   1      
   113   1          scaled_err = numerator / denominator;
   114   1          // 使用range_protect函数确保结果在[-100.0, 100.0]范围内
@@ -134,7 +134,7 @@ stmt  level    source
   119          
   120          /**
   121           * Inductance_Read - 读取并滤波电感值
-C251 COMPILER V5.60.0,  inductance                                                         17/04/26  16:11:51  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         20/04/26  21:52:09  PAGE 3   
 
   122           * 该函数用于读取四个电感传感器的原始值，并使用Median_Average_Filter函数进行滤波处理。
   123           * @param inductance_filter_data 用于存储滤波后的电感值的数组
@@ -171,7 +171,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1289     ------
+  code size            =      1294     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

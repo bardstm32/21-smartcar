@@ -60,8 +60,8 @@ void Menu_Display(uint16 *inductance_data)
     ips114_show_uint16(96, 32, inductance_data[1]); // L2 数值
     ips114_show_uint16(24, 48, inductance_data[2]); // L3 数值
     ips114_show_uint16(96, 48, inductance_data[3]); // L4 数值
-    ips114_show_int16(88, 64, real_left);           // 左编码器数值
-    ips114_show_int16(88, 80, real_right);          // 右编码数值
+    ips114_show_int16(88, 64, speed_left);           // 左编码器数值
+    ips114_show_int16(88, 80, speed_right);          // 右编码数值
 
     //    Send_Data_To_PC(inductance_data); // 将数据通过无线串口发送到电脑端
 }
@@ -121,7 +121,7 @@ void Oscilloscope_Init(void)
 
 // 示波器数据发送函数
 // 将两个通道的数据打包并通过无线串口发送到电脑端
-void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6,int32 num7,int32 num8)
+void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6,float num7,int32 num8)
 {
     seekfree_assistant_oscilloscope_data.dat[0] = num1; // 设置第一个通道的数据
     seekfree_assistant_oscilloscope_data.dat[1] = num2; // 设置第二个通道的数据

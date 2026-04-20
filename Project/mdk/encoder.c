@@ -18,19 +18,13 @@ uint16 cnt = 0;
 void encoder_init()
 {	
 	tim1_irq_handler = pit_handler;
-//tim4_irq_handler = pit_handler4;
 	pit_ms_init(PIT_CH,2);
-//	pit_ms_init(PIT_CH4,10);
 	encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
 	encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
 }
 
 void pit_handler (void)
 {	
-
-
+	imu660ra_get_gyro();
 	Dual_Loop_Control();
-//	imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
-//	imu660ra_get_gyro();
-//	gyro_proc();
 }
