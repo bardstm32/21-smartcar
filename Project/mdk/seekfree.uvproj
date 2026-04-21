@@ -788,14 +788,14 @@
           <GroupName>user</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\user\main.c</FilePath>
-            </File>
-            <File>
               <FileName>isr.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\isr.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\main.c</FilePath>
             </File>
             <File>
               <FileName>isr.h</FileName>

@@ -82,16 +82,16 @@ int Median_Average_Filter(int *arr, int times)
  * @param min_value 最小值
  * @return          归一化后的值，范围在[1.0, 100.0]之间
  */
-double ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
+float ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
 {
-    double temp;
+    float temp;
     // 公式：(值 - 最小值) * 100 / (最大值 - 最小值)
     temp = (adc_val* 100.0f)/ adc_max;
     // 限幅，防止越界
-    if (temp > 100)
-        temp = 100;
-    if (temp < 0)
-        temp = 0;
+    if (temp > 100.0)
+        temp = 100.0;
+    if (temp < 0.0)
+        temp = 0.0;
     return temp;
 }
 
@@ -101,14 +101,14 @@ double ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
  * @param LM 电感值LM（对应公式中a2）
  * @param RM 电感值RM（对应公式中b1）
  * @param R  电感值R（对应公式中b2）
- * @return   电感误差值，范围在[-100, 100]之间
+ * @return   电感误差值，范围在[-10000, 10000]之间
  */
 float Inductance_Count_Err(int16 L, int16 LM, int16 RM, int16 R)
 {
     float scaled_err;
 	float numerator,denominator;
     numerator = ((L - R) + (LM - RM))*10000.0f;
-    denominator = L+R+LM+RM+1;
+    denominator = (L+R)+My_abs((LM-RM));
 
     scaled_err = numerator / denominator;
     // 使用range_protect函数确保结果在[-100.0, 100.0]范围内
@@ -145,8 +145,8 @@ void Inductance_Read(uint16 *inductance_norm_data)
         inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
     } 
 		 
-    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 2470, 0);
-    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 2470, 0);
-    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 2470, 0);
-    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 2470, 0);
+    inductance_norm_data[1] = uint16(ADC_Normalize_0_100(inductance_filter_data[1], 2470, 0));
+    inductance_norm_data[2] = uint16(ADC_Normalize_0_100(inductance_filter_data[2], 2470, 0));
+    inductance_norm_data[3] = uint16(ADC_Normalize_0_100(inductance_filter_data[3], 2470, 0));
+    inductance_norm_data[4] = uint16(ADC_Normalize_0_100(inductance_filter_data[4], 2470, 0));
 }

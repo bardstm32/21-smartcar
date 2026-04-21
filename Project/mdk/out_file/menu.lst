@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               19/04/26  21:51:47  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               21/04/26  22:37:36  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -66,7 +66,7 @@ stmt  level    source
    50   1          gyro_buffer[0] = IMU_Data.gyro_z; // 将偏航角速度存储到缓冲区
    51   1      
    52   1          // 2. 显示当前偏航角度 (来自 Daty_Z)
-C251 COMPILER V5.60.0,  menu                                                               19/04/26  21:51:47  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               21/04/26  22:37:36  PAGE 2   
 
    53   1          // 偏航角范围大致在 -180 到 180 之间，整数位预留4位(包含负号)，小数位2位
    54   1          ips114_show_float(64, 16, Daty_Z, 4, 2); // 显示偏航角度
@@ -79,8 +79,8 @@ stmt  level    source
    60   1          ips114_show_uint16(96, 32, inductance_data[1]); // L2 数值
    61   1          ips114_show_uint16(24, 48, inductance_data[2]); // L3 数值
    62   1          ips114_show_uint16(96, 48, inductance_data[3]); // L4 数值
-   63   1          ips114_show_int16(88, 64, real_left);           // 左编码器数值
-   64   1          ips114_show_int16(88, 80, real_right);          // 右编码数值
+   63   1          ips114_show_int16(88, 64, speed_left);           // 左编码器数值
+   64   1          ips114_show_int16(88, 80, speed_right);          // 右编码数值
    65   1      
    66   1          //    Send_Data_To_PC(inductance_data); // 将数据通过无线串口发送到电脑端
    67   1      }
@@ -125,16 +125,16 @@ stmt  level    source
   103   1          uint8 i; // 循环计数器
   104   1          seekfree_assistant_data_analysis(); // 分析接收到的数据
   105   1          seekfree_assistant_parameter_update_flag[i] = 0; // 重置更新标志
-  106   1          *param1 = seekfree_assistant_parameter[0] * 0.1f; // 更新参数1
+  106   1          *param1 = seekfree_assistant_parameter[0] * 0.01f; // 更新参数1
   107   1          *param2 = seekfree_assistant_parameter[1] * 0.01f; // 更新参数2
-  108   1          *param3 = seekfree_assistant_parameter[2] * 0.1f; // 更新参数3
+  108   1          *param3 = seekfree_assistant_parameter[2] * 0.01f; // 更新参数3
   109   1              *param4 = seekfree_assistant_parameter[3] * 0.01f; // 更新参数3
   110   1          *target1 = seekfree_assistant_parameter[4]; // 更新速度参数
   111   1              *target2 = *target1;
   112   1                 
   113   1      }
   114          
-C251 COMPILER V5.60.0,  menu                                                               19/04/26  21:51:47  PAGE 3   
+C251 COMPILER V5.60.0,  menu                                                               21/04/26  22:37:36  PAGE 3   
 
   115          // 示波器初始化函数
   116          // 初始化用于发送示波器数据的无线串口功能
@@ -145,7 +145,8 @@ stmt  level    source
   121          
   122          // 示波器数据发送函数
   123          // 将两个通道的数据打包并通过无线串口发送到电脑端
-  124          void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6)
+  124          void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6,float num7,i
+             -nt32 num8)
   125          {
   126   1          seekfree_assistant_oscilloscope_data.dat[0] = num1; // 设置第一个通道的数据
   127   1          seekfree_assistant_oscilloscope_data.dat[1] = num2; // 设置第二个通道的数据
@@ -153,9 +154,9 @@ stmt  level    source
   129   1              seekfree_assistant_oscilloscope_data.dat[3] = num4; // 设置第二个通道的数据
   130   1          seekfree_assistant_oscilloscope_data.dat[4] = num5; // 设置第二个通道的数据
   131   1              seekfree_assistant_oscilloscope_data.dat[5] = num6; // 设置第二个通道的数据
-  132   1      //      seekfree_assistant_oscilloscope_data.dat[6] = num7; // 设置第二个通道的数据
-  133   1      //    seekfree_assistant_oscilloscope_data.dat[7] = num8; // 设置第二个通道的数据
-  134   1          seekfree_assistant_oscilloscope_data.channel_num =6; // 设置发送的通道数量为2
+  132   1              seekfree_assistant_oscilloscope_data.dat[6] = num7; // 设置第二个通道的数据
+  133   1          seekfree_assistant_oscilloscope_data.dat[7] = num8; // 设置第二个通道的数据
+  134   1          seekfree_assistant_oscilloscope_data.channel_num =8; // 设置发送的通道数量为2
   135   1          seekfree_assistant_oscilloscope_send(&seekfree_assistant_oscilloscope_data); // 发送示波器数据
              -至电脑
   136   1      }
@@ -163,12 +164,12 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1031     ------
+  code size            =      1076     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =       345     ------
+  xdata size           =       353     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
