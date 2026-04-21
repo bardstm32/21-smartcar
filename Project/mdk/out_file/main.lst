@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               16/04/26  23:33:18  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               19/04/26  22:06:36  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -10,41 +10,43 @@ COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS W
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          
-    3          uint16 t=0;
-    4          void main()
-    5          {
-    6   1              clock_init(SYSTEM_CLOCK_30M);
-    7   1              debug_init();
-    8   1              ALL_init();
-    9   1              PID_Init(&left_spid, 3.2, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   10   1              PID_Init(&right_spid, 3.0, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   11   1              PID_Init(&Turn_PID, 3, 0, 0.5, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   12   1      //      P77=1;
-   13   1      //      system_delay_ms(2);
-   14   1      //      P77=0;
-   15   1      //      system_delay_us(10);
-   16   1      //      P77=1;
-   17   1              
-   18   1              while (1)
-   19   1              {
-   20   2                  Oscilloscope_Display(left_spid.out,right_spid.out,left_spid.target,right_spid.target);
-   21   2      
-   22   2                      //printf("%f\r\n",first_complement.angle.pitch);
-   23   2      //              Parameter_Debug(&left_spid.Kp, &left_spid.Ki,&right_spid.Kp,&right_spid.Ki,&right_spid.target, &left_
-             -spid.target);
-   24   2              }
-   25   1      }
+    2          int16 adc[5] = {0};
+    3          
+    4          //int16 T[5] = {0};
+    5          void main()
+    6          {
+    7   1              clock_init(SYSTEM_CLOCK_30M);
+    8   1              debug_init();
+    9   1              ALL_init();
+   10   1              PID_Init(&left_spid, 3.2, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              PID_Init(&right_spid, 3.0, 0.6f,  0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   12   1              PID_Init(&Turn_PID, 0.8, 0, 2.0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   13   1      //      ips114_clear(RGB565_WHITE);     
+   14   1              while (1)
+   15   1              {
+   16   2                      ips114_show_uint16(0,0,adc_convert(L1));
+   17   2                      ips114_show_uint16(0,16,adc_convert(L2));
+   18   2                      ips114_show_uint16(0,32,adc_convert(L3));
+   19   2                      ips114_show_uint16(0,48,adc_convert(L4));
+   20   2                      Inductance_Read(adc);
+   21   2                      ips114_show_uint16(70,0,adc[1]);
+   22   2                      ips114_show_uint16(70,16,adc[2]);
+   23   2                      ips114_show_uint16(70,32,adc[3]);
+   24   2                      ips114_show_uint16(70,48,adc[4]);
+   25   2                      //printf("%f\r\n",first_complement.angle.pitch);
+   26   2                      //Parameter_Debug(&Turn_PID.Kp, &Turn_PID.Kd);
+   27   2              }
+   28   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       386     ------
+  code size            =       463     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =         2     ------
+  xdata size           =        10     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -54,7 +56,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =         9     ------
+  hconst size          =        17     ------
 End of Module Information.
 
 

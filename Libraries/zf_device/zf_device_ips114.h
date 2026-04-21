@@ -71,7 +71,7 @@
 #define IPS114_RST_PIN                  (P20 )                                   // 液晶复位引脚定义
 #define IPS114_DC_PIN                   (P21 )                                   // 液晶命令位引脚定义
 #define IPS114_CS_PIN                   (P22 )                                   // CS 片选引脚
-#define IPS114_BLK_PIN                  (P33 )                                   // 液晶背光引脚定义
+#define IPS114_BLK_PIN                  (P27 )                                   // 液晶背光引脚定义
 
 #define IPS114_DEFAULT_DISPLAY_DIR      (IPS114_CROSSWISE_180)                  // 默认的显示方向
 #define IPS114_DEFAULT_PENCOLOR         (RGB565_RED)                            // 默认的画笔颜色

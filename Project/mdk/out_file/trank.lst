@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              19/04/26  21:51:47  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
@@ -66,7 +66,7 @@ stmt  level    source
    53          
    54          /**
    55           * @brief  通用位置式PID计算
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              19/04/26  21:51:47  PAGE 2   
 
    56           */
    57          float PID_Calc(PID_TypeDef *pid, float target, float measure)
@@ -134,7 +134,7 @@ stmt  level    source
   119   1      
   120   1      //      float speed_f;
   121   1      //      speed_f = 0.25f * current_speed + 0.75f * pid->last_f_speed;
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 3   
+C251 COMPILER V5.60.0,  trank                                                              19/04/26  21:51:47  PAGE 3   
 
   122   1      //      pid->last_f_speed = speed_f;
   123   1          // 1. 计算当前误差
@@ -203,7 +203,7 @@ Module Information          Static   Overlayable
 ------------------------------------------------
   code size            =      2359     ------
   ecode size           =    ------     ------
-C251 COMPILER V5.60.0,  trank                                                              16/04/26  23:25:28  PAGE 4   
+C251 COMPILER V5.60.0,  trank                                                              19/04/26  21:51:47  PAGE 4   
 
   data size            =    ------     ------
   idata size           =    ------     ------
