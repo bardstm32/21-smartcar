@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  inductance                                                         22/04/26  19:11:43  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         22/04/26  19:39:03  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
 OBJECT MODULE PLACED IN .\out_file\inductance.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
                     -DIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;
                     -..\code) DEBUG PRINT(.\out_file\inductance.lst) OBJECT(.\out_file\inductance.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53           * @param times 需要处理的数组元素个数
    54           * @return      去掉一个最大值和一个最小值后的数组元素平均值
    55           */
-C251 COMPILER V5.60.0,  inductance                                                         22/04/26  19:11:43  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         22/04/26  19:39:03  PAGE 2   
 
    56          int Median_Average_Filter(int *arr, int times)
    57          {
@@ -123,18 +123,18 @@ stmt  level    source
   108   1          float scaled_err;
   109   1              float numerator,denominator;
   110   1          numerator = ((L - R) + (LM - RM))*10000.0f;
-  111   1          denominator = (L+R)+My_abs((LM-RM));
+  111   1          denominator = (L+R)+My_abs((LM-RM))+1;
   112   1      
   113   1          scaled_err = numerator / denominator;
   114   1          // 使用range_protect函数确保结果在[-100.0, 100.0]范围内
-  115   1          scaled_err = range_protect_int(scaled_err, -10000, 10000);
+  115   1          scaled_err = range_protect_float(scaled_err, -10000, 10000);
   116   1          // 返回电感误差值
   117   1          return scaled_err;
   118   1      }
   119          
   120          /**
   121           * Inductance_Read - 读取并滤波电感值
-C251 COMPILER V5.60.0,  inductance                                                         22/04/26  19:11:43  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         22/04/26  19:39:03  PAGE 3   
 
   122           * 该函数用于读取四个电感传感器的原始值，并使用Median_Average_Filter函数进行滤波处理。
   123           * @param inductance_filter_data 用于存储滤波后的电感值的数组
@@ -171,7 +171,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1294     ------
+  code size            =      1311     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

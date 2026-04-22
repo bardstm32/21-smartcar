@@ -78,6 +78,7 @@ void Dir_Control()
 	static int t = 0;
 	if(++t>=2)
 	{
+		t = 0;
 		// 外环（赛道偏差环）,具体正负号根据实际情况确定
 		eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
 		// 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
@@ -138,7 +139,7 @@ void Dual_Loop_Control(void)
 
     elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
     Dir_Control();
-    Calculate_Differential_Drive(&left_spid,&right_spid);
+    Calculate_Differential_Drive();
 
     speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
     speed_right = encoder_get_count(TIM3_ENCOEDER);              	
