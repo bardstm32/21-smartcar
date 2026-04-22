@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  inductance                                                         21/04/26  22:37:36  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         22/04/26  19:11:43  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
@@ -66,7 +66,7 @@ stmt  level    source
    53           * @param times 需要处理的数组元素个数
    54           * @return      去掉一个最大值和一个最小值后的数组元素平均值
    55           */
-C251 COMPILER V5.60.0,  inductance                                                         21/04/26  22:37:36  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         22/04/26  19:11:43  PAGE 2   
 
    56          int Median_Average_Filter(int *arr, int times)
    57          {
@@ -97,16 +97,16 @@ stmt  level    source
    82           * @param min_value 最小值
    83           * @return          归一化后的值，范围在[1.0, 100.0]之间
    84           */
-   85          double ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
+   85          float ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
    86          {
-   87   1          double temp;
+   87   1          float temp;
    88   1          // 公式：(值 - 最小值) * 100 / (最大值 - 最小值)
    89   1          temp = (adc_val* 100.0f)/ adc_max;
    90   1          // 限幅，防止越界
-   91   1          if (temp > 100)
-   92   1              temp = 100;
-   93   1          if (temp < 0)
-   94   1              temp = 0;
+   91   1          if (temp > 100.0)
+   92   1              temp = 100.0;
+   93   1          if (temp < 0.0)
+   94   1              temp = 0.0;
    95   1          return temp;
    96   1      }
    97          
@@ -134,7 +134,7 @@ stmt  level    source
   119          
   120          /**
   121           * Inductance_Read - 读取并滤波电感值
-C251 COMPILER V5.60.0,  inductance                                                         21/04/26  22:37:36  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         22/04/26  19:11:43  PAGE 3   
 
   122           * 该函数用于读取四个电感传感器的原始值，并使用Median_Average_Filter函数进行滤波处理。
   123           * @param inductance_filter_data 用于存储滤波后的电感值的数组
