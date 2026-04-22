@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               22/04/26  19:31:44  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               22/04/26  19:49:02  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -26,17 +26,18 @@ stmt  level    source
    15   1              P77=1;
    16   1              while (1)
    17   1              {
-   18   2                      Oscilloscope_Display(Turn_PID.P,Turn_PID.D,Turn_PID.out,Turn_PID.err,speed_left,speed_right,imu660ra_gy
+   18   2                      Motor_SetSpeed(1800,-1800);
+   19   2                      Oscilloscope_Display(Turn_PID.P,Turn_PID.D,Turn_PID.out,Turn_PID.err,speed_left,speed_right,imu660ra_gy
              -ro_z);
-   19   2              }
-   20   1              
+   20   2              }
    21   1              
-   22   1      }
+   22   1              
+   23   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       478     ------
+  code size            =       490     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

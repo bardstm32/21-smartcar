@@ -15,6 +15,7 @@ void main()
 	P77=1;
 	while (1)
 	{
+		Motor_SetSpeed(1800,-1800);
 		Oscilloscope_Display(Turn_PID.P,Turn_PID.D,Turn_PID.out,Turn_PID.err,speed_left,speed_right,imu660ra_gyro_z);
 	}
 	

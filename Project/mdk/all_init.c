@@ -5,7 +5,7 @@ void ALL_init()
 	gyro_init();
 	pwm_init(PWMA_CH1P_P60, 25000, 0);
 	pwm_init(PWMA_CH2P_P62, 25000, 0);
-	gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+	gpio_init(IO_P61, GPO, GPIO_LOW, GPO_PUSH_PULL);
 	gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 //	gpio_init(IO_P33, GPO, GPIO_HIGH, GPO_PUSH_PULL);
 	ips114_init();
