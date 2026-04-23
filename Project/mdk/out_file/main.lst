@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               22/04/26  19:49:02  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               23/04/26  22:18:05  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -10,39 +10,43 @@ COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS W
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          void main()
-    3          {
-    4   1              clock_init(SYSTEM_CLOCK_30M);
-    5   1              debug_init();
-    6   1              ALL_init();
-    7   1              PID_Init(&left_spid,  3.2, 0.6f,   0,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-    8   1              PID_Init(&right_spid, 3.0, 0.6f,   0,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-    9   1              PID_Init(&Turn_PID, 1.2, 0,120, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   10   1              gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
-   11   1              P77=1;
-   12   1              system_delay_ms(1);
-   13   1              P77=0;
-   14   1              system_delay_us(5);
-   15   1              P77=1;
-   16   1              while (1)
-   17   1              {
-   18   2                      Motor_SetSpeed(1800,-1800);
-   19   2                      Oscilloscope_Display(Turn_PID.P,Turn_PID.D,Turn_PID.out,Turn_PID.err,speed_left,speed_right,imu660ra_gy
-             -ro_z);
-   20   2              }
-   21   1              
-   22   1              
-   23   1      }
+    2          int ADC[5]={0};
+    3          
+    4          void main()
+    5          {
+    6   1              clock_init(SYSTEM_CLOCK_30M);
+    7   1              debug_init();
+    8   1              ALL_init();
+    9   1              PID_Init(&left_spid,  3.2,0, 0.6f,   0,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   10   1              PID_Init(&right_spid, 3.0,0,0.6f,   0,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              PID_Init(&Turn_PID,   0.20,0.0000785,0,4.05, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   12   1              gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
+   13   1      
+   14   1              P77=1;
+   15   1              system_delay_ms(1);
+   16   1              P77=0;
+   17   1              system_delay_us(5);
+   18   1              P77=1;
+   19   1              while (1)
+   20   1              {
+   21   2                      
+   22   2      //              Inductance_Read(ADC);
+   23   2      //              Oscilloscope_Display(Turn_PID.P,Turn_PID.D,Turn_PID.last_f_speed,ADC[2],ADC[3],ADC[4],elemid,Turn_PID
+             -.out);
+   24   2              }
+   25   1              
+   26   1              
+   27   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       490     ------
+  code size            =       398     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =    ------     ------
+  xdata size           =        10     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -52,7 +56,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =         2     ------
+  hconst size          =        17     ------
 End of Module Information.
 
 

@@ -14,7 +14,7 @@ PID_TypeDef right_spid;
 #define MAX_INC 150.0           // 2ms 周期下限制单次增量
 volatile int32 speed_left = 0;
 volatile int32 speed_right = 0;
-volatile uint16 adc_inductance[5] = {0};
+
 
 float elemid = 0; // 目标赛道偏差
 float eleOut_0 = 0; // 赛道偏差环输出值
@@ -27,9 +27,11 @@ float eleValue = 0;
 /**
  * @brief  PID初始化(通用)
  */
-void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, float max_i)
+void PID_Init(PID_TypeDef *pid, float kp, float kp2, float ki, float kd, float max_out, float max_i)
 {
     pid->Kp = kp;
+    pid->Kp2 = kp2;
+	
     pid->Ki = ki;
     pid->Kd = kd;
     pid->max_out = max_out;
@@ -41,10 +43,13 @@ void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, flo
     pid->last_err = 0;
     pid->prev_err = 0; // ——> 【新增】初始化上上次误差
     pid->P = 0;
+	pid->P2 = 0;
     pid->I = 0;
     pid->D = 0;
     pid->out = 0;
 	pid->last_f_speed=0;
+	
+
 }
 
 /**
@@ -60,10 +65,14 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
     
     // 比例项
     pid->P = pid->Kp * pid->err;  
+	pid->P2 = pid->Kp2 * pid->err*My_abs(pid->err);  
+
     // 微分项
     pid->D = pid->Kd * (pid->err - pid->last_err);  
     // 总输出+限幅
-    pid->out = pid->P + pid->D;   
+	pid->last_f_speed=pid->err - pid->last_err;
+	
+    pid->out = pid->P + pid->P2+ pid->D;   
     // 更新误差
     pid->last_err = pid->err;
     
@@ -78,6 +87,7 @@ void Dir_Control()
 	static int t = 0;
 	if(++t>=2)
 	{
+		t = 0;
 		// 外环（赛道偏差环）,具体正负号根据实际情况确定
 		eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
 		// 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
@@ -93,14 +103,14 @@ void Calculate_Differential_Drive() // 差速计算
 	// 计算左右轮目标速度
 	if(k >= 0) // 左转
 	{
-		left_spid.target = BASE_SPEED *(1+k*0.2);
+		left_spid.target = BASE_SPEED *(1+k*0.25);
 		right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
 	}
 	if(k < 0) // 右转
 	{
 		k *= -1;
 		left_spid.target = BASE_SPEED * (1 -k); // 加少减多
-		right_spid.target = BASE_SPEED * (1 + k*0.2);
+		right_spid.target = BASE_SPEED * (1 + k*0.25);
 	}
 }
 
@@ -131,14 +141,7 @@ void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
  */
 void Dual_Loop_Control(void)
 {
-    float left_speed;      // 左轮实际速度(编码器读取)
-    float right_speed;     // 右轮实际速度
     
-    Inductance_Read(adc_inductance);
-
-    elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
-    Dir_Control();
-    Calculate_Differential_Drive(&left_spid,&right_spid);
 
     speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
     speed_right = encoder_get_count(TIM3_ENCOEDER);              	

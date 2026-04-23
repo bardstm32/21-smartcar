@@ -3,7 +3,7 @@
 
 //===================== 全局宏定义 =====================//
 #define PWM_MAX             5000.0f   // 电机PWM最大限幅
-#define BASE_SPEED          100.0f    // 基础直行速度(可调)
+#define BASE_SPEED          150.0f    // 基础直行速度(可调)
 
 // 位置环(循迹外环)参数限幅
 #define POS_PID_MAX_OUT     600     // 位置环最大输出(左右轮速度差)
@@ -19,7 +19,8 @@ typedef struct
     float Kp; // 比例系数
     float Ki; // 积分系数
     float Kd; // 微分系数
-
+	float Kp2;
+	
     int32 target;        // 目标值
     float measure;       // 测量值
     float err;           // 当前误差
@@ -28,6 +29,7 @@ typedef struct
 	float last_f_speed;
 	
     float P;   // 比例项
+	float P2;
     float I;   // 积分项
     float D;   // 微分项
     float out; // 总输出
@@ -52,9 +54,11 @@ extern float eleOut_0;  // 赛道偏差环输出值
 
 
 //===================== 函数声明 =====================//
-void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float max_out, float max_i);
+void PID_Init(PID_TypeDef *pid, float kp, float kp2, float ki, float kd, float max_out, float max_i);
 float PID_Calc(PID_TypeDef *pid, float target, float measure);
 void Dual_Loop_Control(void);  // 双闭环核心控制函数
 void IncPID_Calc(PID_TypeDef *pid, int16 current_speed);
+void Calculate_Differential_Drive() ;// 差速计算
 
+void Dir_Control();
 #endif 

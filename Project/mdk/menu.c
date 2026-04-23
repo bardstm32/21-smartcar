@@ -121,7 +121,7 @@ void Oscilloscope_Init(void)
 
 // 示波器数据发送函数
 // 将两个通道的数据打包并通过无线串口发送到电脑端
-void Oscilloscope_Display(float num1, float num2,float num3,float num4,int32 num5,int32 num6,float num7,int32 num8)
+void Oscilloscope_Display(float num1, float num2,float num3,int16 num4,int32 num5,int32 num6,float num7,float num8)
 {
     seekfree_assistant_oscilloscope_data.dat[0] = num1; // 设置第一个通道的数据
     seekfree_assistant_oscilloscope_data.dat[1] = num2; // 设置第二个通道的数据
