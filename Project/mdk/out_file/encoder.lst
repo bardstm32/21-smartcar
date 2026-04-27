@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            23/04/26  22:15:54  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            23/04/26  22:59:28  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -56,9 +56,8 @@ stmt  level    source
    42          
    43          void pit_handler4 (void)
    44          {
-   45   1      Dual_Loop_Control();
-   46   1      
-   47   1      }
+   45   1              Dual_Loop_Control();
+   46   1      }
 
 
 Module Information          Static   Overlayable
@@ -67,9 +66,9 @@ Module Information          Static   Overlayable
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
-C251 COMPILER V5.60.0,  encoder                                                            23/04/26  22:15:54  PAGE 2   
-
   pdata size           =    ------     ------
+C251 COMPILER V5.60.0,  encoder                                                            23/04/26  22:59:28  PAGE 2   
+
   xdata size           =        10     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------

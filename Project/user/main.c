@@ -1,6 +1,6 @@
 #include "zf_common_headfile.h"
 int ADC[5]={0};
-
+uint16 state = 0;
 void main()
 {
 	clock_init(SYSTEM_CLOCK_30M);
@@ -19,8 +19,16 @@ void main()
 	while (1)
 	{
 		
-//		Inductance_Read(ADC);
-//		Oscilloscope_Display(Turn_PID.P,Turn_PID.D,Turn_PID.last_f_speed,ADC[2],ADC[3],ADC[4],elemid,Turn_PID.out);
+		//Inductance_Read(ADC);
+		//Oscilloscope_Display(Turn_PID.P,Turn_PID.D,ADC[1],ADC[2],ADC[3],ADC[4],elemid,Turn_PID.out);
+		if((state != 1) &&(adc_inductance[4]>=58) && (adc_inductance[1]>=50))
+		{
+			EA = 0;
+			Motor_SetSpeed(1500,800);
+			system_delay_ms(50);
+			EA = 1;
+			state = 1;
+		}
 	}
 	
 	

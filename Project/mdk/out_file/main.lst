@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               23/04/26  22:18:05  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               23/04/26  23:21:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -11,7 +11,7 @@ stmt  level    source
 
     1          #include "zf_common_headfile.h"
     2          int ADC[5]={0};
-    3          
+    3          uint16 state = 0;
     4          void main()
     5          {
     6   1              clock_init(SYSTEM_CLOCK_30M);
@@ -21,7 +21,7 @@ stmt  level    source
    10   1              PID_Init(&right_spid, 3.0,0,0.6f,   0,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    11   1              PID_Init(&Turn_PID,   0.20,0.0000785,0,4.05, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    12   1              gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
-   13   1      
+   13   1              
    14   1              P77=1;
    15   1              system_delay_ms(1);
    16   1              P77=0;
@@ -30,23 +30,30 @@ stmt  level    source
    19   1              while (1)
    20   1              {
    21   2                      
-   22   2      //              Inductance_Read(ADC);
-   23   2      //              Oscilloscope_Display(Turn_PID.P,Turn_PID.D,Turn_PID.last_f_speed,ADC[2],ADC[3],ADC[4],elemid,Turn_PID
-             -.out);
-   24   2              }
-   25   1              
-   26   1              
-   27   1      }
+   22   2                      //Inductance_Read(ADC);
+   23   2                      //Oscilloscope_Display(Turn_PID.P,Turn_PID.D,ADC[1],ADC[2],ADC[3],ADC[4],elemid,Turn_PID.out);
+   24   2                      if((state != 1) &&(adc_inductance[4]>=58) && (adc_inductance[1]>=50))
+   25   2                      {
+   26   3                              EA = 0;
+   27   3                              Motor_SetSpeed(1500,800);
+   28   3                              system_delay_ms(50);
+   29   3                              EA = 1;
+   30   3                              state = 1;
+   31   3                      }
+   32   2              }
+   33   1              
+   34   1              
+   35   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       398     ------
+  code size            =       474     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        10     ------
+  xdata size           =        12     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -56,7 +63,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        17     ------
+  hconst size          =        24     ------
 End of Module Information.
 
 

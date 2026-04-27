@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  trank                                                              23/04/26  22:17:32  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              23/04/26  22:59:28  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
@@ -66,7 +66,7 @@ stmt  level    source
    53   1      }
    54          
    55          /**
-C251 COMPILER V5.60.0,  trank                                                              23/04/26  22:17:32  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              23/04/26  22:59:28  PAGE 2   
 
    56           * @brief  通用位置式PID计算
    57           */
@@ -134,7 +134,7 @@ stmt  level    source
   119          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
   120          {
   121   1          // 1. 计算当前误差
-C251 COMPILER V5.60.0,  trank                                                              23/04/26  22:17:32  PAGE 3   
+C251 COMPILER V5.60.0,  trank                                                              23/04/26  22:59:28  PAGE 3   
 
   122   1          pid->err = pid->target - current_speed;
   123   1              pid->I=pid->Ki * pid->err;      

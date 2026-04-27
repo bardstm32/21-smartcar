@@ -36,8 +36,6 @@
 #include "zf_common_clock.h"
 #include "zf_driver_pit.h"
 
-#pragma warning disable = 183
-#pragma warning disable = 177
 
 //-------------------------------------------------------------------------------------------------------------------
 //  @brief      定时器周期中断

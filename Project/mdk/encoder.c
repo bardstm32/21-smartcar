@@ -42,6 +42,5 @@ void pit_handler (void)
 
 void pit_handler4 (void)
 {
-Dual_Loop_Control();
-
+	Dual_Loop_Control();
 }
