@@ -1,35 +1,118 @@
-C251 COMPILER V5.60.0,  element                                                            23/04/26  22:55:29  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            27/04/26  13:10:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
 OBJECT MODULE PLACED IN .\out_file\element.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE element.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE element.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
                     -(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\
                     -code) DEBUG PRINT(.\out_file\element.lst) OBJECT(.\out_file\element.obj) 
 
 stmt  level    source
 
+    1          #include "element.h"
+*** ERROR C25 IN LINE 21 OF element.h: syntax error near '*'
+    2          
+    3          // 状态与偏差全局定义
+    4          TrackState_e TrackState = NORMAL;
+    5          
+    6          // 核心阈值定义
+    7          #define THRES_CROSS 800  // 十字路口远端阈值
+    8          #define THRES_ROUND 1200 // 环岛触发阈值
+    9          #define PITCH_RAMP 12.0  // 坡道触发俯仰角
+   10          #define PITCH_SEE 6.0    // 跷跷板触发角
+   11          #define ROLL_ROLLER 15.0 // 滚筒横滚角阈值
+   12          #define WALL_SUM_LOW 200 // 墙面信号骤减阈值
+   13          
+   14          void Element_Control(uint16_t *param)
+*** ERROR C25 IN LINE 14 OF element.c: syntax error near '*'
+   15          {
+   16   1      
+   17   1          switch (TrackState)
+   18   1          {
+   19   2      
+   20   2          case NORMAL:
+   21   2              // --- 滚筒判定：依据 Roll 角 ---
+   22   2              if (fabs(Roll) > ROLL_ROLLER)
+*** ERROR C67 IN LINE 22 OF element.c: 'Roll': undefined identifier
+   23   2              {
+   24   3                  TrackState = ROLLER;
+   25   3              }
+   26   2              // --- 竖直墙面判定：电感集体失灵，但姿态平稳 ---
+   27   2              else if (total_sum < WALL_SUM_LOW && fabs(Pitch) < 3.0)
+*** ERROR C67 IN LINE 27 OF element.c: 'total_sum': undefined identifier
+*** ERROR C67 IN LINE 27 OF element.c: 'Pitch': undefined identifier
+   28   2              {
+   29   3                  TrackState = WALL;
+   30   3              }
+   31   2              // --- 坡道与跷跷板判定：依据 Pitch 角 ---
+   32   2              else if (Pitch > PITCH_SEE)
+*** ERROR C67 IN LINE 32 OF element.c: 'Pitch': undefined identifier
+   33   2              {
+   34   3                  // 坡道倾角通常较大且稳定，跷跷板会有明显的入板冲击（Pitch变化率�
+             -��）
+   35   3                  if (Pitch > PITCH_RAMP)
+*** ERROR C67 IN LINE 35 OF element.c: 'Pitch': undefined identifier
+   36   3                      TrackState = RAMP;
+*** ERROR C67 IN LINE 36 OF element.c: 'RAMP': undefined identifier
+   37   3                  else
+   38   3                      TrackState = SEESAW;
+   39   3              }
+   40   2              // --- 环岛判定：单侧远端电感激增 ---
+   41   2              else if (param[0] > THRES_ROUND || param[3] > THRES_ROUND)
+*** ERROR C67 IN LINE 41 OF element.c: 'param': undefined identifier
+*** ERROR C67 IN LINE 41 OF element.c: 'param': undefined identifier
+   42   2              {
+   43   3                  TrackState = ROUNDABOUT;
+   44   3              }
+   45   2              // --- 十字判定：两侧远端电感同时激增 ---
+   46   2              else if (param[0] > THRES_CROSS && param[3] > THRES_CROSS)
+C251 COMPILER V5.60.0,  element                                                            27/04/26  13:10:23  PAGE 2   
 
+*** ERROR C67 IN LINE 46 OF element.c: 'param': undefined identifier
+*** ERROR C67 IN LINE 46 OF element.c: 'param': undefined identifier
+   47   2              {
+   48   3                  TrackState = CROSS;
+   49   3              }
+   50   2              break;
+   51   2      
+   52   2          case WALL:
+   53   2              // 墙面逻辑：通常保持直行，建议锁定 TrackError = 0 或保持上一次值
+   54   2              if (total_sum > 400)
+*** ERROR C67 IN LINE 54 OF element.c: 'total_sum': undefined identifier
+   55   2                  TrackState = NORMAL;
+   56   2              break;
+   57   2      
+   58   2          case ROLLER:
+   59   2              // 滚筒逻辑：车身倾斜，巡线偏差需要根据 Roll 角进行物理补偿
+   60   2              if (fabs(Roll) < 5.0)
+*** ERROR C67 IN LINE 60 OF element.c: 'Roll': undefined identifier
+   61   2                  TrackState = NORMAL;
+   62   2              break;
+   63   2      
+   64   2          case SEESAW:
+   65   2              // 跷跷板逻辑：检测到 Pitch 反转（从正变负）代表过支点，准备下板
+   66   2              if (Pitch < -2.0)
+*** ERROR C67 IN LINE 66 OF element.c: 'Pitch': undefined identifier
+   67   2                  TrackState = NORMAL;
+   68   2              break;
+   69   2      
+   70   2          case ROUNDABOUT:
+   71   2              // 环岛逻辑：此处可配合 Gyro_Z 积分判断转向度数，判定出环
+   72   2              // 简单逻辑：两侧电感恢复正常分布则退出
+   73   2              if (param[0] < 300 && param[3] < 300)
+*** ERROR C67 IN LINE 73 OF element.c: 'param': undefined identifier
+*** ERROR C67 IN LINE 73 OF element.c: 'param': undefined identifier
+   74   2                  TrackState = NORMAL;
+   75   2              break;
+   76   2      
+   77   2          case CROSS:
+   78   2              // 十字逻辑：远端信号消失后回归直道
+   79   2              if (param[0] < THRES_CROSS && param[3] < THRES_CROSS)
+*** ERROR C67 IN LINE 79 OF element.c: 'param': undefined identifier
+*** ERROR C67 IN LINE 79 OF element.c: 'param': undefined identifier
+   80   2                  TrackState = NORMAL;
+   81   2              break;
+   82   2          }
+   83   1      }
 
-Module Information          Static   Overlayable
-------------------------------------------------
-  code size            =    ------     ------
-  ecode size           =    ------     ------
-  data size            =    ------     ------
-  idata size           =    ------     ------
-  pdata size           =    ------     ------
-  xdata size           =    ------     ------
-  xdata-const size     =    ------     ------
-  edata size           =    ------     ------
-  bit size             =    ------     ------
-  ebit size            =    ------     ------
-  bitaddressable size  =    ------     ------
-  ebitaddressable size =    ------     ------
-  far data size        =    ------     ------
-  huge data size       =    ------     ------
-  const size           =    ------     ------
-  hconst size          =    ------     ------
-End of Module Information.
-
-
-C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C251 COMPILATION COMPLETE.  0 WARNING(S),  19 ERROR(S)

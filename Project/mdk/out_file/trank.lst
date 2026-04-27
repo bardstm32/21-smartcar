@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  trank                                                              23/04/26  22:59:28  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              27/04/26  12:49:45  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
 OBJECT MODULE PLACED IN .\out_file\trank.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
                     -.\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\co
                     -de) DEBUG PRINT(.\out_file\trank.lst) OBJECT(.\out_file\trank.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53   1      }
    54          
    55          /**
-C251 COMPILER V5.60.0,  trank                                                              23/04/26  22:59:28  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              27/04/26  12:49:45  PAGE 2   
 
    56           * @brief  通用位置式PID计算
    57           */
@@ -134,7 +134,7 @@ stmt  level    source
   119          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
   120          {
   121   1          // 1. 计算当前误差
-C251 COMPILER V5.60.0,  trank                                                              23/04/26  22:59:28  PAGE 3   
+C251 COMPILER V5.60.0,  trank                                                              27/04/26  12:49:45  PAGE 3   
 
   122   1          pid->err = pid->target - current_speed;
   123   1              pid->I=pid->Ki * pid->err;      
