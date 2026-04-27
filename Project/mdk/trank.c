@@ -21,9 +21,7 @@ float eleOut_0 = 0; // 赛道偏差环输出值
 float eleOut_1 = 0; // 偏航角速度环输出值
 int Gyro_Z = 0; // 实际偏航角速度
 float eleValue = 0;
-
-
-
+volatile float Turn_target = 0;
 /**
  * @brief  PID初始化(通用)
  */
@@ -89,8 +87,8 @@ void Dir_Control()
 	{
 		t = 0;
 		// 外环（赛道偏差环）,具体正负号根据实际情况确定
-		eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
-		// 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
+        eleOut_0 = PID_Calc(&Turn_PID, Turn_target, elemid);
+        // 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
 		eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
 	}
 }

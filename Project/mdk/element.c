@@ -16,32 +16,28 @@ TrackState_e TrackState = NORMAL;
 // 注意这里：把 int16_t 改成了 int16
 void Element_Control(int16 *param)
 {
-    // 注意这里：把 int32_t 改成了 int32
     int32 total_sum = param[0] + param[1] + param[2] + param[3];
-
     switch (TrackState)
     {
     case NORMAL:
         // --- 滚筒判定：依据 Roll 角 ---
-        if (fabs(first_complement.angle.roll) > ROLL_ROLLER)
+        if (fabs(first_complement.angle.roll) > ROLL_ROLLER) // 滚筒不只是角度变化，电感值也会突变后续根据实际情况判断
         {
             TrackState = ROLLER;
         }
         // --- 竖直墙面判定：电感集体失灵，但姿态平稳 ---
-        else if (total_sum < WALL_SUM_LOW && fabs(first_complement.angle.pitch) < 3.0)
+        else if (total_sum < WALL_SUM_LOW && fabs(first_complement.angle.roll) >= 60)
         {
             TrackState = WALL;
         }
-        // --- 坡道与跷跷板判定：依据 Pitch 角 ---
+        /* ---跷跷板判定：依据 Pitch 角 ---正常不需要判断跷跷板可以直接飞过去
         else if (first_complement.angle.pitch > PITCH_SEE)
         {
-            if (first_complement.angle.pitch > PITCH_RAMP)
-                TrackState = RAMP;
-            else
                 TrackState = SEESAW;
         }
+        */
         // --- 环岛判定：单侧远端电感激增 ---
-        else if (param[0] > THRES_ROUND || param[3] > THRES_ROUND)
+        else if ((param[1] > 50) && (param[4] > 58))
         {
             TrackState = ROUNDABOUT;
         }
@@ -53,17 +49,12 @@ void Element_Control(int16 *param)
         break;
 
     case WALL:
-        if (total_sum > 400)
+        if (first_complement.angle.roll <= 5)
             TrackState = NORMAL;
         break;
 
     case ROLLER:
         if (fabs(first_complement.angle.roll) < 5.0)
-            TrackState = NORMAL;
-        break;
-
-    case SEESAW:
-        if (first_complement.angle.pitch < -2.0)
             TrackState = NORMAL;
         break;
 

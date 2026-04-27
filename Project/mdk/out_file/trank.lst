@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  trank                                                              27/04/26  12:49:45  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              27/04/26  16:24:44  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
@@ -34,159 +34,157 @@ stmt  level    source
    21          float eleOut_1 = 0; // 偏航角速度环输出值
    22          int Gyro_Z = 0; // 实际偏航角速度
    23          float eleValue = 0;
-   24          
-   25          
-   26          
-   27          /**
-   28           * @brief  PID初始化(通用)
-   29           */
-   30          void PID_Init(PID_TypeDef *pid, float kp, float kp2, float ki, float kd, float max_out, float max_i)
-   31          {
-   32   1          pid->Kp = kp;
-   33   1          pid->Kp2 = kp2;
-   34   1              
-   35   1          pid->Ki = ki;
-   36   1          pid->Kd = kd;
-   37   1          pid->max_out = max_out;
-   38   1          pid->max_i = max_i;
-   39   1      
-   40   1          pid->target =0;
-   41   1          pid->measure = 0;
-   42   1          pid->err = 0;
-   43   1          pid->last_err = 0;
-   44   1          pid->prev_err = 0; // ——> 【新增】初始化上上次误差
-   45   1          pid->P = 0;
-   46   1              pid->P2 = 0;
-   47   1          pid->I = 0;
-   48   1          pid->D = 0;
-   49   1          pid->out = 0;
-   50   1              pid->last_f_speed=0;
-   51   1              
-   52   1      
-   53   1      }
-   54          
-   55          /**
-C251 COMPILER V5.60.0,  trank                                                              27/04/26  12:49:45  PAGE 2   
+   24          volatile float Turn_target = 0;
+   25          /**
+   26           * @brief  PID初始化(通用)
+   27           */
+   28          void PID_Init(PID_TypeDef *pid, float kp, float kp2, float ki, float kd, float max_out, float max_i)
+   29          {
+   30   1          pid->Kp = kp;
+   31   1          pid->Kp2 = kp2;
+   32   1              
+   33   1          pid->Ki = ki;
+   34   1          pid->Kd = kd;
+   35   1          pid->max_out = max_out;
+   36   1          pid->max_i = max_i;
+   37   1      
+   38   1          pid->target =0;
+   39   1          pid->measure = 0;
+   40   1          pid->err = 0;
+   41   1          pid->last_err = 0;
+   42   1          pid->prev_err = 0; // ——> 【新增】初始化上上次误差
+   43   1          pid->P = 0;
+   44   1              pid->P2 = 0;
+   45   1          pid->I = 0;
+   46   1          pid->D = 0;
+   47   1          pid->out = 0;
+   48   1              pid->last_f_speed=0;
+   49   1              
+   50   1      
+   51   1      }
+   52          
+   53          /**
+   54           * @brief  通用位置式PID计算
+   55           */
+C251 COMPILER V5.60.0,  trank                                                              27/04/26  16:24:44  PAGE 2   
 
-   56           * @brief  通用位置式PID计算
-   57           */
-   58          float PID_Calc(PID_TypeDef *pid, float target, float measure)
-   59          {
-   60   1          pid->target = target;
-   61   1          pid->measure = measure;
-   62   1          
-   63   1          // 计算误差
-   64   1          pid->err = pid->target - pid->measure;
-   65   1          
-   66   1          // 比例项
-   67   1          pid->P = pid->Kp * pid->err;  
-   68   1              pid->P2 = pid->Kp2 * pid->err*My_abs(pid->err);  
-   69   1      
-   70   1          // 微分项
-   71   1          pid->D = pid->Kd * (pid->err - pid->last_err);  
-   72   1          // 总输出+限幅
-   73   1              pid->last_f_speed=pid->err - pid->last_err;
-   74   1              
-   75   1          pid->out = pid->P + pid->P2+ pid->D;   
-   76   1          // 更新误差
-   77   1          pid->last_err = pid->err;
-   78   1          
-   79   1          return pid->out;
-   80   1      }
-   81          
-   82          /**
-   83           * @brief 方向环控制函数
-   84           */
-   85          void Dir_Control()
-   86          {
-   87   1              static int t = 0;
-   88   1              if(++t>=2)
-   89   1              {
-   90   2                      t = 0;
-   91   2                      // 外环（赛道偏差环）,具体正负号根据实际情况确定
-   92   2                      eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
-   93   2                      // 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
-   94   2                      eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
-   95   2              }
-   96   1      }
-   97          
-   98          void Calculate_Differential_Drive() // 差速计算
-   99          {
-  100   1              float k = 0; // 差速比例系数
-  101   1              k = eleOut_0 * 0.0001f; // 缩放成 -1 ~ 1
-  102   1              k = range_protect_float(k, -0.65, 0.65); // 限制到 -0.65 ~ 0.65，实现差速限幅
-  103   1              // 计算左右轮目标速度
-  104   1              if(k >= 0) // 左转
-  105   1              {
-  106   2                      left_spid.target = BASE_SPEED *(1+k*0.25);
-  107   2                      right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
-  108   2              }
-  109   1              if(k < 0) // 右转
-  110   1              {
-  111   2                      k *= -1;
-  112   2                      left_spid.target = BASE_SPEED * (1 -k); // 加少减多
-  113   2                      right_spid.target = BASE_SPEED * (1 + k*0.25);
-  114   2              }
-  115   1      }
-  116          
-  117          // 增量式PID计算函数
-  118          // 公式: ΔU = Kp*(e(k) - e(k-1)) + Ki*e(k)
-  119          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
-  120          {
-  121   1          // 1. 计算当前误差
-C251 COMPILER V5.60.0,  trank                                                              27/04/26  12:49:45  PAGE 3   
+   56          float PID_Calc(PID_TypeDef *pid, float target, float measure)
+   57          {
+   58   1          pid->target = target;
+   59   1          pid->measure = measure;
+   60   1          
+   61   1          // 计算误差
+   62   1          pid->err = pid->target - pid->measure;
+   63   1          
+   64   1          // 比例项
+   65   1          pid->P = pid->Kp * pid->err;  
+   66   1              pid->P2 = pid->Kp2 * pid->err*My_abs(pid->err);  
+   67   1      
+   68   1          // 微分项
+   69   1          pid->D = pid->Kd * (pid->err - pid->last_err);  
+   70   1          // 总输出+限幅
+   71   1              pid->last_f_speed=pid->err - pid->last_err;
+   72   1              
+   73   1          pid->out = pid->P + pid->P2+ pid->D;   
+   74   1          // 更新误差
+   75   1          pid->last_err = pid->err;
+   76   1          
+   77   1          return pid->out;
+   78   1      }
+   79          
+   80          /**
+   81           * @brief 方向环控制函数
+   82           */
+   83          void Dir_Control()
+   84          {
+   85   1              static int t = 0;
+   86   1              if(++t>=2)
+   87   1              {
+   88   2                      t = 0;
+   89   2                      // 外环（赛道偏差环）,具体正负号根据实际情况确定
+   90   2              eleOut_0 = PID_Calc(&Turn_PID, Turn_target, elemid);
+   91   2              // 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
+   92   2                      eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
+   93   2              }
+   94   1      }
+   95          
+   96          void Calculate_Differential_Drive() // 差速计算
+   97          {
+   98   1              float k = 0; // 差速比例系数
+   99   1              k = eleOut_0 * 0.0001f; // 缩放成 -1 ~ 1
+  100   1              k = range_protect_float(k, -0.65, 0.65); // 限制到 -0.65 ~ 0.65，实现差速限幅
+  101   1              // 计算左右轮目标速度
+  102   1              if(k >= 0) // 左转
+  103   1              {
+  104   2                      left_spid.target = BASE_SPEED *(1+k*0.25);
+  105   2                      right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
+  106   2              }
+  107   1              if(k < 0) // 右转
+  108   1              {
+  109   2                      k *= -1;
+  110   2                      left_spid.target = BASE_SPEED * (1 -k); // 加少减多
+  111   2                      right_spid.target = BASE_SPEED * (1 + k*0.25);
+  112   2              }
+  113   1      }
+  114          
+  115          // 增量式PID计算函数
+  116          // 公式: ΔU = Kp*(e(k) - e(k-1)) + Ki*e(k)
+  117          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
+  118          {
+  119   1          // 1. 计算当前误差
+  120   1          pid->err = pid->target - current_speed;
+  121   1              pid->I=pid->Ki * pid->err;      
+C251 COMPILER V5.60.0,  trank                                                              27/04/26  16:24:44  PAGE 3   
 
-  122   1          pid->err = pid->target - current_speed;
-  123   1              pid->I=pid->Ki * pid->err;      
-  124   1      
-  125   1          // 2. 计算输出增量 (ΔU)
-  126   1         pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
-  127   1      
-  128   1          // 3. 累加增量得到最终实际输出
-  129   1          pid->out += pid->inc_out;
-  130   1          // 4. 输出限幅 (防止PWM跑飞)
-  131   1          if (pid->out > pid->max_out)
-  132   1              pid->out = pid->max_out;
-  133   1          if (pid->out < -pid->max_out)
-  134   1              pid->out = -pid->max_out;
-  135   1              pid->last_err=pid->err;
-  136   1      }
-  137          
-  138          /**
-  139           * @brief  双闭环循迹控制(核心函数)
-  140           * 流程：电感差比和 → 位置环 → 左右轮目标速度 → 速度环 → 电机PWM
-  141           */
-  142          void Dual_Loop_Control(void)
-  143          {
-  144   1          
-  145   1      
-  146   1          speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
-  147   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
-  148   1              
-  149   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
-  150   1          encoder_clear_count(TIM3_ENCOEDER);
-  151   1      
-  152   1          IncPID_Calc(&left_spid,speed_left);
-  153   1          IncPID_Calc(&right_spid,speed_right);
-  154   1      
-  155   1          //    //===================== 6. 输出到电机 =====================//
-  156   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
-  157   1      }
+  122   1      
+  123   1          // 2. 计算输出增量 (ΔU)
+  124   1         pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
+  125   1      
+  126   1          // 3. 累加增量得到最终实际输出
+  127   1          pid->out += pid->inc_out;
+  128   1          // 4. 输出限幅 (防止PWM跑飞)
+  129   1          if (pid->out > pid->max_out)
+  130   1              pid->out = pid->max_out;
+  131   1          if (pid->out < -pid->max_out)
+  132   1              pid->out = -pid->max_out;
+  133   1              pid->last_err=pid->err;
+  134   1      }
+  135          
+  136          /**
+  137           * @brief  双闭环循迹控制(核心函数)
+  138           * 流程：电感差比和 → 位置环 → 左右轮目标速度 → 速度环 → 电机PWM
+  139           */
+  140          void Dual_Loop_Control(void)
+  141          {
+  142   1          
+  143   1      
+  144   1          speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
+  145   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
+  146   1              
+  147   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
+  148   1          encoder_clear_count(TIM3_ENCOEDER);
+  149   1      
+  150   1          IncPID_Calc(&left_spid,speed_left);
+  151   1          IncPID_Calc(&right_spid,speed_right);
+  152   1      
+  153   1          //    //===================== 6. 输出到电机 =====================//
+  154   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
+  155   1      }
+  156          
+  157          
   158          
   159          
   160          
-  161          
-  162          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      2244     ------
+  code size            =      2252     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =       350     ------
+  xdata size           =       354     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -196,7 +194,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        68     ------
+  hconst size          =        77     ------
 End of Module Information.
 
 

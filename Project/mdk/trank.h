@@ -45,7 +45,7 @@ extern PID_TypeDef right_spid;// 右轮速度环PID
 
 extern volatile int32 speed_left;
 extern volatile int32 speed_right;
-
+extern volatile float Turn_target;
 extern float elemid;    // 赛道偏差
 extern float eleOut_0;  // 赛道偏差环输出值
 
