@@ -1,7 +1,3 @@
-@echo off
-cd /d "%~dp0"
-
-echo Adding files...
 git add *
 
 echo Committing...
