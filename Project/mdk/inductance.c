@@ -146,7 +146,7 @@ void Inductance_Read(uint16 *inductance_norm_data)
     } 
 		 
     inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3680, 0);
-    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3670, 3);
+    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3680, 3);
     inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3680, 1);
-    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 2610, 0);
+    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3680, 0);
 }

@@ -139,8 +139,6 @@ void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
  */
 void Dual_Loop_Control(void)
 {
-    
-
     speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
     speed_right = encoder_get_count(TIM3_ENCOEDER);              	
 	

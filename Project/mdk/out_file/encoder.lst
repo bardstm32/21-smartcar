@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            27/04/26  16:25:06  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            30/04/26  20:11:12  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -30,8 +30,8 @@ stmt  level    source
    19          {
    20   1              tim1_irq_handler = pit_handler;
    21   1              tim4_irq_handler = pit_handler4;
-   22   1              pit_ms_init(PIT_CH, 5);
-   23   1              pit_ms_init(PIT_CH4, 2);
+   22   1      //      pit_ms_init(PIT_CH, 5);
+   23   1      //      pit_ms_init(PIT_CH4, 2);
    24   1      
    25   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
    26   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
@@ -53,24 +53,23 @@ stmt  level    source
    41          void pit_handler4(void)
    42          {
    43   1              Dual_Loop_Control();
-   44   1              switch (TrackState)
-   45   1              {
-   46   2              case ROUNDABOUT:
-   47   2                      Turn_target = 100; // 暴力拉进环岛
-   48   2                      break;
-   49   2              case NORMAL:
-   50   2                      Turn_target = 0; // 正常状态，不做任何操作
-   51   2                      break;
-   52   2                      // NORMAL等其他状态不写，代表保持正常的 Turn_Out
-   53   2              }
-   54   1      }
+   44   1      //      switch (TrackState)
+   45   1      //      {
+   46   1      //              case ROUNDABOUT:
+   47   1      //                      Turn_target = 100; // 暴力拉进环岛
+   48   1      //                      break;
+   49   1      //              case NORMAL:
+   50   1      //                      Turn_target = 0; // 正常状态，不做任何操作
+   51   1      //                      break;
+   52   1      //      }
+   53   1      }
 
-
-C251 COMPILER V5.60.0,  encoder                                                            27/04/26  16:25:06  PAGE 2   
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       223     ------
+C251 COMPILER V5.60.0,  encoder                                                            30/04/26  20:11:12  PAGE 2   
+
+  code size            =       108     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

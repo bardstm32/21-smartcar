@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  trank                                                              27/04/26  16:24:44  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              30/04/26  20:11:12  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
@@ -66,7 +66,7 @@ stmt  level    source
    53          /**
    54           * @brief  通用位置式PID计算
    55           */
-C251 COMPILER V5.60.0,  trank                                                              27/04/26  16:24:44  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              30/04/26  20:11:12  PAGE 2   
 
    56          float PID_Calc(PID_TypeDef *pid, float target, float measure)
    57          {
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          // 1. 计算当前误差
   120   1          pid->err = pid->target - current_speed;
   121   1              pid->I=pid->Ki * pid->err;      
-C251 COMPILER V5.60.0,  trank                                                              27/04/26  16:24:44  PAGE 3   
+C251 COMPILER V5.60.0,  trank                                                              30/04/26  20:11:12  PAGE 3   
 
   122   1      
   123   1          // 2. 计算输出增量 (ΔU)
@@ -156,25 +156,23 @@ stmt  level    source
   139           */
   140          void Dual_Loop_Control(void)
   141          {
-  142   1          
-  143   1      
-  144   1          speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
-  145   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
-  146   1              
-  147   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
-  148   1          encoder_clear_count(TIM3_ENCOEDER);
-  149   1      
-  150   1          IncPID_Calc(&left_spid,speed_left);
-  151   1          IncPID_Calc(&right_spid,speed_right);
-  152   1      
-  153   1          //    //===================== 6. 输出到电机 =====================//
-  154   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
-  155   1      }
+  142   1          speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
+  143   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
+  144   1              
+  145   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
+  146   1          encoder_clear_count(TIM3_ENCOEDER);
+  147   1      
+  148   1          IncPID_Calc(&left_spid,speed_left);
+  149   1          IncPID_Calc(&right_spid,speed_right);
+  150   1      
+  151   1          //    //===================== 6. 输出到电机 =====================//
+  152   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
+  153   1      }
+  154          
+  155          
   156          
   157          
   158          
-  159          
-  160          
 
 
 Module Information          Static   Overlayable

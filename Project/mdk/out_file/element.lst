@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            27/04/26  16:24:45  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            30/04/26  20:11:13  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -33,12 +33,12 @@ stmt  level    source
    22   2          case NORMAL:
    23   2              // --- 滚筒判定：依据 Roll 角 ---
    24   2              if (fabs(first_complement.angle.roll) > ROLL_ROLLER) // 滚筒不只是角度变化，电感值�
-             -�会突变
+             -�会突变后续根据实际情况判断
    25   2              {
    26   3                  TrackState = ROLLER;
    27   3              }
    28   2              // --- 竖直墙面判定：电感集体失灵，但姿态平稳 ---
-   29   2              else if (total_sum < WALL_SUM_LOW && fabs(first_complement.angle.pitch) < 3.0)
+   29   2              else if (total_sum < WALL_SUM_LOW && fabs(first_complement.angle.roll) >= 60)
    30   2              {
    31   3                  TrackState = WALL;
    32   3              }
@@ -61,38 +61,33 @@ stmt  level    source
    49   2              break;
    50   2      
    51   2          case WALL:
-   52   2              if (total_sum > 400)
+   52   2              if (first_complement.angle.roll <= 5)
    53   2                  TrackState = NORMAL;
    54   2              break;
    55   2      
    56   2          case ROLLER:
-C251 COMPILER V5.60.0,  element                                                            27/04/26  16:24:45  PAGE 2   
+C251 COMPILER V5.60.0,  element                                                            30/04/26  20:11:13  PAGE 2   
 
    57   2              if (fabs(first_complement.angle.roll) < 5.0)
    58   2                  TrackState = NORMAL;
    59   2              break;
    60   2      
-   61   2          case SEESAW:
-   62   2              if (first_complement.angle.pitch < -2.0)
+   61   2          case ROUNDABOUT:
+   62   2              if (param[0] < 300 && param[3] < 300)
    63   2                  TrackState = NORMAL;
    64   2              break;
    65   2      
-   66   2          case ROUNDABOUT:
-   67   2              if (param[0] < 300 && param[3] < 300)
+   66   2          case CROSS:
+   67   2              if (param[0] < THRES_CROSS && param[3] < THRES_CROSS)
    68   2                  TrackState = NORMAL;
    69   2              break;
-   70   2      
-   71   2          case CROSS:
-   72   2              if (param[0] < THRES_CROSS && param[3] < THRES_CROSS)
-   73   2                  TrackState = NORMAL;
-   74   2              break;
-   75   2          }
-   76   1      }
+   70   2          }
+   71   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       578     ------
+  code size            =       541     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

@@ -19,16 +19,16 @@ void main()
 	while (1)
 	{
 		
-		//Inductance_Read(ADC);
-		//Oscilloscope_Display(Turn_PID.P,Turn_PID.D,ADC[1],ADC[2],ADC[3],ADC[4],elemid,Turn_PID.out);
-		if((state != 1) &&(adc_inductance[4]>=58) && (adc_inductance[1]>=50))
-		{
-			EA = 0;
-			Motor_SetSpeed(1500,800);
-			system_delay_ms(50);
-			EA = 1;
-			state = 1;
-		}
+		Inductance_Read(ADC);
+		Oscilloscope_Display(adc_convert(L1),adc_convert(L2),adc_convert(L3),adc_convert(L4),ADC[1],ADC[2],ADC[3],ADC[4]);
+//		if((state != 1) &&(adc_inductance[4]>=58) && (adc_inductance[1]>=50))
+//		{
+//			EA = 0;
+//			Motor_SetSpeed(1500,800);
+//			system_delay_ms(50);
+//			EA = 1;
+//			state = 1;
+//		}
 	}
 	
 	

@@ -19,8 +19,8 @@ void encoder_init()
 {
 	tim1_irq_handler = pit_handler;
 	tim4_irq_handler = pit_handler4;
-	pit_ms_init(PIT_CH, 5);
-	pit_ms_init(PIT_CH4, 2);
+//	pit_ms_init(PIT_CH, 5);
+//	pit_ms_init(PIT_CH4, 2);
 
 	encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
 	encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
@@ -41,13 +41,13 @@ void pit_handler(void)
 void pit_handler4(void)
 {
 	Dual_Loop_Control();
-	switch (TrackState)
-	{
-		case ROUNDABOUT:
-			Turn_target = 100; // 暴力拉进环岛
-			break;
-		case NORMAL:
-			Turn_target = 0; // 正常状态，不做任何操作
-			break;
-	}
+//	switch (TrackState)
+//	{
+//		case ROUNDABOUT:
+//			Turn_target = 100; // 暴力拉进环岛
+//			break;
+//		case NORMAL:
+//			Turn_target = 0; // 正常状态，不做任何操作
+//			break;
+//	}
 }
