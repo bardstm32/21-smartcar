@@ -141,18 +141,10 @@ void IMU_YAW_integral()
     }
     else
     {
-        IMU_Handle_180();
-        IMU_Handle_360();
-        IMU_Handle_0();
-    }
-
-    if (IMU_Data.gyro_x < 0.015 && IMU_Data.gyro_x > -0.015)
-    {
-        Daty_X -= 0;
-    }
-    if (IMU_Data.gyro_y < 0.015 && IMU_Data.gyro_y > -0.015)
-    {
-        Daty_Y -= 0;
+	Daty_Z -= RAD_TO_ANGLE(IMU_Data.gyro_z * 0.005);
+//        IMU_Handle_180();
+//        IMU_Handle_360();
+//        IMU_Handle_0();
     }
 }
 
@@ -268,7 +260,6 @@ float KalmanFilter(extKalman_t *p, float dat)
 
 void gyro_init(void)
 {
-    // imu660ra_init();
     IMU_gyro_Offset_Init();
     KalmanCreate(&Kalman1, 0.01f, 0.05f); // Roll卡尔曼初始化
     KalmanCreate(&Kalman2, 0.01f, 0.05f); // Pitch卡尔曼初始化
@@ -289,4 +280,9 @@ void main_loop(void)
     gyrox = IMU_Data.gyro_x; // X轴角速度
     gyroy = IMU_Data.gyro_y; // Y轴角速度
     gyroz = IMU_Data.gyro_z; // Z轴角速度
+}
+
+void yaw_reset(void)
+{
+	Gyro_Offset.Zdata = 0;
 }

@@ -15,11 +15,11 @@
 #include <string.h>
 uint8 data_buffer[32];
 uint8 gyro_buffer[32];
-
+char send_buf[128];
 #define TEMP_BUFFER_SIZE 64
 static uint8 temp_uart_buffer[TEMP_BUFFER_SIZE]; // 数据存放数组
 
-char send_str[32] = {0};
+
 
 // 菜单初始化函数
 // 初始化IPS114液晶屏幕，并显示静态字符串标签以避免主循环刷新导致的屏幕闪烁
@@ -68,21 +68,14 @@ void Menu_Display(uint16 *inductance_data)
 
 // 通过无线串口发送可变数据的函数
 // 将当前的偏航角速度、偏航角度以及四个电感传感器的数值通过无线串口发送到电脑端
-void Send_Data_To_PC(uint16 *inductance_data)
+void Send_Data_To_PC(void)
 {
     // 1. 申请一个足够大的字符数组，用于存放格式化后的字符串
-    char send_buf[128]; // 用于存放格式化后的字符串的缓冲区
+     // 用于存放格式化后的字符串的缓冲区
 
     // 2. 使用 sprintf 将数值格式化为字符串
     // 这里以浮点数保留2位小数 (%.2f)，整数 (%d) 为例。加上 \r\n 以便电脑端串口助手换行显示。
-    sprintf(send_buf, "Yaw: %.2f, GyroZ: %.2f, L1:%d, L2:%d, L3:%d, L4:%d, EL:%d, ER:%d\r\n",
-            Daty_Z, // 当前偏航角度
-            IMU_Data.gyro_z, // 当前偏航角速度
-            inductance_data[0], // 电感L1的数值
-            inductance_data[1], // 电感L2的数值
-            inductance_data[2], // 电感L3的数值
-            inductance_data[3] // 电感L4的数值
-    );
+    sprintf(send_buf, "State:%d  Angel: %f %f\r\nADC:%d %d %d %d\r\n",TrackState,Daty_Z,Nowangel,adc_inductance[1],adc_inductance[2],adc_inductance[3],adc_inductance[4]);
 
     // 3. 调用库函数发送最终拼装好的字符串
     wireless_uart_send_string(send_buf); // 通过无线串口发送格式化后的字符串
@@ -121,7 +114,7 @@ void Oscilloscope_Init(void)
 
 // 示波器数据发送函数
 // 将两个通道的数据打包并通过无线串口发送到电脑端
-void Oscilloscope_Display(float num1, float num2,int16 num3,int16 num4,int32 num5,int32 num6,float num7,float num8)
+void Oscilloscope_Display(float num1, float num2,int16 num3,int16 num4,int16 num5,int16 num6,float num7,float num8)
 {
     seekfree_assistant_oscilloscope_data.dat[0] = num1; // 设置第一个通道的数据
     seekfree_assistant_oscilloscope_data.dat[1] = num2; // 设置第二个通道的数据

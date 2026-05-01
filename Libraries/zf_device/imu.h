@@ -93,7 +93,7 @@ extern float Roll_Min;
 extern float Max_Delta_Pitch;
 extern float Max_Delta_Roll;
 
-
+void yaw_reset(void);
 void First_complement_Init();
 void low_pass_filter_init(void);
 float low_pass_filter(float value);
@@ -110,5 +110,47 @@ float KalmanFilter(extKalman_t *p, float dat);
 void gyro_init(void);
 void gyro_proc(void);
 void main_loop(void);
+
+
+
+/*测试程序
+#include "zf_common_headfile.h"
+unsigned int imu_cnt = 0;
+void TIM0_handler(void);
+void main()
+{
+    clock_init(SYSTEM_CLOCK_30M);
+	debug_init();
+
+	while (1)
+	{
+		if (imu660ra_init()){}
+		else
+			break;
+		printf("\r\nIMU660RA init error."); // IMU660RA 初始化失败
+	}
+	gyro_init();
+	pit_ms_init(TIM0_PIT, 1);
+	// 此处编写用户代码 例如外设初始化代码等
+	tim0_irq_handler = TIM0_handler;
+	while (1)
+	{
+		printf("pitch:%f,yaw:%f,roll:%f\r\n", first_complement.angle.pitch, Daty_Z, first_complement.angle.roll);
+	}
+}
+
+void TIM0_handler(void)
+{
+	imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
+	imu660ra_get_gyro();
+	imu_cnt++; 
+	if (imu_cnt >= 5)
+	{
+		imu_cnt = 0;
+		gyro_proc();
+	}
+}
+*/
+
 
 #endif /* CODE_GYROSCOPE_H_ */

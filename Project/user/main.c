@@ -18,9 +18,10 @@ void main()
 	P77=1;
 	while (1)
 	{
-		
-		Inductance_Read(ADC);
-		Oscilloscope_Display(adc_convert(L1),adc_convert(L2),adc_convert(L3),adc_convert(L4),ADC[1],ADC[2],ADC[3],ADC[4]);
+		//system_delay_ms(2000);
+//		
+		Element_Control(adc_inductance);
+		//Inductance_Read(ADC);
 //		if((state != 1) &&(adc_inductance[4]>=58) && (adc_inductance[1]>=50))
 //		{
 //			EA = 0;

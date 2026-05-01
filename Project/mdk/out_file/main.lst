@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               30/04/26  20:11:24  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               01/05/26  19:24:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -29,27 +29,27 @@ stmt  level    source
    18   1              P77=1;
    19   1              while (1)
    20   1              {
-   21   2                      
-   22   2                      Inductance_Read(ADC);
-   23   2                      Oscilloscope_Display(adc_convert(L1),adc_convert(L2),adc_convert(L3),adc_convert(L4),ADC[1],ADC[2],ADC[
-             -3],ADC[4]);
-   24   2      //              if((state != 1) &&(adc_inductance[4]>=58) && (adc_inductance[1]>=50))
-   25   2      //              {
-   26   2      //                      EA = 0;
-   27   2      //                      Motor_SetSpeed(1500,800);
-   28   2      //                      system_delay_ms(50);
-   29   2      //                      EA = 1;
-   30   2      //                      state = 1;
-   31   2      //              }
-   32   2              }
-   33   1              
+   21   2                      //system_delay_ms(2000);
+   22   2      //              
+   23   2                      Element_Control(adc_inductance);
+   24   2                      //Inductance_Read(ADC);
+   25   2      //              if((state != 1) &&(adc_inductance[4]>=58) && (adc_inductance[1]>=50))
+   26   2      //              {
+   27   2      //                      EA = 0;
+   28   2      //                      Motor_SetSpeed(1500,800);
+   29   2      //                      system_delay_ms(50);
+   30   2      //                      EA = 1;
+   31   2      //                      state = 1;
+   32   2      //              }
+   33   2              }
    34   1              
-   35   1      }
+   35   1              
+   36   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       563     ------
+  code size            =       409     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

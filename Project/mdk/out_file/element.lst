@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            30/04/26  20:11:13  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            01/05/26  20:17:02  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -24,70 +24,52 @@ stmt  level    source
    13          #define ROLL_ROLLER 15.0
    14          #define WALL_SUM_LOW 200
    15          
-   16          // 注意这里：把 int16_t 改成了 int16
-   17          void Element_Control(int16 *param)
-   18          {
-   19   1          int32 total_sum = param[0] + param[1] + param[2] + param[3];
+   16          extern float Nowangel = 0.0f;
+   17          // 注意这里：把 int16_t 改成了 int16
+   18          void Element_Control(int16 *param)
+   19          {
    20   1          switch (TrackState)
    21   1          {
-   22   2          case NORMAL:
-   23   2              // --- 滚筒判定：依据 Roll 角 ---
-   24   2              if (fabs(first_complement.angle.roll) > ROLL_ROLLER) // 滚筒不只是角度变化，电感值�
-             -�会突变后续根据实际情况判断
-   25   2              {
-   26   3                  TrackState = ROLLER;
-   27   3              }
-   28   2              // --- 竖直墙面判定：电感集体失灵，但姿态平稳 ---
-   29   2              else if (total_sum < WALL_SUM_LOW && fabs(first_complement.angle.roll) >= 60)
-   30   2              {
-   31   3                  TrackState = WALL;
-   32   3              }
-   33   2              /* ---跷跷板判定：依据 Pitch 角 ---正常不需要判断跷跷板可以直接飞过去
-   34   2              else if (first_complement.angle.pitch > PITCH_SEE)
-   35   2              {
-   36   2                      TrackState = SEESAW;
-   37   2              }
-   38   2              */
-   39   2              // --- 环岛判定：单侧远端电感激增 ---
-   40   2              else if ((param[1] > 50) && (param[4] > 58))
-   41   2              {
-   42   3                  TrackState = ROUNDABOUT;
-   43   3              }
-   44   2              // --- 十字判定：两侧远端电感同时激增 ---
-   45   2              else if (param[0] > THRES_CROSS && param[3] > THRES_CROSS)
-   46   2              {
-   47   3                  TrackState = CROSS;
-   48   3              }
-   49   2              break;
-   50   2      
-   51   2          case WALL:
-   52   2              if (first_complement.angle.roll <= 5)
-   53   2                  TrackState = NORMAL;
-   54   2              break;
-   55   2      
-   56   2          case ROLLER:
-C251 COMPILER V5.60.0,  element                                                            30/04/26  20:11:13  PAGE 2   
-
-   57   2              if (fabs(first_complement.angle.roll) < 5.0)
-   58   2                  TrackState = NORMAL;
-   59   2              break;
-   60   2      
-   61   2          case ROUNDABOUT:
-   62   2              if (param[0] < 300 && param[3] < 300)
-   63   2                  TrackState = NORMAL;
-   64   2              break;
-   65   2      
-   66   2          case CROSS:
-   67   2              if (param[0] < THRES_CROSS && param[3] < THRES_CROSS)
-   68   2                  TrackState = NORMAL;
-   69   2              break;
-   70   2          }
-   71   1      }
+   22   2                      case NORMAL:
+   23   2                              // --- 环岛判定：单侧远端电感激增 ---
+   24   2                              if (((param[1] > 38) && (param[4] > 60) && (param[1] + param[4]>=100)) || ((param[4] > (30 + param[1])
+             -)))
+   25   2                              {
+   26   3                                      TrackState = ROUNDAPPROCH;      
+   27   3                                      Nowangel = Daty_Z;                                                      
+   28   3                              }
+   29   2                              break;
+   30   2                      case ROUNDAPPROCH:
+   31   2                              if ((Nowangel - Daty_Z)>=40)
+   32   2                              {
+   33   3                                      TrackState = ROUNDIN;
+   34   3      //                              Send_Data_To_PC();
+   35   3                              }
+   36   2                              break;
+   37   2                      case ROUNDIN:
+   38   2                              if ((Nowangel - Daty_Z)>=310)
+   39   2                              {
+   40   3                                      TrackState = ROUNDOUT;
+   41   3      //                              Send_Data_To_PC();
+   42   3                              }
+   43   2                              break;
+   44   2      //              case ROUNDOUT:
+   45   2      //                      if (My_abs(Daty_Z - Nowangel)<5)
+   46   2      //                      {
+   47   2      //                              TrackState = NORMAL;
+   48   2      ////                            Send_Data_To_PC();
+   49   2      //                      }
+   50   2      //                      break;
+   51   2          }
+   52   1              Send_Data_To_PC();
+   53   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       541     ------
+C251 COMPILER V5.60.0,  element                                                            01/05/26  20:17:02  PAGE 2   
+
+  code size            =       297     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -102,7 +84,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =         7     ------
+  hconst size          =        16     ------
 End of Module Information.
 
 

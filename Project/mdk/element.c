@@ -13,59 +13,41 @@ TrackState_e TrackState = NORMAL;
 #define ROLL_ROLLER 15.0
 #define WALL_SUM_LOW 200
 
+extern float Nowangel = 0.0f;
 // 注意这里：把 int16_t 改成了 int16
 void Element_Control(int16 *param)
 {
-    int32 total_sum = param[0] + param[1] + param[2] + param[3];
     switch (TrackState)
     {
-    case NORMAL:
-        // --- 滚筒判定：依据 Roll 角 ---
-        if (fabs(first_complement.angle.roll) > ROLL_ROLLER) // 滚筒不只是角度变化，电感值也会突变后续根据实际情况判断
-        {
-            TrackState = ROLLER;
-        }
-        // --- 竖直墙面判定：电感集体失灵，但姿态平稳 ---
-        else if (total_sum < WALL_SUM_LOW && fabs(first_complement.angle.roll) >= 60)
-        {
-            TrackState = WALL;
-        }
-        /* ---跷跷板判定：依据 Pitch 角 ---正常不需要判断跷跷板可以直接飞过去
-        else if (first_complement.angle.pitch > PITCH_SEE)
-        {
-                TrackState = SEESAW;
-        }
-        */
-        // --- 环岛判定：单侧远端电感激增 ---
-        else if ((param[1] > 50) && (param[4] > 58))
-        {
-            TrackState = ROUNDABOUT;
-        }
-        // --- 十字判定：两侧远端电感同时激增 ---
-        else if (param[0] > THRES_CROSS && param[3] > THRES_CROSS)
-        {
-            TrackState = CROSS;
-        }
-        break;
-
-    case WALL:
-        if (first_complement.angle.roll <= 5)
-            TrackState = NORMAL;
-        break;
-
-    case ROLLER:
-        if (fabs(first_complement.angle.roll) < 5.0)
-            TrackState = NORMAL;
-        break;
-
-    case ROUNDABOUT:
-        if (param[0] < 300 && param[3] < 300)
-            TrackState = NORMAL;
-        break;
-
-    case CROSS:
-        if (param[0] < THRES_CROSS && param[3] < THRES_CROSS)
-            TrackState = NORMAL;
-        break;
+		case NORMAL:
+			// --- 环岛判定：单侧远端电感激增 ---
+			if (((param[1] > 38) && (param[4] > 60) && (param[1] + param[4]>=100)) || ((param[4] > (30 + param[1]))))
+			{
+				TrackState = ROUNDAPPROCH;	
+				Nowangel = Daty_Z;							
+			}
+			break;
+		case ROUNDAPPROCH:
+			if ((Nowangel - Daty_Z)>=40)
+			{
+				TrackState = ROUNDIN;
+//				Send_Data_To_PC();
+			}
+			break;
+		case ROUNDIN:
+			if ((Nowangel - Daty_Z)>=310)
+			{
+				TrackState = ROUNDOUT;
+//				Send_Data_To_PC();
+			}
+			break;
+//		case ROUNDOUT:
+//			if (My_abs(Daty_Z - Nowangel)<5)
+//			{
+//				TrackState = NORMAL;
+////				Send_Data_To_PC();
+//			}
+//			break;
     }
+	Send_Data_To_PC();
 }

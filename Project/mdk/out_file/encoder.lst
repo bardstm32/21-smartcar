@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            30/04/26  20:11:12  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            01/05/26  20:21:33  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -26,55 +26,68 @@ stmt  level    source
    15          #define ENCODER_DIR_DIR_RIGHT (IO_P53)                          // DIR 对应的引脚
    16          #define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE 对应的引脚
    17          
-   18          void encoder_init()
-   19          {
-   20   1              tim1_irq_handler = pit_handler;
-   21   1              tim4_irq_handler = pit_handler4;
-   22   1      //      pit_ms_init(PIT_CH, 5);
-   23   1      //      pit_ms_init(PIT_CH4, 2);
-   24   1      
-   25   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
-   26   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
-   27   1      }
-   28          
-   29          void pit_handler(void)
-   30          {
-   31   1              //      imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
-   32   1              //      imu660ra_get_gyro();
-   33   1              //      gyro_proc();
-   34   1              Inductance_Read(adc_inductance);
-   35   1              //      Motor_Protect(adc_inductance);
-   36   1              elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]
-             -);
-   37   1              Dir_Control();
-   38   1              Calculate_Differential_Drive();
-   39   1      }
-   40          
-   41          void pit_handler4(void)
-   42          {
-   43   1              Dual_Loop_Control();
-   44   1      //      switch (TrackState)
-   45   1      //      {
-   46   1      //              case ROUNDABOUT:
-   47   1      //                      Turn_target = 100; // 暴力拉进环岛
-   48   1      //                      break;
-   49   1      //              case NORMAL:
-   50   1      //                      Turn_target = 0; // 正常状态，不做任何操作
-   51   1      //                      break;
-   52   1      //      }
-   53   1      }
+   18          uint16 imu_cnt = 0;
+   19          
+   20          void encoder_init()
+   21          {
+   22   1              tim1_irq_handler = pit_handler;
+   23   1              tim4_irq_handler = pit_handler4;
+   24   1              pit_ms_init(PIT_CH, 1);
+   25   1              pit_ms_init(PIT_CH4, 2);
+   26   1      
+   27   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
+   28   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
+   29   1      }
+   30          
+   31          void pit_handler(void)
+   32          {
+   33   1      //      imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
+   34   1      //      imu660ra_get_gyro();
+   35   1              imu_cnt++; 
+   36   1              if (imu_cnt >= 5)
+   37   1              {
+   38   2                      Inductance_Read(adc_inductance);
+   39   2                      elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4
+             -]);
+   40   2                      Dir_Control();
+   41   2                      Calculate_Differential_Drive();
+   42   2                      imu_cnt = 0;
+   43   2      //              gyro_proc();
+   44   2              }
+   45   1              
+   46   1      }
+   47          
+   48          void pit_handler4(void)
+   49          {
+   50   1              Dual_Loop_Control();
+   51   1              switch (TrackState)
+   52   1              {
+   53   2                      case ROUNDAPPROCH:
+   54   2                              Turn_target = 3000; // 暴力拉进环岛
+   55   2                              break;
+   56   2                      case ROUNDIN:
+C251 COMPILER V5.60.0,  encoder                                                            01/05/26  20:21:33  PAGE 2   
+
+   57   2                              Turn_target = 0;
+   58   2                              break;
+   59   2                      case ROUNDOUT:
+   60   2                              Turn_target = 0;
+   61   2                              break;
+   62   2                      case NORMAL:
+   63   2                              Turn_target = 0; // 正常状态，不做任何操作
+   64   2                              break;
+   65   2              }
+   66   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-C251 COMPILER V5.60.0,  encoder                                                            30/04/26  20:11:12  PAGE 2   
-
-  code size            =       108     ------
+  code size            =       293     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        10     ------
+  xdata size           =        12     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -84,7 +97,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        15     ------
+  hconst size          =        22     ------
 End of Module Information.
 
 

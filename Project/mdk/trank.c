@@ -68,7 +68,7 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
     // 微分项
     pid->D = pid->Kd * (pid->err - pid->last_err);  
     // 总输出+限幅
-	pid->last_f_speed=pid->err - pid->last_err;
+//	pid->last_f_speed=pid->err - pid->last_err;
 	
     pid->out = pid->P + pid->P2+ pid->D;   
     // 更新误差
@@ -101,14 +101,14 @@ void Calculate_Differential_Drive() // 差速计算
 	// 计算左右轮目标速度
 	if(k >= 0) // 左转
 	{
-		left_spid.target = BASE_SPEED *(1+k*0.25);
+		left_spid.target = BASE_SPEED *(1+k*0.2);
 		right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
 	}
 	if(k < 0) // 右转
 	{
 		k *= -1;
 		left_spid.target = BASE_SPEED * (1 -k); // 加少减多
-		right_spid.target = BASE_SPEED * (1 + k*0.25);
+		right_spid.target = BASE_SPEED * (1 + k*0.2);
 	}
 }
 
@@ -139,7 +139,7 @@ void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
  */
 void Dual_Loop_Control(void)
 {
-    speed_left = encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
+    speed_left = -encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
     speed_right = encoder_get_count(TIM3_ENCOEDER);              	
 	
     encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
