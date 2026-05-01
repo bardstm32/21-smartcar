@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            01/05/26  20:21:33  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            01/05/26  22:17:57  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -33,7 +33,7 @@ stmt  level    source
    22   1              tim1_irq_handler = pit_handler;
    23   1              tim4_irq_handler = pit_handler4;
    24   1              pit_ms_init(PIT_CH, 1);
-   25   1              pit_ms_init(PIT_CH4, 2);
+   25   1      //      pit_ms_init(PIT_CH4, 2);
    26   1      
    27   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
    28   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
@@ -41,18 +41,18 @@ stmt  level    source
    30          
    31          void pit_handler(void)
    32          {
-   33   1      //      imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
-   34   1      //      imu660ra_get_gyro();
+   33   1              imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
+   34   1              imu660ra_get_gyro();
    35   1              imu_cnt++; 
    36   1              if (imu_cnt >= 5)
    37   1              {
-   38   2                      Inductance_Read(adc_inductance);
-   39   2                      elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4
-             -]);
-   40   2                      Dir_Control();
-   41   2                      Calculate_Differential_Drive();
+   38   2      //              Inductance_Read(adc_inductance);
+   39   2      //              elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance
+             -[4]);
+   40   2      //              Dir_Control();
+   41   2      //              Calculate_Differential_Drive();
    42   2                      imu_cnt = 0;
-   43   2      //              gyro_proc();
+   43   2                      gyro_proc();
    44   2              }
    45   1              
    46   1      }
@@ -60,30 +60,15 @@ stmt  level    source
    48          void pit_handler4(void)
    49          {
    50   1              Dual_Loop_Control();
-   51   1              switch (TrackState)
-   52   1              {
-   53   2                      case ROUNDAPPROCH:
-   54   2                              Turn_target = 3000; // 暴力拉进环岛
-   55   2                              break;
-   56   2                      case ROUNDIN:
-C251 COMPILER V5.60.0,  encoder                                                            01/05/26  20:21:33  PAGE 2   
-
-   57   2                              Turn_target = 0;
-   58   2                              break;
-   59   2                      case ROUNDOUT:
-   60   2                              Turn_target = 0;
-   61   2                              break;
-   62   2                      case NORMAL:
-   63   2                              Turn_target = 0; // 正常状态，不做任何操作
-   64   2                              break;
-   65   2              }
-   66   1      }
+   51   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       293     ------
+  code size            =       130     ------
   ecode size           =    ------     ------
+C251 COMPILER V5.60.0,  encoder                                                            01/05/26  22:17:57  PAGE 2   
+
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------

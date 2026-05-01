@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  imu                                                                01/05/26  19:24:22  PAGE 1   
+C251 COMPILER V5.60.0,  imu                                                                01/05/26  21:39:02  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE imu
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          first_complement.angle.roll = KalmanFilter(&Kalman1, first_complement.angle.roll);
    54   1          first_complement.angle.pitch = KalmanFilter(&Kalman2, first_complement.angle.pitch);
    55   1      
-C251 COMPILER V5.60.0,  imu                                                                01/05/26  19:24:22  PAGE 2   
+C251 COMPILER V5.60.0,  imu                                                                01/05/26  21:39:02  PAGE 2   
 
    56   1          // 修复2：Pitch/Roll极值统计逻辑搞反的问题（核心修复）
    57   1          if (Pitch_Flag == 0)
@@ -134,7 +134,7 @@ stmt  level    source
   119          {
   120   1          imu660ra_get_gyro();
   121   1          imu660ra_get_acc();
-C251 COMPILER V5.60.0,  imu                                                                01/05/26  19:24:22  PAGE 3   
+C251 COMPILER V5.60.0,  imu                                                                01/05/26  21:39:02  PAGE 3   
 
   122   1      
   123   1          IMU_Data.gyro_x = ((float)imu660ra_gyro_x - Gyro_Offset.Xdata) * PI / 180 / 16.4f;
@@ -202,7 +202,7 @@ stmt  level    source
   185   3                  Round = 1;
   186   3              }
   187   2          }
-C251 COMPILER V5.60.0,  imu                                                                01/05/26  19:24:22  PAGE 4   
+C251 COMPILER V5.60.0,  imu                                                                01/05/26  21:39:02  PAGE 4   
 
   188   1          if (Round == 1)
   189   1          {
@@ -270,7 +270,7 @@ stmt  level    source
   251   1          p->X_mid = p->A * p->X_last;
   252   1          p->P_mid = p->A * p->P_last + p->Q;
   253   1          p->kg = p->P_mid / (p->P_mid + p->R);
-C251 COMPILER V5.60.0,  imu                                                                01/05/26  19:24:22  PAGE 5   
+C251 COMPILER V5.60.0,  imu                                                                01/05/26  21:39:02  PAGE 5   
 
   254   1          p->X_now = p->X_mid + p->kg * (dat - p->X_mid);
   255   1          p->P_now = (1 - p->kg) * p->P_mid;

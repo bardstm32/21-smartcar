@@ -70,7 +70,7 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
     // 总输出+限幅
 //	pid->last_f_speed=pid->err - pid->last_err;
 	
-    pid->out = pid->P + pid->P2+ pid->D;   
+    pid->out = pid->P + pid->P2+ pid->D + 0.08*IMU_Data.gyro_z;   
     // 更新误差
     pid->last_err = pid->err;
     
@@ -82,15 +82,40 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
  */
 void Dir_Control()
 {
-	static int t = 0;
-	if(++t>=2)
-	{
-		t = 0;
-		// 外环（赛道偏差环）,具体正负号根据实际情况确定
-        eleOut_0 = PID_Calc(&Turn_PID, Turn_target, elemid);
+    static int t = 0;
+    if(++t >= 2)
+    {
+        t = 0;
+        
+        // 根据状态机决定输出，具体正负号需要根据你实际的左右环岛情况测试
+        if (TrackState == NORMAL)
+        {
+            // 正常循迹
+            eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
+        }
+        else if (TrackState == ROUNDAPPROCH)
+        {
+            // 【关键优化】：入环阶段，不要用PID了！强制给出一个极大的固定偏置
+            // 假设负值代表向左急转 (进入左环岛)
+            // 强制给 -6000，经过 k=eleOut_0*0.0001 会变成 -0.6，产生极强的差速
+            eleOut_0 = 2000; 
+        }
+        else if (TrackState == ROUNDIN)
+        {
+            // 环内循迹阶段：环内中心磁场弱，推荐切换成单边电感计算的 elemid
+            // 例如：如果是左环岛，只用左侧电感的值与一个基准值做差作为 elemid
+            // elemid = param[左内] - 目标电感值;
+            eleOut_0 = PID_Calc(&Turn_PID, 0, elemid); 
+        }
+        else if (TrackState == ROUNDOUT)
+        {
+            // 出环阶段：强行向外侧打轮
+            eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
+        }
+        
         // 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
-		eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
-	}
+        eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
+    }
 }
 
 void Calculate_Differential_Drive() // 差速计算
@@ -149,7 +174,7 @@ void Dual_Loop_Control(void)
     IncPID_Calc(&right_spid,speed_right);
 
     //    //===================== 6. 输出到电机 =====================//
-    Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
+    //Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
 }
 
 

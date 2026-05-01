@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               01/05/26  19:34:08  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               01/05/26  22:15:25  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -66,7 +66,7 @@ stmt  level    source
    50   1          gyro_buffer[0] = IMU_Data.gyro_z; // 将偏航角速度存储到缓冲区
    51   1      
    52   1          // 2. 显示当前偏航角度 (来自 Daty_Z)
-C251 COMPILER V5.60.0,  menu                                                               01/05/26  19:34:08  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               01/05/26  22:15:25  PAGE 2   
 
    53   1          // 偏航角范围大致在 -180 到 180 之间，整数位预留4位(包含负号)，小数位2位
    54   1          ips114_show_float(64, 16, Daty_Z, 4, 2); // 显示偏航角度
@@ -96,8 +96,7 @@ stmt  level    source
    76   1          // 2. 使用 sprintf 将数值格式化为字符串
    77   1          // 这里以浮点数保留2位小数 (%.2f)，整数 (%d) 为例。加上 \r\n 以便电脑端串口
              -助手换行显示。
-   78   1          sprintf(send_buf, "State:%d  Angel: %f %f\r\nADC:%d %d %d %d\r\n",TrackState,Daty_Z,Nowangel,adc_indu
-             -ctance[1],adc_inductance[2],adc_inductance[3],adc_inductance[4]);
+   78   1          sprintf(send_buf, "%f %f %f \r\n",imu660ra_gyro_x,imu660ra_gyro_y,imu660ra_gyro_z);
    79   1      
    80   1          // 3. 调用库函数发送最终拼装好的字符串
    81   1          wireless_uart_send_string(send_buf); // 通过无线串口发送格式化后的字符串
@@ -134,9 +133,9 @@ stmt  level    source
   111          {
   112   1          seekfree_assistant_transfer_callback = wireless_uart_send_buffer; // 设置发送回调函数
   113   1      }
-C251 COMPILER V5.60.0,  menu                                                               01/05/26  19:34:08  PAGE 3   
-
   114          
+C251 COMPILER V5.60.0,  menu                                                               01/05/26  22:15:25  PAGE 3   
+
   115          // 示波器数据发送函数
   116          // 将两个通道的数据打包并通过无线串口发送到电脑端
   117          void Oscilloscope_Display(float num1, float num2,int16 num3,int16 num4,int16 num5,int16 num6,float num7,f
@@ -158,7 +157,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1031     ------
+  code size            =       967     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -173,7 +172,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        98     ------
+  hconst size          =        68     ------
 End of Module Information.
 
 

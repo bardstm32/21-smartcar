@@ -8,7 +8,7 @@ void main()
 	ALL_init();
 	PID_Init(&left_spid,  3.2,0, 0.6f,   0,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
 	PID_Init(&right_spid, 3.0,0,0.6f,   0,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&Turn_PID,   0.20,0.0000785,0,4.05, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&Turn_PID,   0.23,0.0000789,0,4.10, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
 	gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
 	
 	P77=1;
@@ -19,8 +19,8 @@ void main()
 	while (1)
 	{
 		//system_delay_ms(2000);
-//		
-		Element_Control(adc_inductance);
+		Send_Data_To_PC();
+//		Element_Control(adc_inductance);
 		//Inductance_Read(ADC);
 //		if((state != 1) &&(adc_inductance[4]>=58) && (adc_inductance[1]>=50))
 //		{
