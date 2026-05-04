@@ -70,7 +70,7 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
     // 总输出+限幅
 //	pid->last_f_speed=pid->err - pid->last_err;
 	
-    pid->out = pid->P + pid->P2+ pid->D + 0.08*IMU_Data.gyro_z;   
+    pid->out = pid->P + pid->P2+ pid->D;   
     // 更新误差
     pid->last_err = pid->err;
     
@@ -82,58 +82,43 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
  */
 void Dir_Control()
 {
-    static int t = 0;
-    if(++t >= 2)
-    {
-        t = 0;
-        
+//    static int t = 0;
+//    if(++t >= 2)
+//    {
+//        t = 0;
         // 根据状态机决定输出，具体正负号需要根据你实际的左右环岛情况测试
-        if (TrackState == NORMAL)
+        if (TrackState == NORMAL || TrackState == ROUNDIN || TrackState == ROUNDOUT)
         {
             // 正常循迹
             eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
         }
         else if (TrackState == ROUNDAPPROCH)
         {
-            // 【关键优化】：入环阶段，不要用PID了！强制给出一个极大的固定偏置
-            // 假设负值代表向左急转 (进入左环岛)
-            // 强制给 -6000，经过 k=eleOut_0*0.0001 会变成 -0.6，产生极强的差速
-            eleOut_0 = 2000; 
-        }
-        else if (TrackState == ROUNDIN)
-        {
-            // 环内循迹阶段：环内中心磁场弱，推荐切换成单边电感计算的 elemid
-            // 例如：如果是左环岛，只用左侧电感的值与一个基准值做差作为 elemid
-            // elemid = param[左内] - 目标电感值;
-            eleOut_0 = PID_Calc(&Turn_PID, 0, elemid); 
-        }
-        else if (TrackState == ROUNDOUT)
-        {
-            // 出环阶段：强行向外侧打轮
-            eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
-        }
-        
+            eleOut_0 = 6000; 
+        }       
         // 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
-        eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
-    }
+		eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
+		eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z);
+		eleOut_1 = range_protect_float(eleOut_1, -10000.0f, 10000.0f);
+//    }
 }
 
 void Calculate_Differential_Drive() // 差速计算
 {
 	float k = 0; // 差速比例系数
-	k = eleOut_0 * 0.0001f; // 缩放成 -1 ~ 1
-	k = range_protect_float(k, -0.65, 0.65); // 限制到 -0.65 ~ 0.65，实现差速限幅
+    k = eleOut_1 * 0.0001f;                  // 缩放成 -1 ~ 1
+    k = range_protect_float(k, -0.75, 0.75); // 限制到 -0.65 ~ 0.65，实现差速限幅
 	// 计算左右轮目标速度
-	if(k >= 0) // 左转
+	if(k >= 0) // 右转
 	{
-		left_spid.target = BASE_SPEED *(1+k*0.2);
+		left_spid.target = BASE_SPEED *(1+k*0.35);
 		right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
 	}
-	if(k < 0) // 右转
+	if(k < 0) // 左转
 	{
 		k *= -1;
-		left_spid.target = BASE_SPEED * (1 -k); // 加少减多
-		right_spid.target = BASE_SPEED * (1 + k*0.2);
+		left_spid.target = BASE_SPEED * (1 - k); // 加少减多
+		right_spid.target = BASE_SPEED * (1 + k*0.35);
 	}
 }
 
@@ -173,8 +158,7 @@ void Dual_Loop_Control(void)
     IncPID_Calc(&left_spid,speed_left);
     IncPID_Calc(&right_spid,speed_right);
 
-    //    //===================== 6. 输出到电机 =====================//
-    //Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
+    Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
 }
 
 

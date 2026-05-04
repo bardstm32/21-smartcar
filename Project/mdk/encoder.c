@@ -22,7 +22,7 @@ void encoder_init()
 	tim1_irq_handler = pit_handler;
 	tim4_irq_handler = pit_handler4;
 	pit_ms_init(PIT_CH, 1);
-//	pit_ms_init(PIT_CH4, 2);
+	pit_ms_init(PIT_CH4, 2);
 
 	encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
 	encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
@@ -35,10 +35,10 @@ void pit_handler(void)
 	imu_cnt++; 
 	if (imu_cnt >= 5)
 	{
-//		Inductance_Read(adc_inductance);
-//		elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
-//		Dir_Control();
-//		Calculate_Differential_Drive();
+		Inductance_Read(adc_inductance);
+		elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
+		Dir_Control();
+		Calculate_Differential_Drive();
 		imu_cnt = 0;
 		gyro_proc();
 	}
@@ -47,5 +47,6 @@ void pit_handler(void)
 
 void pit_handler4(void)
 {
+
 	Dual_Loop_Control();
 }

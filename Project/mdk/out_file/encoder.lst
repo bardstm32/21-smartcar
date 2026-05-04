@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            01/05/26  22:17:57  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            03/05/26  22:48:44  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -33,7 +33,7 @@ stmt  level    source
    22   1              tim1_irq_handler = pit_handler;
    23   1              tim4_irq_handler = pit_handler4;
    24   1              pit_ms_init(PIT_CH, 1);
-   25   1      //      pit_ms_init(PIT_CH4, 2);
+   25   1              pit_ms_init(PIT_CH4, 2);
    26   1      
    27   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
    28   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
@@ -46,11 +46,11 @@ stmt  level    source
    35   1              imu_cnt++; 
    36   1              if (imu_cnt >= 5)
    37   1              {
-   38   2      //              Inductance_Read(adc_inductance);
-   39   2      //              elemid = Inductance_Count_Err(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance
-             -[4]);
-   40   2      //              Dir_Control();
-   41   2      //              Calculate_Differential_Drive();
+   38   2                      Inductance_Read(adc_inductance);
+   39   2                      elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[
+             -4]);
+   40   2                      Dir_Control();
+   41   2                      Calculate_Differential_Drive();
    42   2                      imu_cnt = 0;
    43   2                      gyro_proc();
    44   2              }
@@ -59,16 +59,17 @@ stmt  level    source
    47          
    48          void pit_handler4(void)
    49          {
-   50   1              Dual_Loop_Control();
-   51   1      }
+   50   1      
+   51   1              Dual_Loop_Control();
+   52   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       130     ------
-  ecode size           =    ------     ------
-C251 COMPILER V5.60.0,  encoder                                                            01/05/26  22:17:57  PAGE 2   
+  code size            =       216     ------
+C251 COMPILER V5.60.0,  encoder                                                            03/05/26  22:48:44  PAGE 2   
 
+  ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------

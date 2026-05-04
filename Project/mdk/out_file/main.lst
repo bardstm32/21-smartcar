@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               01/05/26  22:05:27  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               03/05/26  23:11:27  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -17,39 +17,30 @@ stmt  level    source
     6   1              clock_init(SYSTEM_CLOCK_30M);
     7   1              debug_init();
     8   1              ALL_init();
-    9   1              PID_Init(&left_spid,  3.2,0, 0.6f,   0,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   10   1              PID_Init(&right_spid, 3.0,0,0.6f,   0,  SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   11   1              PID_Init(&Turn_PID,   0.23,0.0000789,0,4.10, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   12   1              gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
-   13   1              
-   14   1              P77=1;
-   15   1              system_delay_ms(1);
-   16   1              P77=0;
-   17   1              system_delay_us(5);
-   18   1              P77=1;
-   19   1              while (1)
-   20   1              {
-   21   2                      //system_delay_ms(2000);
-   22   2                      Send_Data_To_PC();
-   23   2      //              Element_Control(adc_inductance);
-   24   2                      //Inductance_Read(ADC);
-   25   2      //              if((state != 1) &&(adc_inductance[4]>=58) && (adc_inductance[1]>=50))
-   26   2      //              {
-   27   2      //                      EA = 0;
-   28   2      //                      Motor_SetSpeed(1500,800);
-   29   2      //                      system_delay_ms(50);
-   30   2      //                      EA = 1;
-   31   2      //                      state = 1;
-   32   2      //              }
-   33   2              }
-   34   1              
-   35   1              
-   36   1      }
+    9   1              PID_Init(&left_spid,  3.2,0,0.6f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   10   1              PID_Init(&right_spid, 3.0,0,0.6f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              PID_Init(&Turn_PID,   0.2,0.0000791,0,4.10, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   12   1              PID_Init(&Gyro_PID,  1.5, 0, 0, 0.5, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   13   1              gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
+   14   1              
+   15   1              P77=1;
+   16   1              system_delay_ms(1);
+   17   1              P77=0;
+   18   1              system_delay_us(5);
+   19   1              P77=1;
+   20   1              while (1)
+   21   1              {       
+   22   2                      Element_Control(adc_inductance);
+   23   2                      Send_Data_To_PC();
+   24   2              }
+   25   1              
+   26   1              
+   27   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       401     ------
+  code size            =       505     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
