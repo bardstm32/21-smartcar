@@ -1,0 +1,61 @@
+C251 COMPILER V5.60.0,  main                                                               05/05/26  21:54:00  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE main
+OBJECT MODULE PLACED IN .\out_file\main.obj
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\user\main.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE I
+                    -NCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\use
+                    -r;..\code) DEBUG PRINT(.\out_file\main.lst) OBJECT(.\out_file\main.obj) 
+
+stmt  level    source
+
+    1          #include "zf_common_headfile.h"
+    2          void main()
+    3          {
+    4   1              clock_init(SYSTEM_CLOCK_30M);
+    5   1              debug_init();
+    6   1              ALL_init();
+    7   1              PID_Init(&left_spid,  3.2,0,0.6f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+    8   1              PID_Init(&right_spid, 3.0,0,0.6f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+    9   1              PID_Init(&Turn_PID,   0.2,0.0000785,0,4.10, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   10   1              PID_Init(&Gyro_PID,  2.5, 0, 0, 2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
+   12   1              
+   13   1              P77=1;
+   14   1              system_delay_ms(1);
+   15   1              P77=0;
+   16   1              system_delay_us(5);
+   17   1              P77=1;
+   18   1              
+   19   1              while (1)
+   20   1              {       
+   21   2                      Element_Control(adc_inductance);
+   22   2                      Send_Data_To_PC();
+   23   2              }
+   24   1              
+   25   1              
+   26   1      }
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       505     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =    ------     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =         2     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

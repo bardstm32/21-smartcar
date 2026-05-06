@@ -1,0 +1,214 @@
+C251 COMPILER V5.60.0,  trank                                                              05/05/26  22:23:06  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
+OBJECT MODULE PLACED IN .\out_file\trank.obj
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
+                    -.\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\co
+                    -de) DEBUG PRINT(.\out_file\trank.lst) OBJECT(.\out_file\trank.obj) 
+
+stmt  level    source
+
+    1          #include "zf_common_headfile.h"
+    2          // ¶¨Òå3×éPID(Î»ÖÃ»·+×óÓÒÂÖËÙ¶È»·)
+    3          PID_TypeDef Turn_PID, Gyro_PID;
+    4          PID_TypeDef left_spid;
+    5          PID_TypeDef right_spid;
+    6          
+    7          #define ENCODER_DIR_LEFT                        (TIM0_ENCOEDER)                         // Õý½»±àÂëÆ÷¶ÔÓ¦Ê¹ÓÃµÄ
+             -±àÂëÆ÷½Ó¿Ú ÕâÀïÊ¹ÓÃQTIMER1µÄENCOEDER1
+    8          #define ENCODER_DIR_DIR_LEFT                    (IO_P35)                                                // DIR ¶ÔÓ¦µÄÒý½Å
+    9          #define ENCODER_DIR_PULSE_LEFT                  (TIM0_ENCOEDER_P34)                             // PULSE ¶ÔÓ¦µÄÒý½Å
+   10          
+   11          #define ENCODER_DIR_RIGHT                       (TIM3_ENCOEDER)                         // Õý½»±àÂëÆ÷¶ÔÓ¦Ê¹ÓÃµ
+             -Ä±àÂëÆ÷½Ó¿Ú ÕâÀïÊ¹ÓÃQTIMER1µÄENCOEDER1
+   12          #define ENCODER_DIR_DIR_RIGHT                   (IO_P53)                                                // DIR ¶ÔÓ¦µÄÒý½Å
+   13          #define ENCODER_DIR_PULSE_RIGHT                 (TIM3_ENCOEDER_P04)                             // PULSE ¶ÔÓ¦µÄÒý½Å
+   14          #define MAX_INC 150.0           // 2ms ÖÜÆÚÏÂÏÞÖÆµ¥´ÎÔöÁ¿
+   15          volatile int32 speed_left = 0;
+   16          volatile int32 speed_right = 0;
+   17          
+   18          
+   19          float elemid = 0; // Ä¿±êÈüµÀÆ«²î
+   20          float eleOut_0 = 0; // ÈüµÀÆ«²î»·Êä³öÖµ
+   21          float eleOut_1 = 0; // Æ«º½½ÇËÙ¶È»·Êä³öÖµ
+   22          int Gyro_Z = 0; // Êµ¼ÊÆ«º½½ÇËÙ¶È
+   23          float eleValue = 0;
+   24          volatile float Turn_target = 0;
+   25          /**
+   26           * @brief  PID³õÊ¼»¯(Í¨ÓÃ)
+   27           */
+   28          void PID_Init(PID_TypeDef *pid, float kp, float kp2, float ki, float kd, float max_out, float max_i)
+   29          {
+   30   1          pid->Kp = kp;
+   31   1          pid->Kp2 = kp2;
+   32   1              
+   33   1          pid->Ki = ki;
+   34   1          pid->Kd = kd;
+   35   1          pid->max_out = max_out;
+   36   1          pid->max_i = max_i;
+   37   1      
+   38   1          pid->target =0;
+   39   1          pid->measure = 0;
+   40   1          pid->err = 0;
+   41   1          pid->last_err = 0;
+   42   1          pid->prev_err = 0; // ¡ª¡ª> ¡¾ÐÂÔö¡¿³õÊ¼»¯ÉÏÉÏ´ÎÎó²î
+   43   1          pid->P = 0;
+   44   1              pid->P2 = 0;
+   45   1          pid->I = 0;
+   46   1          pid->D = 0;
+   47   1          pid->out = 0;
+   48   1              pid->last_f_speed=0;
+   49   1              
+   50   1      
+   51   1      }
+   52          
+   53          /**
+   54           * @brief  Í¨ÓÃÎ»ÖÃÊ½PID¼ÆËã
+   55           */
+C251 COMPILER V5.60.0,  trank                                                              05/05/26  22:23:06  PAGE 2   
+
+   56          float PID_Calc(PID_TypeDef *pid, float target, float measure)
+   57          {
+   58   1          pid->target = target;
+   59   1          pid->measure = measure;
+   60   1          
+   61   1          // ¼ÆËãÎó²î
+   62   1          pid->err = pid->target - pid->measure;
+   63   1          
+   64   1          // ±ÈÀýÏî
+   65   1          pid->P = pid->Kp * pid->err;  
+   66   1              pid->P2 = pid->Kp2 * pid->err*My_abs(pid->err);  
+   67   1      
+   68   1          // Î¢·ÖÏî
+   69   1          pid->D = pid->Kd * (pid->err - pid->last_err);  
+   70   1          // ×ÜÊä³ö+ÏÞ·ù
+   71   1      //      pid->last_f_speed=pid->err - pid->last_err;
+   72   1              
+   73   1          pid->out = pid->P + pid->P2+ pid->D;   
+   74   1          // ¸üÐÂÎó²î
+   75   1          pid->last_err = pid->err;
+   76   1          
+   77   1          return pid->out;
+   78   1      }
+   79          
+   80          /**
+   81           * @brief ·½Ïò»·¿ØÖÆº¯Êý
+   82           */
+   83          void Dir_Control()
+   84          {
+   85   1              // ¸ù¾Ý×´Ì¬»ú¾ö¶¨Êä³ö£¬¾ßÌåÕý¸ººÅÐèÒª¸ù¾ÝÄãÊµ¼ÊµÄ×óÓÒ»·µºÇé¿ö²âÊÔ
+   86   1              if (TrackState == NORMAL || TrackState == ROUNDIN || TrackState == ROUNDOUT)
+   87   1              {
+   88   2                  // Õý³£Ñ­¼£
+   89   2                  eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
+   90   2              }
+   91   1              else if (TrackState == RIGHT_ROUND)
+   92   1              {
+   93   2                  eleOut_0 = 7000; 
+   94   2              }      
+   95   1                      else if (TrackState == LEFT_ROUND)
+   96   1              {
+   97   2                  eleOut_0 = -7000; 
+   98   2              }       
+   99   1              // ÏÞ·ù±£»¤£¬È·±£Êä³ö½á¹ûÔÚ -10000 ~ 10000 ·¶Î§ÄÚ
+  100   1                      eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
+  101   1      }
+  102          
+  103          void Dir_Control_gyro()
+  104          {
+  105   1              eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z);
+  106   1              eleOut_1 = range_protect_float(eleOut_1, -10000.0f, 10000.0f);
+  107   1      }
+  108          
+  109          
+  110          void Calculate_Differential_Drive() // ²îËÙ¼ÆËã
+  111          {
+  112   1              float k = 0; // ²îËÙ±ÈÀýÏµÊý
+  113   1          k = eleOut_1 * 0.0001f;                  // Ëõ·Å³É -1 ~ 1
+  114   1          k = range_protect_float(k, -0.75, 0.75); // ÏÞÖÆµ½ -0.65 ~ 0.65£¬ÊµÏÖ²îËÙÏÞ·ù
+  115   1              // ¼ÆËã×óÓÒÂÖÄ¿±êËÙ¶È
+  116   1              if(k >= 0) // ÓÒ×ª
+  117   1              {
+  118   2                      left_spid.target = BASE_SPEED *(1+k*0.25);
+  119   2                      right_spid.target  = BASE_SPEED *(1-k) ; // ¼ÓÉÙ¼õ¶à
+  120   2              }
+  121   1              if(k < 0) // ×ó×ª
+C251 COMPILER V5.60.0,  trank                                                              05/05/26  22:23:06  PAGE 3   
+
+  122   1              {
+  123   2                      k *= -1;
+  124   2                      left_spid.target = BASE_SPEED * (1 - k); // ¼ÓÉÙ¼õ¶à
+  125   2                      right_spid.target = BASE_SPEED * (1 + k*0.25);
+  126   2              }
+  127   1      }
+  128          
+  129          // ÔöÁ¿Ê½PID¼ÆËãº¯Êý
+  130          // ¹«Ê½: ¦¤U = Kp*(e(k) - e(k-1)) + Ki*e(k)
+  131          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
+  132          {
+  133   1          // 1. ¼ÆËãµ±Ç°Îó²î
+  134   1          pid->err = pid->target - current_speed;
+  135   1              pid->I=pid->Ki * pid->err;      
+  136   1      
+  137   1          // 2. ¼ÆËãÊä³öÔöÁ¿ (¦¤U)
+  138   1         pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
+  139   1      
+  140   1          // 3. ÀÛ¼ÓÔöÁ¿µÃµ½×îÖÕÊµ¼ÊÊä³ö
+  141   1          pid->out += pid->inc_out;
+  142   1          // 4. Êä³öÏÞ·ù (·ÀÖ¹PWMÅÜ·É)
+  143   1          if (pid->out > pid->max_out)
+  144   1              pid->out = pid->max_out;
+  145   1          if (pid->out < -pid->max_out)
+  146   1              pid->out = -pid->max_out;
+  147   1              pid->last_err=pid->err;
+  148   1      }
+  149          
+  150          /**
+  151           * @brief  Ë«±Õ»·Ñ­¼£¿ØÖÆ(ºËÐÄº¯Êý)
+  152           * Á÷³Ì£ºµç¸Ð²î±ÈºÍ ¡ú Î»ÖÃ»· ¡ú ×óÓÒÂÖÄ¿±êËÙ¶È ¡ú ËÙ¶È»· ¡ú µç»úPWM
+  153           */
+  154          void Dual_Loop_Control(void)
+  155          {
+  156   1          speed_left = -encoder_get_count(TIM0_ENCOEDER); // »ñÈ¡±àÂëÆ÷¼ÆÊý
+  157   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
+  158   1              
+  159   1          encoder_clear_count(TIM0_ENCOEDER);                          // Çå¿Õ±àÂëÆ÷¼ÆÊý
+  160   1          encoder_clear_count(TIM3_ENCOEDER);
+  161   1      
+  162   1          IncPID_Calc(&left_spid,speed_left);
+  163   1          IncPID_Calc(&right_spid,speed_right);
+  164   1      
+  165   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
+  166   1      }
+  167          
+  168          
+  169          
+  170          
+  171          
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =      2357     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =       352     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+C251 COMPILER V5.60.0,  trank                                                              05/05/26  22:23:06  PAGE 4   
+
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        70     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

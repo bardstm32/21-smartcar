@@ -1,0 +1,94 @@
+C251 COMPILER V5.60.0,  encoder                                                            05/05/26  22:02:37  PAGE 1   
+
+
+C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
+OBJECT MODULE PLACED IN .\out_file\encoder.obj
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE encoder.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
+                    -(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\
+                    -code) DEBUG PRINT(.\out_file\encoder.lst) OBJECT(.\out_file\encoder.obj) 
+
+stmt  level    source
+
+    1          #include "zf_common_headfile.h"
+    2          
+    3          #define PIT_CH (TIM1_PIT)
+    4          #define PIT_CH4 (TIM4_PIT)
+    5          
+    6          volatile uint16 adc_inductance[5] = {0};
+    7          void pit_handler(void);
+    8          void pit_handler4(void);
+    9          
+   10          #define ENCODER_DIR_LEFT (TIM0_ENCOEDER)                   // 正交编码器对应使用的编码器接口 这里使用QTIMER1的ENCOEDER1
+   11          #define ENCODER_DIR_DIR_LEFT (IO_P35)                      // DIR 对应的引脚
+   12          #define ENCODER_DIR_PULSE_LEFT (TIM0_ENCOEDER_P34) // PULSE 对应的引脚
+   13          
+   14          #define ENCODER_DIR_RIGHT (TIM3_ENCOEDER)                       // 正交编码器对应使用的编码器接口 这里使用QTIMER1的ENCOEDER1
+   15          #define ENCODER_DIR_DIR_RIGHT (IO_P53)                          // DIR 对应的引脚
+   16          #define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE 对应的引脚
+   17          
+   18          uint16 imu_cnt = 0,t = 0;
+   19          
+   20          void encoder_init()
+   21          {
+   22   1              tim1_irq_handler = pit_handler;
+   23   1              tim4_irq_handler = pit_handler4;
+   24   1              pit_ms_init(PIT_CH, 1);
+   25   1              pit_ms_init(PIT_CH4, 2);
+   26   1      
+   27   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
+   28   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
+   29   1      }
+   30          
+   31          void pit_handler(void)
+   32          {
+   33   1              imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
+   34   1              imu660ra_get_gyro();
+   35   1              imu_cnt++; 
+   36   1              if(imu_cnt >=5)
+   37   1              {   
+   38   2                      gyro_proc();
+   39   2                      t++;
+   40   2                      if(t >=2)
+   41   2                      {
+   42   3                              Inductance_Read(adc_inductance);
+   43   3                              elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance
+             -[4]);
+   44   3                              Dir_Control();
+   45   3                              imu_cnt = 0;
+   46   3                              t = 0;
+   47   3                      }
+   48   2                      Dir_Control_gyro();     
+   49   2                      Calculate_Differential_Drive();
+   50   2              }
+   51   1      }
+   52          
+   53          void pit_handler4(void)
+   54          {
+   55   1              Dual_Loop_Control();
+   56   1      }
+C251 COMPILER V5.60.0,  encoder                                                            05/05/26  22:02:37  PAGE 2   
+
+
+
+Module Information          Static   Overlayable
+------------------------------------------------
+  code size            =       256     ------
+  ecode size           =    ------     ------
+  data size            =    ------     ------
+  idata size           =    ------     ------
+  pdata size           =    ------     ------
+  xdata size           =        14     ------
+  xdata-const size     =    ------     ------
+  edata size           =    ------     ------
+  bit size             =    ------     ------
+  ebit size            =    ------     ------
+  bitaddressable size  =    ------     ------
+  ebitaddressable size =    ------     ------
+  far data size        =    ------     ------
+  huge data size       =    ------     ------
+  const size           =    ------     ------
+  hconst size          =        29     ------
+End of Module Information.
+
+
+C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
