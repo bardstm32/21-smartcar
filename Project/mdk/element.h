@@ -8,12 +8,15 @@ typedef enum
 {
     NORMAL = 0,
     CROSS = 1,      // 十字
-	ROUNDAPPROCH = 2,
-	ROUNDIN = 3,
-    ROUNDOUT = 4, // 环岛
-    SEESAW = 5,     // 跷跷板
-    WALL = 6,       // 竖直墙面
-    ROLLER = 7,     // 滚筒
+	RIGHT_ROUNDAPPROCH = 2,
+	LEFT_ROUNDAPPROCH = 3,
+	RIGHT_ROUND = 4,
+	LEFT_ROUND = 5,
+	ROUNDIN = 6,
+    ROUNDOUT = 7, // 环岛
+    SEESAW = 8,     // 跷跷板
+    WALL = 9,       // 竖直墙面
+    ROLLER = 10,     // 滚筒
 } TrackState_e;
 
 extern TrackState_e TrackState;

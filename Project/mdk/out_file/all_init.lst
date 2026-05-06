@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  all_init                                                           03/05/26  22:48:44  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           05/05/26  21:21:52  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
 OBJECT MODULE PLACED IN .\out_file\all_init.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDI
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDI
                     -R(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..
                     -\code) DEBUG PRINT(.\out_file\all_init.lst) OBJECT(.\out_file\all_init.obj) 
 
@@ -17,24 +17,21 @@ stmt  level    source
     6   1              gyro_init();
     7   1              pwm_init(PWMA_CH1P_P60, 25000, 0);
     8   1              pwm_init(PWMA_CH2P_P62, 25000, 0);
-    9   1              pwm_init(PWMA_CH4N_P27, 25000, 0);
-   10   1              pwm_set_duty(PWMA_CH4N_P27, 5000);
+    9   1      //      pwm_init(PWMA_CH4N_P27, 25000, 0);
+   10   1      //      pwm_set_duty(PWMA_CH4N_P27, 5000);
    11   1              gpio_init(IO_P61, GPO, GPIO_LOW, GPO_PUSH_PULL);
    12   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
-   13   1              ips114_init();
-   14   1              wireless_uart_init();
-   15   1              encoder_init();
-   16   1              LED_Init();
-   17   1              Oscilloscope_Init();
-   18   1              Parameter_Debug_Init();
-   19   1              Inductance_Init();
-   20   1              interrupt_global_enable();
-   21   1      }
+   13   1              wireless_uart_init();
+   14   1              encoder_init();
+   15   1              Oscilloscope_Init();
+   16   1              Inductance_Init();
+   17   1              interrupt_global_enable();
+   18   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       147     ------
+  code size            =       104     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

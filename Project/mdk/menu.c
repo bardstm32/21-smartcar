@@ -75,7 +75,8 @@ void Send_Data_To_PC(void)
 
     // 2. 使用 sprintf 将数值格式化为字符串
     // 这里以浮点数保留2位小数 (%.2f)，整数 (%d) 为例。加上 \r\n 以便电脑端串口助手换行显示。
-    sprintf(send_buf, "state:%d %d %f %f\r\n",TrackState,imu660ra_gyro_z,eleOut_0,eleOut_1);
+    sprintf(send_buf, "state: %d %d %d %d %d %f\r\n",TrackState,adc_inductance[1],adc_inductance[2]
+	,adc_inductance[3],adc_inductance[4],Nowangel - Daty_Z);
 
     // 3. 调用库函数发送最终拼装好的字符串
     wireless_uart_send_string(send_buf); // 通过无线串口发送格式化后的字符串
@@ -114,7 +115,7 @@ void Oscilloscope_Init(void)
 
 // 示波器数据发送函数
 // 将两个通道的数据打包并通过无线串口发送到电脑端
-void Oscilloscope_Display(float num1, float num2,int16 num3,int16 num4,int16 num5,int16 num6,float num7,float num8)
+void Oscilloscope_Display(float num1, float num2,float num3,int16 num4,int16 num5,int16 num6,float num7,float num8)
 {
     seekfree_assistant_oscilloscope_data.dat[0] = num1; // 设置第一个通道的数据
     seekfree_assistant_oscilloscope_data.dat[1] = num2; // 设置第二个通道的数据

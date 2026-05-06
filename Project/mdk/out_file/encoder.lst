@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  encoder                                                            03/05/26  22:48:44  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            05/05/26  22:02:37  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
 OBJECT MODULE PLACED IN .\out_file\encoder.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE encoder.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE encoder.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
                     -(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\
                     -code) DEBUG PRINT(.\out_file\encoder.lst) OBJECT(.\out_file\encoder.obj) 
 
@@ -26,7 +26,7 @@ stmt  level    source
    15          #define ENCODER_DIR_DIR_RIGHT (IO_P53)                          // DIR 对应的引脚
    16          #define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE 对应的引脚
    17          
-   18          uint16 imu_cnt = 0;
+   18          uint16 imu_cnt = 0,t = 0;
    19          
    20          void encoder_init()
    21          {
@@ -44,36 +44,40 @@ stmt  level    source
    33   1              imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
    34   1              imu660ra_get_gyro();
    35   1              imu_cnt++; 
-   36   1              if (imu_cnt >= 5)
-   37   1              {
-   38   2                      Inductance_Read(adc_inductance);
-   39   2                      elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[
-             -4]);
-   40   2                      Dir_Control();
-   41   2                      Calculate_Differential_Drive();
-   42   2                      imu_cnt = 0;
-   43   2                      gyro_proc();
-   44   2              }
-   45   1              
-   46   1      }
-   47          
-   48          void pit_handler4(void)
-   49          {
-   50   1      
-   51   1              Dual_Loop_Control();
-   52   1      }
+   36   1              if(imu_cnt >=5)
+   37   1              {   
+   38   2                      gyro_proc();
+   39   2                      t++;
+   40   2                      if(t >=2)
+   41   2                      {
+   42   3                              Inductance_Read(adc_inductance);
+   43   3                              elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance
+             -[4]);
+   44   3                              Dir_Control();
+   45   3                              imu_cnt = 0;
+   46   3                              t = 0;
+   47   3                      }
+   48   2                      Dir_Control_gyro();     
+   49   2                      Calculate_Differential_Drive();
+   50   2              }
+   51   1      }
+   52          
+   53          void pit_handler4(void)
+   54          {
+   55   1              Dual_Loop_Control();
+   56   1      }
+C251 COMPILER V5.60.0,  encoder                                                            05/05/26  22:02:37  PAGE 2   
+
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       216     ------
-C251 COMPILER V5.60.0,  encoder                                                            03/05/26  22:48:44  PAGE 2   
-
+  code size            =       256     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        12     ------
+  xdata size           =        14     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -83,7 +87,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        22     ------
+  hconst size          =        29     ------
 End of Module Information.
 
 

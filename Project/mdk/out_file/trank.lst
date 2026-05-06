@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  trank                                                              03/05/26  23:09:35  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              05/05/26  22:23:06  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
 OBJECT MODULE PLACED IN .\out_file\trank.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE trank.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(.
                     -.\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\co
                     -de) DEBUG PRINT(.\out_file\trank.lst) OBJECT(.\out_file\trank.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53          /**
    54           * @brief  通用位置式PID计算
    55           */
-C251 COMPILER V5.60.0,  trank                                                              03/05/26  23:09:35  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              05/05/26  22:23:06  PAGE 2   
 
    56          float PID_Calc(PID_TypeDef *pid, float target, float measure)
    57          {
@@ -97,96 +97,100 @@ stmt  level    source
    82           */
    83          void Dir_Control()
    84          {
-   85   1      //    static int t = 0;
-   86   1      //    if(++t >= 2)
-   87   1      //    {
-   88   1      //        t = 0;
-   89   1              // 根据状态机决定输出，具体正负号需要根据你实际的左右环岛情况测试
-   90   1              if (TrackState == NORMAL || TrackState == ROUNDIN || TrackState == ROUNDOUT)
-   91   1              {
-   92   2                  // 正常循迹
-   93   2                  eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
-   94   2              }
-   95   1              else if (TrackState == ROUNDAPPROCH)
+   85   1              // 根据状态机决定输出，具体正负号需要根据你实际的左右环岛情况测试
+   86   1              if (TrackState == NORMAL || TrackState == ROUNDIN || TrackState == ROUNDOUT)
+   87   1              {
+   88   2                  // 正常循迹
+   89   2                  eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
+   90   2              }
+   91   1              else if (TrackState == RIGHT_ROUND)
+   92   1              {
+   93   2                  eleOut_0 = 7000; 
+   94   2              }      
+   95   1                      else if (TrackState == LEFT_ROUND)
    96   1              {
-   97   2                  eleOut_0 = 6000; 
+   97   2                  eleOut_0 = -7000; 
    98   2              }       
    99   1              // 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
   100   1                      eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
-  101   1                      eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z);
-  102   1                      eleOut_1 = range_protect_float(eleOut_1, -10000.0f, 10000.0f);
-  103   1      //    }
-  104   1      }
-  105          
-  106          void Calculate_Differential_Drive() // 差速计算
-  107          {
-  108   1              float k = 0; // 差速比例系数
-  109   1          k = eleOut_1 * 0.0001f;                  // 缩放成 -1 ~ 1
-  110   1          k = range_protect_float(k, -0.75, 0.75); // 限制到 -0.65 ~ 0.65，实现差速限幅
-  111   1              // 计算左右轮目标速度
-  112   1              if(k >= 0) // 右转
-  113   1              {
-  114   2                      left_spid.target = BASE_SPEED *(1+k*0.35);
-  115   2                      right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
-  116   2              }
-  117   1              if(k < 0) // 左转
-  118   1              {
-  119   2                      k *= -1;
-  120   2                      left_spid.target = BASE_SPEED * (1 - k); // 加少减多
-  121   2                      right_spid.target = BASE_SPEED * (1 + k*0.35);
-C251 COMPILER V5.60.0,  trank                                                              03/05/26  23:09:35  PAGE 3   
+  101   1      }
+  102          
+  103          void Dir_Control_gyro()
+  104          {
+  105   1              eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z);
+  106   1              eleOut_1 = range_protect_float(eleOut_1, -10000.0f, 10000.0f);
+  107   1      }
+  108          
+  109          
+  110          void Calculate_Differential_Drive() // 差速计算
+  111          {
+  112   1              float k = 0; // 差速比例系数
+  113   1          k = eleOut_1 * 0.0001f;                  // 缩放成 -1 ~ 1
+  114   1          k = range_protect_float(k, -0.75, 0.75); // 限制到 -0.65 ~ 0.65，实现差速限幅
+  115   1              // 计算左右轮目标速度
+  116   1              if(k >= 0) // 右转
+  117   1              {
+  118   2                      left_spid.target = BASE_SPEED *(1+k*0.25);
+  119   2                      right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
+  120   2              }
+  121   1              if(k < 0) // 左转
+C251 COMPILER V5.60.0,  trank                                                              05/05/26  22:23:06  PAGE 3   
 
-  122   2              }
-  123   1      }
-  124          
-  125          // 增量式PID计算函数
-  126          // 公式: ΔU = Kp*(e(k) - e(k-1)) + Ki*e(k)
-  127          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
-  128          {
-  129   1          // 1. 计算当前误差
-  130   1          pid->err = pid->target - current_speed;
-  131   1              pid->I=pid->Ki * pid->err;      
-  132   1      
-  133   1          // 2. 计算输出增量 (ΔU)
-  134   1         pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
-  135   1      
-  136   1          // 3. 累加增量得到最终实际输出
-  137   1          pid->out += pid->inc_out;
-  138   1          // 4. 输出限幅 (防止PWM跑飞)
-  139   1          if (pid->out > pid->max_out)
-  140   1              pid->out = pid->max_out;
-  141   1          if (pid->out < -pid->max_out)
-  142   1              pid->out = -pid->max_out;
-  143   1              pid->last_err=pid->err;
-  144   1      }
-  145          
-  146          /**
-  147           * @brief  双闭环循迹控制(核心函数)
-  148           * 流程：电感差比和 → 位置环 → 左右轮目标速度 → 速度环 → 电机PWM
-  149           */
-  150          void Dual_Loop_Control(void)
-  151          {
-  152   1          speed_left = -encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
-  153   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
-  154   1              
-  155   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
-  156   1          encoder_clear_count(TIM3_ENCOEDER);
-  157   1      
-  158   1          IncPID_Calc(&left_spid,speed_left);
-  159   1          IncPID_Calc(&right_spid,speed_right);
-  160   1      
-  161   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
-  162   1      }
-  163          
-  164          
-  165          
-  166          
+  122   1              {
+  123   2                      k *= -1;
+  124   2                      left_spid.target = BASE_SPEED * (1 - k); // 加少减多
+  125   2                      right_spid.target = BASE_SPEED * (1 + k*0.25);
+  126   2              }
+  127   1      }
+  128          
+  129          // 增量式PID计算函数
+  130          // 公式: ΔU = Kp*(e(k) - e(k-1)) + Ki*e(k)
+  131          void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
+  132          {
+  133   1          // 1. 计算当前误差
+  134   1          pid->err = pid->target - current_speed;
+  135   1              pid->I=pid->Ki * pid->err;      
+  136   1      
+  137   1          // 2. 计算输出增量 (ΔU)
+  138   1         pid->inc_out = (pid->Kp * (pid->err - pid->last_err) +pid->I);
+  139   1      
+  140   1          // 3. 累加增量得到最终实际输出
+  141   1          pid->out += pid->inc_out;
+  142   1          // 4. 输出限幅 (防止PWM跑飞)
+  143   1          if (pid->out > pid->max_out)
+  144   1              pid->out = pid->max_out;
+  145   1          if (pid->out < -pid->max_out)
+  146   1              pid->out = -pid->max_out;
+  147   1              pid->last_err=pid->err;
+  148   1      }
+  149          
+  150          /**
+  151           * @brief  双闭环循迹控制(核心函数)
+  152           * 流程：电感差比和 → 位置环 → 左右轮目标速度 → 速度环 → 电机PWM
+  153           */
+  154          void Dual_Loop_Control(void)
+  155          {
+  156   1          speed_left = -encoder_get_count(TIM0_ENCOEDER); // 获取编码器计数
+  157   1          speed_right = encoder_get_count(TIM3_ENCOEDER);                     
+  158   1              
+  159   1          encoder_clear_count(TIM0_ENCOEDER);                          // 清空编码器计数
+  160   1          encoder_clear_count(TIM3_ENCOEDER);
+  161   1      
+  162   1          IncPID_Calc(&left_spid,speed_left);
+  163   1          IncPID_Calc(&right_spid,speed_right);
+  164   1      
+  165   1          Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
+  166   1      }
   167          
+  168          
+  169          
+  170          
+  171          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      2326     ------
+  code size            =      2357     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -199,12 +203,12 @@ Module Information          Static   Overlayable
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
+C251 COMPILER V5.60.0,  trank                                                              05/05/26  22:23:06  PAGE 4   
+
   huge data size       =    ------     ------
   const size           =    ------     ------
   hconst size          =        70     ------
 End of Module Information.
-
-C251 COMPILER V5.60.0,  trank                                                              03/05/26  23:09:35  PAGE 4   
 
 
 C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

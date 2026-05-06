@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  inductance                                                         03/05/26  23:11:28  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         05/05/26  15:56:19  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
 OBJECT MODULE PLACED IN .\out_file\inductance.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
                     -DIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;
                     -..\code) DEBUG PRINT(.\out_file\inductance.lst) OBJECT(.\out_file\inductance.obj) 
 
@@ -26,7 +26,7 @@ stmt  level    source
    13          #include "zf_common_headfile.h"
    14          uint16 inductance_init_data[5][Filter_deepth];
    15          uint16 inductance_filter_data[5];
-   16          float CUR_PARA = 2,STR_PARA = 6;
+   16          float CUR_PARA = 8,STR_PARA = 2;
    17          /**
    18           * range_protect - 将值限制在指定的最小值和最大值之间
    19           * 该函数接收一个值以及最小值和最大值作为参数，如果值大于最大值，则返回最大值；
@@ -66,7 +66,7 @@ stmt  level    source
    53           * 和一个最小值后的平均值。适用于需要滤除异常值的场景。
    54           * @param arr   整型数组，包含待处理的数据
    55           * @param times 需要处理的数组元素个数
-C251 COMPILER V5.60.0,  inductance                                                         03/05/26  23:11:28  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         05/05/26  15:56:19  PAGE 2   
 
    56           * @return      去掉一个最大值和一个最小值后的数组元素平均值
    57           */
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          return scaled_err;
   120   1      }
   121          
-C251 COMPILER V5.60.0,  inductance                                                         03/05/26  23:11:28  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         05/05/26  15:56:19  PAGE 3   
 
   122          float Inductance_Count_Err2(int16 L, int16 LM, int16 RM, int16 R)
   123          {
@@ -191,7 +191,7 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =       153     ------
+  xdata size           =       173     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -204,7 +204,7 @@ Module Information          Static   Overlayable
   hconst size          =        18     ------
 End of Module Information.
 
-C251 COMPILER V5.60.0,  inductance                                                         03/05/26  23:11:28  PAGE 4   
+C251 COMPILER V5.60.0,  inductance                                                         05/05/26  15:56:19  PAGE 4   
 
 
 C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

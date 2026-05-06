@@ -13,7 +13,7 @@
 #include "zf_common_headfile.h"
 uint16 inductance_init_data[5][Filter_deepth];
 uint16 inductance_filter_data[5];
-float CUR_PARA = 2,STR_PARA = 6;
+float CUR_PARA = 8,STR_PARA = 2;
 /**
  * range_protect - 将值限制在指定的最小值和最大值之间
  * 该函数接收一个值以及最小值和最大值作为参数，如果值大于最大值，则返回最大值；

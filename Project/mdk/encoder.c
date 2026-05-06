@@ -15,7 +15,7 @@ void pit_handler4(void);
 #define ENCODER_DIR_DIR_RIGHT (IO_P53)				// DIR 对应的引脚
 #define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE 对应的引脚
 
-uint16 imu_cnt = 0;
+uint16 imu_cnt = 0,t = 0;
 
 void encoder_init()
 {
@@ -33,20 +33,24 @@ void pit_handler(void)
 	imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
 	imu660ra_get_gyro();
 	imu_cnt++; 
-	if (imu_cnt >= 5)
-	{
-		Inductance_Read(adc_inductance);
-		elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
-		Dir_Control();
-		Calculate_Differential_Drive();
-		imu_cnt = 0;
+	if(imu_cnt >=5)
+	{   
 		gyro_proc();
+		t++;
+		if(t >=2)
+		{
+			Inductance_Read(adc_inductance);
+			elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
+			Dir_Control();
+			imu_cnt = 0;
+			t = 0;
+		}
+		Dir_Control_gyro();	
+		Calculate_Differential_Drive();
 	}
-	
 }
 
 void pit_handler4(void)
 {
-
 	Dual_Loop_Control();
 }

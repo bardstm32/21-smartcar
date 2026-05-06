@@ -82,26 +82,30 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
  */
 void Dir_Control()
 {
-//    static int t = 0;
-//    if(++t >= 2)
-//    {
-//        t = 0;
         // 根据状态机决定输出，具体正负号需要根据你实际的左右环岛情况测试
         if (TrackState == NORMAL || TrackState == ROUNDIN || TrackState == ROUNDOUT)
         {
             // 正常循迹
             eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
         }
-        else if (TrackState == ROUNDAPPROCH)
+        else if (TrackState == RIGHT_ROUND)
         {
-            eleOut_0 = 6000; 
-        }       
+            eleOut_0 = 7000; 
+        }      
+		else if (TrackState == LEFT_ROUND)
+        {
+            eleOut_0 = -7000; 
+        } 	
         // 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
 		eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
-		eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z);
-		eleOut_1 = range_protect_float(eleOut_1, -10000.0f, 10000.0f);
-//    }
 }
+
+void Dir_Control_gyro()
+{
+	eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z);
+	eleOut_1 = range_protect_float(eleOut_1, -10000.0f, 10000.0f);
+}
+
 
 void Calculate_Differential_Drive() // 差速计算
 {
@@ -111,14 +115,14 @@ void Calculate_Differential_Drive() // 差速计算
 	// 计算左右轮目标速度
 	if(k >= 0) // 右转
 	{
-		left_spid.target = BASE_SPEED *(1+k*0.35);
+		left_spid.target = BASE_SPEED *(1+k*0.25);
 		right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
 	}
 	if(k < 0) // 左转
 	{
 		k *= -1;
 		left_spid.target = BASE_SPEED * (1 - k); // 加少减多
-		right_spid.target = BASE_SPEED * (1 + k*0.35);
+		right_spid.target = BASE_SPEED * (1 + k*0.25);
 	}
 }
 

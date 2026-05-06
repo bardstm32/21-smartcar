@@ -8,7 +8,7 @@
 #define L4 (ADC_CH5_P15) // 电感传感器L4连接到IO引脚P0.6
 
 // 滤波深度，连读N次的电感进行滤波防止异常抖动
-#define Filter_deepth 5
+#define Filter_deepth 7
 
 extern float CUR_PARA,STR_PARA;
 
