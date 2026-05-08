@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  inductance                                                         05/05/26  15:56:19  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         07/05/26  21:05:15  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
 OBJECT MODULE PLACED IN .\out_file\inductance.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE inductance.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INC
                     -DIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;
                     -..\code) DEBUG PRINT(.\out_file\inductance.lst) OBJECT(.\out_file\inductance.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53           * 和一个最小值后的平均值。适用于需要滤除异常值的场景。
    54           * @param arr   整型数组，包含待处理的数据
    55           * @param times 需要处理的数组元素个数
-C251 COMPILER V5.60.0,  inductance                                                         05/05/26  15:56:19  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         07/05/26  21:05:15  PAGE 2   
 
    56           * @return      去掉一个最大值和一个最小值后的数组元素平均值
    57           */
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          return scaled_err;
   120   1      }
   121          
-C251 COMPILER V5.60.0,  inductance                                                         05/05/26  15:56:19  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         07/05/26  21:05:15  PAGE 3   
 
   122          float Inductance_Count_Err2(int16 L, int16 LM, int16 RM, int16 R)
   123          {
@@ -177,16 +177,16 @@ stmt  level    source
   160   2              inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
   161   2          } 
   162   1                       
-  163   1          inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3689, 0);
-  164   1          inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3680, 0);
-  165   1          inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3702, 0);
-  166   1          inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3687, 0);
+  163   1          inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3685, 18);
+  164   1          inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3685, 23);
+  165   1          inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3685, 25);
+  166   1          inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3685, 22);
   167   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1644     ------
+  code size            =      1652     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -204,7 +204,7 @@ Module Information          Static   Overlayable
   hconst size          =        18     ------
 End of Module Information.
 
-C251 COMPILER V5.60.0,  inductance                                                         05/05/26  15:56:19  PAGE 4   
+C251 COMPILER V5.60.0,  inductance                                                         07/05/26  21:05:15  PAGE 4   
 
 
 C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

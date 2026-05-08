@@ -3,11 +3,8 @@
 
 //===================== 全局宏定义 =====================//
 #define PWM_MAX             5000.0f   // 电机PWM最大限幅
-#define BASE_SPEED          100.0f    // 基础直行速度(可调)
+#define BASE_SPEED          130.0f    // 基础直行速度(可调)
 
-// 位置环(循迹外环)参数限幅
-#define POS_PID_MAX_OUT     600     // 位置环最大输出(左右轮速度差)
-#define POS_PID_MAX_I       200     // 位置环积分限幅
 // 速度环(稳速内环)参数限幅
 #define SPEED_PID_MAX_OUT    PWM_MAX // 速度环最大输出(PWM)
 #define SPEED_PID_MAX_I      1900    // 速度环积分限幅
@@ -43,8 +40,8 @@ extern PID_TypeDef Turn_PID, Gyro_PID;   // 位置环PID(循迹)
 extern PID_TypeDef left_spid; // 左轮速度环PID
 extern PID_TypeDef right_spid;// 右轮速度环PID
 
-extern volatile int32 speed_left;
-extern volatile int32 speed_right;
+extern volatile int16 speed_left;
+extern volatile int16 speed_right;
 extern volatile float Turn_target;
 extern float elemid;    // 赛道偏差
 extern float eleOut_0;  // 赛道偏差环输出值

@@ -2,8 +2,8 @@
 #define __ENCODER_H__
 
 void encoder_init();
-extern volatile uint16 adc_inductance[];
+void Distance_Add();
 
-// extern  volatile int16 real_left;
-// extern volatile int16 real_right;
+extern volatile uint16 adc_inductance[];
+extern uint32 distance;
 #endif

@@ -833,16 +833,6 @@
               <FilePath>.\moto.h</FilePath>
             </File>
             <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\led.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\led.h</FilePath>
-            </File>
-            <File>
               <FileName>trank.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\trank.c</FilePath>

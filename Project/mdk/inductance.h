@@ -10,8 +10,6 @@
 // 滤波深度，连读N次的电感进行滤波防止异常抖动
 #define Filter_deepth 7
 
-extern float CUR_PARA,STR_PARA;
-
 
 int16 range_protect_int(int16 value, int16 min_value, int16 max_value);
 float range_protect_float(float value, float min_value, float max_value);

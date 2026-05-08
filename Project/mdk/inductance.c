@@ -160,8 +160,8 @@ void Inductance_Read(uint16 *inductance_norm_data)
         inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
     } 
 		 
-    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3689, 0);
-    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3680, 0);
-    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3702, 0);
-    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3687, 0);
+    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3685, 18);
+    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3685, 23);
+    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3685, 25);
+    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3685, 22);
 }

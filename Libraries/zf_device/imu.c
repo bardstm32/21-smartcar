@@ -231,7 +231,8 @@ float fast_sqrt(float num)
 
 float My_abs(float x)
 {
-    return x < 0 ? -x : x;
+    if(x>=0)return x;
+	else return -x;
 }
 
 void KalmanCreate(extKalman_t *p, float T_Q, float T_R)

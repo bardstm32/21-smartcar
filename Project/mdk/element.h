@@ -21,7 +21,6 @@ typedef enum
 
 extern TrackState_e TrackState;
 extern float Nowangel;
-
 // 注意这里：把 int16_t 改成了 int16
 void Element_Control(int16 *param);
 

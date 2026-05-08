@@ -12,15 +12,13 @@ PID_TypeDef right_spid;
 #define ENCODER_DIR_DIR_RIGHT              	(IO_P53)            				 	// DIR 对应的引脚
 #define ENCODER_DIR_PULSE_RIGHT            	(TIM3_ENCOEDER_P04)            			// PULSE 对应的引脚
 #define MAX_INC 150.0           // 2ms 周期下限制单次增量
-volatile int32 speed_left = 0;
-volatile int32 speed_right = 0;
-
+volatile int16 speed_left = 0;
+volatile int16 speed_right = 0;
+uint16 dur_time =0;
 
 float elemid = 0; // 目标赛道偏差
 float eleOut_0 = 0; // 赛道偏差环输出值
 float eleOut_1 = 0; // 偏航角速度环输出值
-int Gyro_Z = 0; // 实际偏航角速度
-float eleValue = 0;
 volatile float Turn_target = 0;
 /**
  * @brief  PID初始化(通用)
@@ -83,18 +81,19 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
 void Dir_Control()
 {
         // 根据状态机决定输出，具体正负号需要根据你实际的左右环岛情况测试
-        if (TrackState == NORMAL || TrackState == ROUNDIN || TrackState == ROUNDOUT)
+        if (TrackState == NORMAL || TrackState == ROUNDIN || TrackState == ROUNDOUT 
+			|| TrackState ==RIGHT_ROUNDAPPROCH || TrackState ==LEFT_ROUNDAPPROCH)
         {
             // 正常循迹
             eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
         }
         else if (TrackState == RIGHT_ROUND)
         {
-            eleOut_0 = 7000; 
+            eleOut_0 = 6000; 
         }      
 		else if (TrackState == LEFT_ROUND)
         {
-            eleOut_0 = -7000; 
+            eleOut_0 = -6000; 
         } 	
         // 限幅保护，确保输出结果在 -10000 ~ 10000 范围内
 		eleOut_0 = range_protect_float(eleOut_0, -10000.0f, 10000.0f);
@@ -162,7 +161,7 @@ void Dual_Loop_Control(void)
     IncPID_Calc(&left_spid,speed_left);
     IncPID_Calc(&right_spid,speed_right);
 
-    Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);
+    Motor_SetSpeed((uint16)left_spid.out, (uint16)right_spid.out);
 }
 
 

@@ -15,8 +15,17 @@ void pit_handler4(void);
 #define ENCODER_DIR_DIR_RIGHT (IO_P53)				// DIR 对应的引脚
 #define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE 对应的引脚
 
-uint16 imu_cnt = 0,t = 0;
 
+int encoder_L_R = 0; // 平均速度
+uint32 distance = 0; // 累计距离
+
+void Distance_Add()
+{
+	encoder_L_R = (unsigned int) ((My_abs(speed_left) + My_abs(speed_right)) / 2.0);
+	distance += encoder_L_R;
+}
+
+uint16 imu_cnt = 0,t = 0;
 void encoder_init()
 {
 	tim1_irq_handler = pit_handler;

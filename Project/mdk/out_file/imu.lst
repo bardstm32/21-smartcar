@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  imu                                                                05/05/26  22:07:14  PAGE 1   
+C251 COMPILER V5.60.0,  imu                                                                07/05/26  21:05:13  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE imu
 OBJECT MODULE PLACED IN .\out_file\imu.obj
-COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\..\Libraries\zf_device\imu.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\zf_device\imu.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE
                     -(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries
                     -\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\imu.lst) OBJECT(.\out_file\imu.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          first_complement.angle.roll = KalmanFilter(&Kalman1, first_complement.angle.roll);
    54   1          first_complement.angle.pitch = KalmanFilter(&Kalman2, first_complement.angle.pitch);
    55   1      
-C251 COMPILER V5.60.0,  imu                                                                05/05/26  22:07:14  PAGE 2   
+C251 COMPILER V5.60.0,  imu                                                                07/05/26  21:05:13  PAGE 2   
 
    56   1          // 修复2：Pitch/Roll极值统计逻辑搞反的问题（核心修复）
    57   1          if (Pitch_Flag == 0)
@@ -134,7 +134,7 @@ stmt  level    source
   119          {
   120   1          imu660ra_get_gyro();
   121   1          imu660ra_get_acc();
-C251 COMPILER V5.60.0,  imu                                                                05/05/26  22:07:14  PAGE 3   
+C251 COMPILER V5.60.0,  imu                                                                07/05/26  21:05:13  PAGE 3   
 
   122   1      
   123   1          IMU_Data.gyro_x = ((float)imu660ra_gyro_x - Gyro_Offset.Xdata) * PI / 180 / 16.4f;
@@ -202,7 +202,7 @@ stmt  level    source
   185   3                  Round = 1;
   186   3              }
   187   2          }
-C251 COMPILER V5.60.0,  imu                                                                05/05/26  22:07:14  PAGE 4   
+C251 COMPILER V5.60.0,  imu                                                                07/05/26  21:05:13  PAGE 4   
 
   188   1          if (Round == 1)
   189   1          {
@@ -250,63 +250,64 @@ stmt  level    source
   231          
   232          float My_abs(float x)
   233          {
-  234   1          return x < 0 ? -x : x;
-  235   1      }
-  236          
-  237          void KalmanCreate(extKalman_t *p, float T_Q, float T_R)
-  238          {
-  239   1          p->X_last = (float)0;
-  240   1          p->P_last = 0;
-  241   1          p->Q = T_Q;
-  242   1          p->R = T_R;
-  243   1          p->A = 1;
-  244   1          p->B = 0;
-  245   1          p->H = 1;
-  246   1          p->X_mid = p->X_last;
-  247   1      }
-  248          
-  249          float KalmanFilter(extKalman_t *p, float dat)
-  250          {
-  251   1          p->X_mid = p->A * p->X_last;
-  252   1          p->P_mid = p->A * p->P_last + p->Q;
-  253   1          p->kg = p->P_mid / (p->P_mid + p->R);
-C251 COMPILER V5.60.0,  imu                                                                05/05/26  22:07:14  PAGE 5   
+  234   1          if(x>=0)return x;
+  235   1              else return -x;
+  236   1      }
+  237          
+  238          void KalmanCreate(extKalman_t *p, float T_Q, float T_R)
+  239          {
+  240   1          p->X_last = (float)0;
+  241   1          p->P_last = 0;
+  242   1          p->Q = T_Q;
+  243   1          p->R = T_R;
+  244   1          p->A = 1;
+  245   1          p->B = 0;
+  246   1          p->H = 1;
+  247   1          p->X_mid = p->X_last;
+  248   1      }
+  249          
+  250          float KalmanFilter(extKalman_t *p, float dat)
+  251          {
+  252   1          p->X_mid = p->A * p->X_last;
+  253   1          p->P_mid = p->A * p->P_last + p->Q;
+C251 COMPILER V5.60.0,  imu                                                                07/05/26  21:05:13  PAGE 5   
 
-  254   1          p->X_now = p->X_mid + p->kg * (dat - p->X_mid);
-  255   1          p->P_now = (1 - p->kg) * p->P_mid;
-  256   1          p->P_last = p->P_now;
-  257   1          p->X_last = p->X_now;
-  258   1          return p->X_now;
-  259   1      }
-  260          
-  261          void gyro_init(void)
-  262          {
-  263   1          IMU_gyro_Offset_Init();
-  264   1          KalmanCreate(&Kalman1, 0.01f, 0.05f); // Roll卡尔曼初始化
-  265   1          KalmanCreate(&Kalman2, 0.01f, 0.05f); // Pitch卡尔曼初始化
-  266   1      }
-  267          
-  268          void gyro_proc(void)
-  269          {
-  270   1          IMU_GetValues();
-  271   1          IMU_YAW_integral();
-  272   1          First_complement_Init();
-  273   1      }
-  274          
-  275          void main_loop(void)
-  276          {
-  277   1          Daty_X = first_complement.angle.pitch;  // 俯仰角
-  278   1          roll = first_complement.angle.roll;   // 横滚角
-  279   1          yaw = Daty_Z;                         // 偏航角（-180~180）
-  280   1          gyrox = IMU_Data.gyro_x; // X轴角速度
-  281   1          gyroy = IMU_Data.gyro_y; // Y轴角速度
-  282   1          gyroz = IMU_Data.gyro_z; // Z轴角速度
-  283   1      }
-  284          
-  285          void yaw_reset(void)
-  286          {
-  287   1              Gyro_Offset.Zdata = 0;
-  288   1      }
+  254   1          p->kg = p->P_mid / (p->P_mid + p->R);
+  255   1          p->X_now = p->X_mid + p->kg * (dat - p->X_mid);
+  256   1          p->P_now = (1 - p->kg) * p->P_mid;
+  257   1          p->P_last = p->P_now;
+  258   1          p->X_last = p->X_now;
+  259   1          return p->X_now;
+  260   1      }
+  261          
+  262          void gyro_init(void)
+  263          {
+  264   1          IMU_gyro_Offset_Init();
+  265   1          KalmanCreate(&Kalman1, 0.01f, 0.05f); // Roll卡尔曼初始化
+  266   1          KalmanCreate(&Kalman2, 0.01f, 0.05f); // Pitch卡尔曼初始化
+  267   1      }
+  268          
+  269          void gyro_proc(void)
+  270          {
+  271   1          IMU_GetValues();
+  272   1          IMU_YAW_integral();
+  273   1          First_complement_Init();
+  274   1      }
+  275          
+  276          void main_loop(void)
+  277          {
+  278   1          Daty_X = first_complement.angle.pitch;  // 俯仰角
+  279   1          roll = first_complement.angle.roll;   // 横滚角
+  280   1          yaw = Daty_Z;                         // 偏航角（-180~180）
+  281   1          gyrox = IMU_Data.gyro_x; // X轴角速度
+  282   1          gyroy = IMU_Data.gyro_y; // Y轴角速度
+  283   1          gyroz = IMU_Data.gyro_z; // Z轴角速度
+  284   1      }
+  285          
+  286          void yaw_reset(void)
+  287          {
+  288   1              Gyro_Offset.Zdata = 0;
+  289   1      }
 
 
 Module Information          Static   Overlayable

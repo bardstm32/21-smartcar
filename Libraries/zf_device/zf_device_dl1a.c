@@ -50,7 +50,6 @@
 #include "zf_device_dl1a.h"
 #include "zf_device_type.h"
 
-#pragma warning disable = 183
 
 static  uint8   dl1a_init_flag = 0;
 uint8 dl1a_finsh_flag = 0;
