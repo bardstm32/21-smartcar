@@ -13,7 +13,7 @@
 #include "zf_common_headfile.h"
 uint16 inductance_init_data[5][Filter_deepth];
 uint16 inductance_filter_data[5];
-float CUR_PARA = 8,STR_PARA = 2;
+float CUR_PARA = 7,STR_PARA = 3;
 /**
  * range_protect - 将值限制在指定的最小值和最大值之间
  * 该函数接收一个值以及最小值和最大值作为参数，如果值大于最大值，则返回最大值；
@@ -87,13 +87,19 @@ int Median_Average_Filter(int *arr, int times)
 float ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
 {
     float temp;
-    // 公式：(值 - 最小值) * 100 / (最大值 - 最小值)
-    temp = (adc_val* 100.0f)/ adc_max;
-    // 限幅，防止越界
-    if (temp > 100.0)
-        temp = 100.0;
-    if (temp < 0.0)
-        temp = 0.0;
+    
+    // 1. 提前拦截：只要当前值小于等于最小值，直接输出 0，彻底杜绝无符号数相减溢出
+    if (adc_val <= adc_min) 
+        return 0.0f;
+        
+    // 2. 提前拦截：超过最大值直接输出 100（省去了浮点乘除法，提升运行速度）
+    if (adc_val >= adc_max) 
+        return 100.0f;
+
+    // 3. 在安全范围内，正常计算
+    // 此时 adc_val 必定大于 adc_min，相减绝不会溢出
+    temp = ((adc_val - adc_min) * 100.0f / (adc_max - adc_min));
+
     return temp;
 }
 
@@ -160,8 +166,8 @@ void Inductance_Read(uint16 *inductance_norm_data)
         inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
     } 
 		 
-    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3685, 18);
-    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3685, 23);
-    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3685, 25);
-    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3685, 22);
+    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3685, 11);
+    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3685, 27);
+    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3685, 20);
+    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3685, 9);
 }

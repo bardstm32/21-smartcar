@@ -25,7 +25,7 @@ void Distance_Add()
 	distance += encoder_L_R;
 }
 
-uint16 imu_cnt = 0,t = 0;
+uint8 imu_cnt = 0,t = 0;
 void encoder_init()
 {
 	tim1_irq_handler = pit_handler;

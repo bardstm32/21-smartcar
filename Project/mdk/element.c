@@ -12,9 +12,9 @@ void Element_Control(int16 *param)
     {
         case NORMAL:
             // 环岛判定：单侧远端电感激增
-            if ((param[3] >= 26) && (param[4] >= 45) && (param[2] <= 35) && param[2] >= 20)
+		if ((param[3] >= 20) && (param[3] <= 40) && (param[4] >= 50) && (param[2] <= 35) && param[2] >= 20)
             {
-				if(param[1] >= 30 && param[1]<=40){times++;}
+				if(param[1] >= 30){times++;}
 				if(times >= 3)
 				{                
 					TrackState = RIGHT_ROUNDAPPROCH;	
@@ -23,7 +23,7 @@ void Element_Control(int16 *param)
 
             }
 			
-			else if ((param[2] >= 26) && (param[1] >= 40) && (param[3] <= 35))//左侧横电感>75 && 右侧横电感 >40 
+			else if ((param[2] >= 20) &&(param[2] <= 40)&& (param[1] >= 50) && (param[3] <= 35))//左侧横电感>75 && 右侧横电感 >40 
             {
 				if(param[4] >= 30){times++;}
 				if(times >= 3)
@@ -35,7 +35,7 @@ void Element_Control(int16 *param)
             break;
 			
 		case RIGHT_ROUNDAPPROCH:
-			if((param[4] >=50) && (param[3] >= 45))
+			if((param[4] >=50) && (param[3] >= 40))
 			{
 				times++;
 				if(times >=2)

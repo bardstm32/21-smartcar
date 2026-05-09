@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  seekfree_assistant_interface                                       07/05/26  21:05:13  PAGE 1   
+C251 COMPILER V5.60.0,  seekfree_assistant_interface                                       09/05/26  22:05:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE seekfree_assistant_interface
@@ -66,7 +66,7 @@ stmt  level    source
    49          // 函数简介     逐飞助手接收数据函数
    50          // 参数说明     *buff           需要接收的数据地址
    51          // 参数说明     length          要接收的数据最大长度
-C251 COMPILER V5.60.0,  seekfree_assistant_interface                                       07/05/26  21:05:13  PAGE 2   
+C251 COMPILER V5.60.0,  seekfree_assistant_interface                                       09/05/26  22:05:56  PAGE 2   
 
    52          // 返回参数     uint32          接收到的数据长度
    53          // 使用示例
@@ -102,28 +102,21 @@ stmt  level    source
    78   3                  seekfree_assistant_receive_callback = wireless_uart_read_buffer;
    79   3              }break;
    80   2              
-   81   2      
-   82   2              case SEEKFREE_ASSISTANT_BLE6A20:
-   83   2              {
-   84   3                  seekfree_assistant_transfer_callback = ble6a20_send_buffer;
-   85   3                  seekfree_assistant_receive_callback = ble6a20_read_buffer;
-   86   3              }break;
-   87   2      
-   88   2              case SEEKFREE_ASSISTANT_CUSTOM:
-   89   2              {         
-   90   3                  // 根据自己的需求 自行实现seekfree_assistant_transfer与seekfree_assistant_receive函数，完成数
+   81   2              case SEEKFREE_ASSISTANT_CUSTOM:
+   82   2              {         
+   83   3                  // 根据自己的需求 自行实现seekfree_assistant_transfer与seekfree_assistant_receive函数，完成数
              -据的收发
-   91   3                  
-   92   3              }break;
-   93   2          }
-   94   1      }
-   95          
-   96          
+   84   3                  
+   85   3              }break;
+   86   2          }
+   87   1      }
+   88          
+   89          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        89     ------
+  code size            =        63     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -135,8 +128,6 @@ Module Information          Static   Overlayable
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
-C251 COMPILER V5.60.0,  seekfree_assistant_interface                                       07/05/26  21:05:13  PAGE 3   
-
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------

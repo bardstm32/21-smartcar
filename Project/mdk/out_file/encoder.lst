@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            07/05/26  21:05:14  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            09/05/26  22:05:57  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -36,7 +36,7 @@ stmt  level    source
    25   1              distance += encoder_L_R;
    26   1      }
    27          
-   28          uint16 imu_cnt = 0,t = 0;
+   28          uint8 imu_cnt = 0,t = 0;
    29          void encoder_init()
    30          {
    31   1              tim1_irq_handler = pit_handler;
@@ -66,7 +66,7 @@ stmt  level    source
    54   3                              imu_cnt = 0;
    55   3                              t = 0;
    56   3                      }
-C251 COMPILER V5.60.0,  encoder                                                            07/05/26  21:05:14  PAGE 2   
+C251 COMPILER V5.60.0,  encoder                                                            09/05/26  22:05:57  PAGE 2   
 
    57   2                      Dir_Control_gyro();     
    58   2                      Calculate_Differential_Drive();
@@ -81,12 +81,12 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       343     ------
+  code size            =       325     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        20     ------
+  xdata size           =        18     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -96,7 +96,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        45     ------
+  hconst size          =        43     ------
 End of Module Information.
 
 

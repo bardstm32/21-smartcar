@@ -14,7 +14,6 @@ PID_TypeDef right_spid;
 #define MAX_INC 150.0           // 2ms 周期下限制单次增量
 volatile int16 speed_left = 0;
 volatile int16 speed_right = 0;
-uint16 dur_time =0;
 
 float elemid = 0; // 目标赛道偏差
 float eleOut_0 = 0; // 赛道偏差环输出值
@@ -43,8 +42,6 @@ void PID_Init(PID_TypeDef *pid, float kp, float kp2, float ki, float kd, float m
     pid->I = 0;
     pid->D = 0;
     pid->out = 0;
-	pid->last_f_speed=0;
-	
 
 }
 
@@ -66,7 +63,6 @@ float PID_Calc(PID_TypeDef *pid, float target, float measure)
     // 微分项
     pid->D = pid->Kd * (pid->err - pid->last_err);  
     // 总输出+限幅
-//	pid->last_f_speed=pid->err - pid->last_err;
 	
     pid->out = pid->P + pid->P2+ pid->D;   
     // 更新误差
@@ -108,7 +104,7 @@ void Dir_Control_gyro()
 
 void Calculate_Differential_Drive() // 差速计算
 {
-	float k = 0; // 差速比例系数
+	static float k = 0; // 差速比例系数
     k = eleOut_1 * 0.0001f;                  // 缩放成 -1 ~ 1
     k = range_protect_float(k, -0.75, 0.75); // 限制到 -0.65 ~ 0.65，实现差速限幅
 	// 计算左右轮目标速度

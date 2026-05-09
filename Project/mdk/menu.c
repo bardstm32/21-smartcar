@@ -13,7 +13,7 @@
 #include "zf_common_headfile.h"
 #include <stdlib.h>
 #include <string.h>
-char send_buf[128];
+
 
 
 
@@ -23,7 +23,7 @@ void Send_Data_To_PC(void)
 {
     // 1. 申请一个足够大的字符数组，用于存放格式化后的字符串
      // 用于存放格式化后的字符串的缓冲区
-
+	char send_buf[128];
     // 2. 使用 sprintf 将数值格式化为字符串
     // 这里以浮点数保留2位小数 (%.2f)，整数 (%d) 为例。加上 \r\n 以便电脑端串口助手换行显示。
     sprintf(send_buf, "state: %d %d %d %d %d %f \r\n",TrackState,adc_inductance[1],adc_inductance[2]

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               07/05/26  21:05:15  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               09/05/26  22:05:58  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -27,7 +27,7 @@ stmt  level    source
    13          #include "zf_common_headfile.h"
    14          #include <stdlib.h>
    15          #include <string.h>
-   16          char send_buf[128];
+   16          
    17          
    18          
    19          
@@ -38,7 +38,7 @@ stmt  level    source
    23          {
    24   1          // 1. 申请一个足够大的字符数组，用于存放格式化后的字符串
    25   1           // 用于存放格式化后的字符串的缓冲区
-   26   1      
+   26   1              char send_buf[128];
    27   1          // 2. 使用 sprintf 将数值格式化为字符串
    28   1          // 这里以浮点数保留2位小数 (%.2f)，整数 (%d) 为例。加上 \r\n 以便电脑端串口
              -助手换行显示。
@@ -66,7 +66,7 @@ stmt  level    source
    49   1          seekfree_assistant_data_analysis(); // 分析接收到的数据
    50   1          seekfree_assistant_parameter_update_flag[i] = 0; // 重置更新标志
    51   1          *param1 = seekfree_assistant_parameter[0] * 0.01f; // 更新参数1
-C251 COMPILER V5.60.0,  menu                                                               07/05/26  21:05:15  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               09/05/26  22:05:58  PAGE 2   
 
    52   1          *param2 = seekfree_assistant_parameter[1] * 0.01f; // 更新参数2
    53   1          *param3 = seekfree_assistant_parameter[2] * 0.01f; // 更新参数3

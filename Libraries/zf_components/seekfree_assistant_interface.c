@@ -78,13 +78,6 @@ void seekfree_assistant_interface_init (seekfree_assistant_transfer_device_enum 
             seekfree_assistant_receive_callback = wireless_uart_read_buffer;
         }break;
         
-
-        case SEEKFREE_ASSISTANT_BLE6A20:
-        {
-            seekfree_assistant_transfer_callback = ble6a20_send_buffer;
-            seekfree_assistant_receive_callback = ble6a20_read_buffer;
-        }break;
-
         case SEEKFREE_ASSISTANT_CUSTOM:
         {         
             // 根据自己的需求 自行实现seekfree_assistant_transfer与seekfree_assistant_receive函数，完成数据的收发
