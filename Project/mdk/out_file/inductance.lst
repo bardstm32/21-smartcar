@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  inductance                                                         09/05/26  22:05:58  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         09/05/26  22:59:08  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
@@ -66,7 +66,7 @@ stmt  level    source
    53           * 和一个最小值后的平均值。适用于需要滤除异常值的场景。
    54           * @param arr   整型数组，包含待处理的数据
    55           * @param times 需要处理的数组元素个数
-C251 COMPILER V5.60.0,  inductance                                                         09/05/26  22:05:58  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         09/05/26  22:59:08  PAGE 2   
 
    56           * @return      去掉一个最大值和一个最小值后的数组元素平均值
    57           */
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          denominator = (L+R)+My_abs((LM-RM))+1;
   120   1      
   121   1          scaled_err = numerator / denominator;
-C251 COMPILER V5.60.0,  inductance                                                         09/05/26  22:05:58  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         09/05/26  22:59:08  PAGE 3   
 
   122   1          // 使用range_protect函数确保结果在[-10000.0, 10000.0]范围内
   123   1          scaled_err = range_protect_float(scaled_err, -10000, 10000);
@@ -203,7 +203,7 @@ Module Information          Static   Overlayable
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
-C251 COMPILER V5.60.0,  inductance                                                         09/05/26  22:05:58  PAGE 4   
+C251 COMPILER V5.60.0,  inductance                                                         09/05/26  22:59:08  PAGE 4   
 
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------

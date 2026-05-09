@@ -99,6 +99,7 @@ void Dir_Control_gyro()
 {
 	eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z);
 	eleOut_1 = range_protect_float(eleOut_1, -10000.0f, 10000.0f);
+	
 }
 
 
@@ -117,7 +118,7 @@ void Calculate_Differential_Drive() // 差速计算
 	{
 		k *= -1;
 		left_spid.target = BASE_SPEED * (1 - k); // 加少减多
-		right_spid.target = BASE_SPEED * (1 + k*0.25);
+		right_spid.target = BASE_SPEED * (1+k*0.25);
 	}
 }
 

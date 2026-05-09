@@ -26,8 +26,8 @@ void Send_Data_To_PC(void)
 	char send_buf[128];
     // 2. 使用 sprintf 将数值格式化为字符串
     // 这里以浮点数保留2位小数 (%.2f)，整数 (%d) 为例。加上 \r\n 以便电脑端串口助手换行显示。
-    sprintf(send_buf, "state: %d %d %d %d %d %f \r\n",TrackState,adc_inductance[1],adc_inductance[2]
-	,adc_inductance[3],adc_inductance[4],Nowangel - Daty_Z);
+    sprintf(send_buf, "state: %f %f %f %d %d %f \r\n",eleOut_0,imu660ra_gyro_z,left_spid.target
+	,adc_inductance[3],adc_inductance[4],eleOut_1);
 
     // 3. 调用库函数发送最终拼装好的字符串
     wireless_uart_send_string(send_buf); // 通过无线串口发送格式化后的字符串

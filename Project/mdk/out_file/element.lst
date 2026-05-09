@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            09/05/26  22:08:54  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            09/05/26  22:59:08  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -66,7 +66,7 @@ stmt  level    source
    54   3                                      if(times >=2)
    55   3                                      {
    56   4                                              TrackState = LEFT_ROUND;        
-C251 COMPILER V5.60.0,  element                                                            09/05/26  22:08:54  PAGE 2   
+C251 COMPILER V5.60.0,  element                                                            09/05/26  22:59:08  PAGE 2   
 
    57   4                                              Nowangel = Daty_Z; // 记录初始角度
    58   4                                              times = 0;
