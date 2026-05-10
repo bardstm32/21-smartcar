@@ -6,6 +6,7 @@ TrackState_e TrackState = NORMAL;
 uint16 times = 0;
 // 核心阈值定义
 float Nowangel = 0;
+uint8 dur_time = 0;
 void Element_Control(int16 *param)
 {
     switch (TrackState)
@@ -35,7 +36,8 @@ void Element_Control(int16 *param)
             break;
 			
 		case RIGHT_ROUNDAPPROCH:
-			if((param[4] >=50) && (param[3] >= 40))
+			dur_time++;
+			if((param[4] >=45) && (param[3] >= 40))
 			{
 				times++;
 				if(times >=2)
@@ -45,10 +47,12 @@ void Element_Control(int16 *param)
 					times = 0;
 				}
 			}
+			if(dur_time >= 200){TrackState = NORMAL;dur_time = 0;}
 			break;
 			
 		case LEFT_ROUNDAPPROCH:
-            if((param[1] >= 50) && param[2] >= 40)
+			dur_time++;
+            if((param[1] >= 45) && param[2] >= 40)
 			{
 				times++;
 				if(times >=2)
@@ -57,7 +61,8 @@ void Element_Control(int16 *param)
 					Nowangel = Daty_Z; // 记录初始角度
 					times = 0;
 				}
-			}		
+			}
+			if(dur_time >= 200){TrackState = NORMAL;dur_time = 0;}			
 			break;
 		case LEFT_ROUND:
 		case RIGHT_ROUND:

@@ -19,8 +19,8 @@ void main()
 	while (1)
 	{	
 		Element_Control(adc_inductance);
-		Oscilloscope_Display(eleOut_0,imu660ra_gyro_z,eleOut_1,0,0,0,left_spid.target,right_spid.target);
-
+		//Oscilloscope_Display(eleOut_0,imu660ra_gyro_z,eleOut_1,0,0,0,left_spid.target,right_spid.target);
+		Send_Data_To_PC();
 	}
 	
 	

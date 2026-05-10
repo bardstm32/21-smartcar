@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               09/05/26  23:26:24  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               10/05/26  14:00:46  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -30,8 +30,8 @@ stmt  level    source
    19   1              while (1)
    20   1              {       
    21   2                      Element_Control(adc_inductance);
-   22   2                      Oscilloscope_Display(eleOut_0,imu660ra_gyro_z,eleOut_1,0,0,0,left_spid.target,right_spid.target);
-   23   2      
+   22   2                      //Oscilloscope_Display(eleOut_0,imu660ra_gyro_z,eleOut_1,0,0,0,left_spid.target,right_spid.target);
+   23   2                      Send_Data_To_PC();
    24   2              }
    25   1              
    26   1              
@@ -40,7 +40,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       625     ------
+  code size            =       503     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
