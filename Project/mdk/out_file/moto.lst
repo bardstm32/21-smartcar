@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  moto                                                               09/05/26  22:59:08  PAGE 1   
+C251 COMPILER V5.60.0,  moto                                                               11/05/26  13:30:03  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE moto
@@ -67,7 +67,7 @@ Module Information          Static   Overlayable
   xdata size           =        12     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
-C251 COMPILER V5.60.0,  moto                                                               09/05/26  22:59:08  PAGE 2   
+C251 COMPILER V5.60.0,  moto                                                               11/05/26  13:30:03  PAGE 2   
 
   bit size             =    ------     ------
   ebit size            =    ------     ------

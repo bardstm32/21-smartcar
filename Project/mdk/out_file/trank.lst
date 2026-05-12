@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  trank                                                              10/05/26  14:07:43  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              11/05/26  17:35:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          pid->target = target;
    54   1          pid->measure = measure;
    55   1          
-C251 COMPILER V5.60.0,  trank                                                              10/05/26  14:07:43  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              11/05/26  17:35:56  PAGE 2   
 
    56   1          // 计算误差
    57   1          pid->err = pid->target - pid->measure;
@@ -113,7 +113,7 @@ stmt  level    source
    98          void Dir_Control_gyro()
    99          {
   100   1              eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z);
-  101   1              eleOut_1 = range_protect_float(eleOut_1, -10000.0f, 10000.0f);
+  101   1      //      eleOut_1 = range_protect_float(eleOut_1, -10000.0f, 10000.0f);
   102   1              
   103   1      }
   104          
@@ -126,15 +126,15 @@ stmt  level    source
   111   1              // 计算左右轮目标速度
   112   1              if(k >= 0) // 右转
   113   1              {
-  114   2                      left_spid.target = BASE_SPEED *(1+k*0.25);
+  114   2                      left_spid.target = BASE_SPEED *(1+k*0.2);
   115   2                      right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
   116   2              }
   117   1              if(k < 0) // 左转
   118   1              {
   119   2                      k *= -1;
   120   2                      left_spid.target = BASE_SPEED * (1 - k); // 加少减多
-  121   2                      right_spid.target = BASE_SPEED * (1+k*0.25);
-C251 COMPILER V5.60.0,  trank                                                              10/05/26  14:07:43  PAGE 3   
+  121   2                      right_spid.target = BASE_SPEED * (1+k*0.2);
+C251 COMPILER V5.60.0,  trank                                                              11/05/26  17:35:56  PAGE 3   
 
   122   2              }
   123   1      }
@@ -186,7 +186,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      2326     ------
+  code size            =      2281     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -204,7 +204,7 @@ Module Information          Static   Overlayable
   hconst size          =        59     ------
 End of Module Information.
 
-C251 COMPILER V5.60.0,  trank                                                              10/05/26  14:07:43  PAGE 4   
+C251 COMPILER V5.60.0,  trank                                                              11/05/26  17:35:56  PAGE 4   
 
 
 C251 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

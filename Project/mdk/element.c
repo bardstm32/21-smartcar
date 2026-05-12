@@ -47,12 +47,12 @@ void Element_Control(int16 *param)
 					times = 0;
 				}
 			}
-			if(dur_time >= 200){TrackState = NORMAL;dur_time = 0;}
+			if(dur_time >= 150){TrackState = NORMAL;dur_time = 0;}
 			break;
 			
 		case LEFT_ROUNDAPPROCH:
 			dur_time++;
-            if((param[1] >= 45) && param[2] >= 40)
+            if((param[1] >= 50) && param[2] >= 55)
 			{
 				times++;
 				if(times >=2)
@@ -62,7 +62,7 @@ void Element_Control(int16 *param)
 					times = 0;
 				}
 			}
-			if(dur_time >= 200){TrackState = NORMAL;dur_time = 0;}			
+			if(dur_time >= 150){TrackState = NORMAL;dur_time = 0;}			
 			break;
 		case LEFT_ROUND:
 		case RIGHT_ROUND:

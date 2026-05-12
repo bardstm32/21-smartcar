@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            10/05/26  14:20:08  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            11/05/26  13:33:51  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -59,14 +59,14 @@ stmt  level    source
    47   4                                              times = 0;
    48   4                                      }
    49   3                              }
-   50   2                              if(dur_time >= 200){TrackState = NORMAL;dur_time = 0;}
+   50   2                              if(dur_time >= 150){TrackState = NORMAL;dur_time = 0;}
    51   2                              break;
    52   2                              
    53   2                      case LEFT_ROUNDAPPROCH:
    54   2                              dur_time++;
-   55   2                  if((param[1] >= 45) && param[2] >= 40)
+   55   2                  if((param[1] >= 50) && param[2] >= 55)
    56   2                              {
-C251 COMPILER V5.60.0,  element                                                            10/05/26  14:20:08  PAGE 2   
+C251 COMPILER V5.60.0,  element                                                            11/05/26  13:33:51  PAGE 2   
 
    57   3                                      times++;
    58   3                                      if(times >=2)
@@ -76,7 +76,7 @@ stmt  level    source
    62   4                                              times = 0;
    63   4                                      }
    64   3                              }
-   65   2                              if(dur_time >= 200){TrackState = NORMAL;dur_time = 0;}                  
+   65   2                              if(dur_time >= 150){TrackState = NORMAL;dur_time = 0;}                  
    66   2                              break;
    67   2                      case LEFT_ROUND:
    68   2                      case RIGHT_ROUND:

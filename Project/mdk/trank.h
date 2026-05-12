@@ -3,7 +3,7 @@
 
 //===================== 全局宏定义 =====================//
 #define PWM_MAX             5000.0f   // 电机PWM最大限幅
-#define BASE_SPEED          130.0f    // 基础直行速度(可调)
+#define BASE_SPEED          230.0f    // 基础直行速度(可调)
 
 // 速度环(稳速内环)参数限幅
 #define SPEED_PID_MAX_OUT    PWM_MAX // 速度环最大输出(PWM)
