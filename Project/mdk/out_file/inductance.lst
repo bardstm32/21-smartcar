@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  inductance                                                         11/05/26  13:30:04  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         14/05/26  22:22:14  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
@@ -26,7 +26,7 @@ stmt  level    source
    13          #include "zf_common_headfile.h"
    14          uint16 inductance_init_data[5][Filter_deepth];
    15          uint16 inductance_filter_data[5];
-   16          float CUR_PARA = 7,STR_PARA = 3;
+   16          float CUR_PARA = 5,STR_PARA = 3;
    17          /**
    18           * range_protect - 将值限制在指定的最小值和最大值之间
    19           * 该函数接收一个值以及最小值和最大值作为参数，如果值大于最大值，则返回最大值；
@@ -66,7 +66,7 @@ stmt  level    source
    53           * 和一个最小值后的平均值。适用于需要滤除异常值的场景。
    54           * @param arr   整型数组，包含待处理的数据
    55           * @param times 需要处理的数组元素个数
-C251 COMPILER V5.60.0,  inductance                                                         11/05/26  13:30:04  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         14/05/26  22:22:14  PAGE 2   
 
    56           * @return      去掉一个最大值和一个最小值后的数组元素平均值
    57           */
@@ -134,7 +134,7 @@ stmt  level    source
   119   1          denominator = (L+R)+My_abs((LM-RM))+1;
   120   1      
   121   1          scaled_err = numerator / denominator;
-C251 COMPILER V5.60.0,  inductance                                                         11/05/26  13:30:04  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         14/05/26  22:22:14  PAGE 3   
 
   122   1          // 使用range_protect函数确保结果在[-10000.0, 10000.0]范围内
   123   1          scaled_err = range_protect_float(scaled_err, -10000, 10000);
@@ -183,10 +183,10 @@ stmt  level    source
   166   2              inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
   167   2          } 
   168   1                       
-  169   1          inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3685, 11);
-  170   1          inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3685, 27);
-  171   1          inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3685, 20);
-  172   1          inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3685, 9);
+  169   1          inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3675, 1);
+  170   1          inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3673, 1);
+  171   1          inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3685, 1);
+  172   1          inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3676, 3);
   173   1      }
 
 
@@ -203,7 +203,7 @@ Module Information          Static   Overlayable
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
-C251 COMPILER V5.60.0,  inductance                                                         11/05/26  13:30:04  PAGE 4   
+C251 COMPILER V5.60.0,  inductance                                                         14/05/26  22:22:14  PAGE 4   
 
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------

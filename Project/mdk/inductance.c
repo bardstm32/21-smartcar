@@ -13,7 +13,7 @@
 #include "zf_common_headfile.h"
 uint16 inductance_init_data[5][Filter_deepth];
 uint16 inductance_filter_data[5];
-float CUR_PARA = 7,STR_PARA = 3;
+float CUR_PARA = 5,STR_PARA = 3;
 /**
  * range_protect - 将值限制在指定的最小值和最大值之间
  * 该函数接收一个值以及最小值和最大值作为参数，如果值大于最大值，则返回最大值；
@@ -166,8 +166,8 @@ void Inductance_Read(uint16 *inductance_norm_data)
         inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
     } 
 		 
-    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3685, 11);
-    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3685, 27);
-    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3685, 20);
-    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3685, 9);
+    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3675, 1);
+    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3673, 1);
+    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3685, 1);
+    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3676, 3);
 }

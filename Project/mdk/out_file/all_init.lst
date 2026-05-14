@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  all_init                                                           11/05/26  13:30:03  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           14/05/26  22:22:13  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
@@ -18,7 +18,7 @@ stmt  level    source
     7   1              pwm_init(PWMA_CH1P_P60, 25000, 0);
     8   1              pwm_init(PWMA_CH2P_P62, 25000, 0);
     9   1              pwm_init(PWMA_CH4N_P27, 25000, 0);
-   10   1              pwm_set_duty(PWMA_CH4N_P27, 5000);
+   10   1              pwm_set_duty(PWMA_CH4N_P27, 6500);
    11   1              gpio_init(IO_P61, GPO, GPIO_LOW, GPO_PUSH_PULL);
    12   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
    13   1              wireless_uart_init();

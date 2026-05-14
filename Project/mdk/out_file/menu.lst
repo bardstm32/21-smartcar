@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  menu                                                               11/05/26  13:30:04  PAGE 1   
+C251 COMPILER V5.60.0,  menu                                                               14/05/26  22:22:14  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE menu
@@ -66,7 +66,7 @@ stmt  level    source
    49   1          seekfree_assistant_data_analysis(); // 分析接收到的数据
    50   1          seekfree_assistant_parameter_update_flag[i] = 0; // 重置更新标志
    51   1          *param1 = seekfree_assistant_parameter[0] * 0.01f; // 更新参数1
-C251 COMPILER V5.60.0,  menu                                                               11/05/26  13:30:04  PAGE 2   
+C251 COMPILER V5.60.0,  menu                                                               14/05/26  22:22:14  PAGE 2   
 
    52   1          *param2 = seekfree_assistant_parameter[1] * 0.01f; // 更新参数2
    53   1          *param3 = seekfree_assistant_parameter[2] * 0.01f; // 更新参数3

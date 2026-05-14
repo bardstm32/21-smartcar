@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            11/05/26  13:33:51  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            14/05/26  22:22:14  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -24,10 +24,11 @@ stmt  level    source
    13   1          {
    14   2              case NORMAL:
    15   2                  // 环岛判定：单侧远端电感激增
-   16   2                      if ((param[3] >= 20) && (param[3] <= 40) && (param[4] >= 50) && (param[2] <= 35) && param[2] >= 20)
+   16   2                      if ((param[3] >= 8) && (param[3] <= 20) && (param[4] >= 40) && (param[2] <= 25) && first_complement.ang
+             -le.pitch <=30)
    17   2                  {
-   18   3                                      if(param[1] >= 30){times++;}
-   19   3                                      if(times >= 3)
+   18   3                                      times++;
+   19   3                                      if(times >= 2)
    20   3                                      {                
    21   4                                              TrackState = RIGHT_ROUNDAPPROCH;        
    22   4                                              times = 0;
@@ -35,11 +36,11 @@ stmt  level    source
    24   3      
    25   3                  }
    26   2                              
-   27   2                              else if ((param[2] >= 20) &&(param[2] <= 40)&& (param[1] >= 50) && (param[3] <= 35))//左侧横电感>
-             -75 && 右侧横电感 >40 
+   27   2                      else if ((param[2] >= 8) &&(param[2] <= 20)&& (param[1] >= 40) && (param[3] <= 25) && first_complement.
+             -angle.pitch <=30)//左侧横电感>75 && 右侧横电感 >40 
    28   2                  {
-   29   3                                      if(param[4] >= 30){times++;}
-   30   3                                      if(times >= 3)
+   29   3                                      times++;
+   30   3                                      if(times >= 2)
    31   3                                      {                
    32   4                                              TrackState = LEFT_ROUNDAPPROCH; //识别为左环岛
    33   4                                              times = 0;
@@ -49,7 +50,7 @@ stmt  level    source
    37   2                              
    38   2                      case RIGHT_ROUNDAPPROCH:
    39   2                              dur_time++;
-   40   2                              if((param[4] >=45) && (param[3] >= 40))
+   40   2                              if((param[4] >=45) && (param[3] >= 35))
    41   2                              {
    42   3                                      times++;
    43   3                                      if(times >=2)
@@ -59,15 +60,15 @@ stmt  level    source
    47   4                                              times = 0;
    48   4                                      }
    49   3                              }
-   50   2                              if(dur_time >= 150){TrackState = NORMAL;dur_time = 0;}
+   50   2                              if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}
    51   2                              break;
    52   2                              
    53   2                      case LEFT_ROUNDAPPROCH:
    54   2                              dur_time++;
-   55   2                  if((param[1] >= 50) && param[2] >= 55)
-   56   2                              {
-C251 COMPILER V5.60.0,  element                                                            11/05/26  13:33:51  PAGE 2   
+   55   2                  if((param[1] >= 45) && param[2] >= 35)
+C251 COMPILER V5.60.0,  element                                                            14/05/26  22:22:14  PAGE 2   
 
+   56   2                              {
    57   3                                      times++;
    58   3                                      if(times >=2)
    59   3                                      {
@@ -76,11 +77,11 @@ stmt  level    source
    62   4                                              times = 0;
    63   4                                      }
    64   3                              }
-   65   2                              if(dur_time >= 150){TrackState = NORMAL;dur_time = 0;}                  
+   65   2                              if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}                  
    66   2                              break;
    67   2                      case LEFT_ROUND:
    68   2                      case RIGHT_ROUND:
-   69   2                  // 入环强制差速中... 直到车体实际上偏转了约40度，认为已经成功入环
+   69   2                  // 入环强制差速中... 直到车体实际上偏转了约35度，认为已经成功入环
    70   2                  if (My_abs(Nowangel - Daty_Z) >= 35) 
    71   2                  {
    72   3                      TrackState = ROUNDIN;
@@ -89,7 +90,7 @@ stmt  level    source
    75   2                  
    76   2              case ROUNDIN:
    77   2                  // 环内循迹中... 转了差不多一圈（例如270-300度），准备出环
-   78   2                  if (My_abs(Nowangel - Daty_Z) >= 260) // 提前一点出环，避免错过
+   78   2                  if (My_abs(Nowangel - Daty_Z) >= 280) // 提前一点出环，避免错过
    79   2                  {
    80   3                      TrackState = ROUNDOUT;
    81   3                      Nowangel = Daty_Z; // 重新记录角度用于出环判定
@@ -112,7 +113,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       926     ------
+  code size            =       897     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

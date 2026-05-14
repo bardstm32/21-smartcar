@@ -7,17 +7,17 @@ volatile uint16 adc_inductance[5] = {0};
 void pit_handler(void);
 void pit_handler4(void);
 
-#define ENCODER_DIR_LEFT (TIM0_ENCOEDER)		   // Õý½»±àÂëÆ÷¶ÔÓ¦Ê¹ÓÃµÄ±àÂëÆ÷½Ó¿Ú ÕâÀïÊ¹ÓÃQTIMER1µÄENCOEDER1
-#define ENCODER_DIR_DIR_LEFT (IO_P35)			   // DIR ¶ÔÓ¦µÄÒý½Å
-#define ENCODER_DIR_PULSE_LEFT (TIM0_ENCOEDER_P34) // PULSE ¶ÔÓ¦µÄÒý½Å
+#define ENCODER_DIR_LEFT (TIM0_ENCOEDER)		   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ê¹ï¿½ÃµÄ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½QTIMER1ï¿½ï¿½ENCOEDER1
+#define ENCODER_DIR_DIR_LEFT (IO_P35)			   // DIR ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define ENCODER_DIR_PULSE_LEFT (TIM0_ENCOEDER_P34) // PULSE ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-#define ENCODER_DIR_RIGHT (TIM3_ENCOEDER)			// Õý½»±àÂëÆ÷¶ÔÓ¦Ê¹ÓÃµÄ±àÂëÆ÷½Ó¿Ú ÕâÀïÊ¹ÓÃQTIMER1µÄENCOEDER1
-#define ENCODER_DIR_DIR_RIGHT (IO_P53)				// DIR ¶ÔÓ¦µÄÒý½Å
-#define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE ¶ÔÓ¦µÄÒý½Å
+#define ENCODER_DIR_RIGHT (TIM3_ENCOEDER)			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ê¹ï¿½ÃµÄ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½QTIMER1ï¿½ï¿½ENCOEDER1
+#define ENCODER_DIR_DIR_RIGHT (IO_P53)				// DIR ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
-int encoder_L_R = 0; // Æ½¾ùËÙ¶È
-uint32 distance = 0; // ÀÛ¼Æ¾àÀë
+int encoder_L_R = 0; // Æ½ï¿½ï¿½ï¿½Ù¶ï¿½
+uint32 distance = 0; // ï¿½Û¼Æ¾ï¿½ï¿½ï¿½
 
 void Distance_Add()
 {
@@ -39,22 +39,22 @@ void encoder_init()
 
 void pit_handler(void)
 {
-	imu660ra_get_acc(); // »ñÈ¡ IMU660RA µÄ¼ÓËÙ¶È²âÁ¿ÊýÖµ
+	imu660ra_get_acc(); // ï¿½ï¿½È¡ IMU660RA ï¿½Ä¼ï¿½ï¿½Ù¶È²ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 	imu660ra_get_gyro();
-	imu_cnt++; 
-	if(imu_cnt >=5)
-	{   
+	imu_cnt++;
+	if(imu_cnt >= 5)
+	{
+		imu_cnt = 0;
 		gyro_proc();
 		t++;
-		if(t >=2)
+		if(t >= 2)
 		{
+			t = 0;
 			Inductance_Read(adc_inductance);
 			elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
 			Dir_Control();
-			imu_cnt = 0;
-			t = 0;
 		}
-		Dir_Control_gyro();	
+		Dir_Control_gyro();
 		Calculate_Differential_Drive();
 	}
 }

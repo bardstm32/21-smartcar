@@ -13,10 +13,10 @@ void Element_Control(int16 *param)
     {
         case NORMAL:
             // 环岛判定：单侧远端电感激增
-		if ((param[3] >= 20) && (param[3] <= 40) && (param[4] >= 50) && (param[2] <= 35) && param[2] >= 20)
+		if ((param[3] >= 8) && (param[3] <= 20) && (param[4] >= 40) && (param[2] <= 25) && first_complement.angle.pitch <=30)
             {
-				if(param[1] >= 30){times++;}
-				if(times >= 3)
+				times++;
+				if(times >= 2)
 				{                
 					TrackState = RIGHT_ROUNDAPPROCH;	
 					times = 0;
@@ -24,10 +24,10 @@ void Element_Control(int16 *param)
 
             }
 			
-			else if ((param[2] >= 20) &&(param[2] <= 40)&& (param[1] >= 50) && (param[3] <= 35))//左侧横电感>75 && 右侧横电感 >40 
+		else if ((param[2] >= 8) &&(param[2] <= 20)&& (param[1] >= 40) && (param[3] <= 25) && first_complement.angle.pitch <=30)//左侧横电感>75 && 右侧横电感 >40 
             {
-				if(param[4] >= 30){times++;}
-				if(times >= 3)
+				times++;
+				if(times >= 2)
 				{                
 					TrackState = LEFT_ROUNDAPPROCH;	//识别为左环岛
 					times = 0;
@@ -37,7 +37,7 @@ void Element_Control(int16 *param)
 			
 		case RIGHT_ROUNDAPPROCH:
 			dur_time++;
-			if((param[4] >=45) && (param[3] >= 40))
+			if((param[4] >=45) && (param[3] >= 35))
 			{
 				times++;
 				if(times >=2)
@@ -47,12 +47,12 @@ void Element_Control(int16 *param)
 					times = 0;
 				}
 			}
-			if(dur_time >= 150){TrackState = NORMAL;dur_time = 0;}
+			if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}
 			break;
 			
 		case LEFT_ROUNDAPPROCH:
 			dur_time++;
-            if((param[1] >= 50) && param[2] >= 55)
+            if((param[1] >= 45) && param[2] >= 35)
 			{
 				times++;
 				if(times >=2)
@@ -62,11 +62,11 @@ void Element_Control(int16 *param)
 					times = 0;
 				}
 			}
-			if(dur_time >= 150){TrackState = NORMAL;dur_time = 0;}			
+			if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}			
 			break;
 		case LEFT_ROUND:
 		case RIGHT_ROUND:
-            // 入环强制差速中... 直到车体实际上偏转了约40度，认为已经成功入环
+            // 入环强制差速中... 直到车体实际上偏转了约35度，认为已经成功入环
             if (My_abs(Nowangel - Daty_Z) >= 35) 
             {
                 TrackState = ROUNDIN;
@@ -75,7 +75,7 @@ void Element_Control(int16 *param)
             
         case ROUNDIN:
             // 环内循迹中... 转了差不多一圈（例如270-300度），准备出环
-            if (My_abs(Nowangel - Daty_Z) >= 260) // 提前一点出环，避免错过
+            if (My_abs(Nowangel - Daty_Z) >= 280) // 提前一点出环，避免错过
             {
                 TrackState = ROUNDOUT;
                 Nowangel = Daty_Z; // 重新记录角度用于出环判定
