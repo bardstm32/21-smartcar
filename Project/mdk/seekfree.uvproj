@@ -663,14 +663,14 @@
               <FilePath>..\user\main.c</FilePath>
             </File>
             <File>
-              <FileName>isr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\user\isr.c</FilePath>
-            </File>
-            <File>
               <FileName>isr.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\user\isr.h</FilePath>
+            </File>
+            <File>
+              <FileName>isr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\isr.c</FilePath>
             </File>
             <File>
               <FileName>all_init.c</FileName>

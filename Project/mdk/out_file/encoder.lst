@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            14/05/26  22:22:14  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            17/05/26  22:28:29  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -18,77 +18,94 @@ stmt  level    source
     7          void pit_handler(void);
     8          void pit_handler4(void);
     9          
-   10          #define ENCODER_DIR_LEFT (TIM0_ENCOEDER)                   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ê¹ï¿½ÃµÄ±ï¿½ï¿½ï¿½ï
-             -¿½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½QTIMER1ï¿½ï¿½ENCOEDER1
-   11          #define ENCODER_DIR_DIR_LEFT (IO_P35)                      // DIR ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-   12          #define ENCODER_DIR_PULSE_LEFT (TIM0_ENCOEDER_P34) // PULSE ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+   10          #define ENCODER_DIR_LEFT (TIM0_ENCOEDER)
+   11          #define ENCODER_DIR_DIR_LEFT (IO_P35)
+   12          #define ENCODER_DIR_PULSE_LEFT (TIM0_ENCOEDER_P34)
    13          
-   14          #define ENCODER_DIR_RIGHT (TIM3_ENCOEDER)                       // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ê¹ï¿½ÃµÄ±ï¿½ï¿½ï¿½ï¿
-             -½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½QTIMER1ï¿½ï¿½ENCOEDER1
-   15          #define ENCODER_DIR_DIR_RIGHT (IO_P53)                          // DIR ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-   16          #define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+   14          #define ENCODER_DIR_RIGHT (TIM3_ENCOEDER)
+   15          #define ENCODER_DIR_DIR_RIGHT (IO_P53)
+   16          #define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04)
    17          
-   18          
-   19          int encoder_L_R = 0; // Æ½ï¿½ï¿½ï¿½Ù¶ï¿½
-   20          uint32 distance = 0; // ï¿½Û¼Æ¾ï¿½ï¿½ï¿½
-   21          
-   22          void Distance_Add()
+   18          int encoder_L_R = 0;
+   19          uint32 distance = 0;
+   20          
+   21          /* ÀÛ¼ÆÐÐ³Ì£ºÈ¡×óÓÒÂÖËÙ¾ø¶ÔÖµµÄ¾ùÖµ²¢¼Óµ½ distance */
+   22          void Distance_Add(void)
    23          {
-   24   1              encoder_L_R = (unsigned int) ((My_abs(speed_left) + My_abs(speed_right)) / 2.0);
+   24   1              encoder_L_R = (IABS((int32)speed_left) + IABS((int32)speed_right)) >> 1;
    25   1              distance += encoder_L_R;
    26   1      }
    27          
-   28          uint8 imu_cnt = 0,t = 0;
-   29          void encoder_init()
-   30          {
-   31   1              tim1_irq_handler = pit_handler;
-   32   1              tim4_irq_handler = pit_handler4;
-   33   1              pit_ms_init(PIT_CH, 1);
-   34   1              pit_ms_init(PIT_CH4, 2);
-   35   1      
-   36   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
-   37   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
-   38   1      }
-   39          
-   40          void pit_handler(void)
-   41          {
-   42   1              imu660ra_get_acc(); // ï¿½ï¿½È¡ IMU660RA ï¿½Ä¼ï¿½ï¿½Ù¶È²ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
-   43   1              imu660ra_get_gyro();
-   44   1              imu_cnt++;
-   45   1              if(imu_cnt >=5)
-   46   1              {
-   47   2                      gyro_proc();
-   48   2                      t++;
-   49   2                      if(t >=2)
-   50   2                      {
-   51   3                              Inductance_Read(adc_inductance);
-   52   3                              elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance
-             -[4]);
-   53   3                              Dir_Control();
-   54   3                              imu_cnt = 0;
-C251 COMPILER V5.60.0,  encoder                                                            14/05/26  22:22:14  PAGE 2   
+   28          volatile uint16 ind_10ms_flag = 0;
+   29          static uint16 imu_cnt = 0;
+   30          static uint8 ind_cnt = 0;
+   31          
+   32          /* ×¢²á TIM1 / TIM4 ÖÐ¶Ï£¬³õÊ¼»¯Á½Â·±àÂëÆ÷ */
+   33          void encoder_init()
+   34          {
+   35   1              tim1_irq_handler = pit_handler;
+   36   1              tim4_irq_handler = pit_handler4;
+   37   1              interrupt_set_priority(TIMER1_IRQn,3);
+   38   1              pit_ms_init(PIT_CH, 2);
+   39   1              pit_ms_init(PIT_CH4, 5);
+   40   1      
+   41   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
+   42   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
+   43   1      }
+   44          
+   45          /* TIM1 2ms ½ÚÅÄ£ºÖ´ÐÐËÙ¶È±Õ»· */
+   46          void pit_handler(void)
+   47          {
+   48   1      //      imu_cnt++;
+   49   1      //      if(imu_cnt>300&&imu_cnt<550)
+   50   1      //      {
+   51   1      //      left_spid.target=100;
+   52   1      //      right_spid.target=100;
+   53   1      //      }
+   54   1      //              
+   55   1      //      if(imu_cnt>550&&imu_cnt<800)
+   56   1      //              {
+   57   1      //      left_spid.target=180;
+C251 COMPILER V5.60.0,  encoder                                                            17/05/26  22:28:29  PAGE 2   
 
-   55   3                              t = 0;
-   56   3                      }
-   57   2                      Dir_Control_gyro();
-   58   2                      Calculate_Differential_Drive();
-   59   2              }
-   60   1      }
-   61          
-   62          void pit_handler4(void)
-   63          {
-   64   1              Dual_Loop_Control();
-   65   1      }
+   58   1      //      right_spid.target=180;
+   59   1      //              }
+   60   1      //              
+   61   1      //      if(imu_cnt>800)
+   62   1      //              {
+   63   1      //              imu_cnt=0;
+   64   1      //              }
+   65   1              Dual_Loop_Control();
+   66   1      }
+   67          
+   68          /* TIM4 5ms ½ÚÅÄ£ºÖ´ÐÐ IMU + ·½Ïò½ÇËÙ¶È»· + ²îËÙ*/
+   69          void pit_handler4(void)
+   70          {
+   71   1      
+   72   1      //      if (++ind_cnt >= 2)
+   73   1      //      {
+   74   1      //              ind_cnt = 0;
+   75   1              Inductance_Read(adc_inductance);
+   76   1              elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2],adc_inductance[3], adc_inductance[4]
+             -);
+   77   1              Dir_Control();
+   78   1              gyro_proc();
+   79   1              Dir_Control_gyro();
+   80   1              Calculate_Differential_Drive();
+   81   1      
+   82   1      //      }
+   83   1      
+   84   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       325     ------
+  code size            =       321     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        18     ------
+  xdata size           =        21     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -98,7 +115,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        43     ------
+  hconst size          =        51     ------
 End of Module Information.
 
 

@@ -7,59 +7,78 @@ volatile uint16 adc_inductance[5] = {0};
 void pit_handler(void);
 void pit_handler4(void);
 
-#define ENCODER_DIR_LEFT (TIM0_ENCOEDER)		   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ê¹ï¿½ÃµÄ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½QTIMER1ï¿½ï¿½ENCOEDER1
-#define ENCODER_DIR_DIR_LEFT (IO_P35)			   // DIR ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-#define ENCODER_DIR_PULSE_LEFT (TIM0_ENCOEDER_P34) // PULSE ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define ENCODER_DIR_LEFT (TIM0_ENCOEDER)
+#define ENCODER_DIR_DIR_LEFT (IO_P35)
+#define ENCODER_DIR_PULSE_LEFT (TIM0_ENCOEDER_P34)
 
-#define ENCODER_DIR_RIGHT (TIM3_ENCOEDER)			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ê¹ï¿½ÃµÄ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½QTIMER1ï¿½ï¿½ENCOEDER1
-#define ENCODER_DIR_DIR_RIGHT (IO_P53)				// DIR ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-#define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define ENCODER_DIR_RIGHT (TIM3_ENCOEDER)
+#define ENCODER_DIR_DIR_RIGHT (IO_P53)
+#define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04)
 
+int encoder_L_R = 0;
+uint32 distance = 0;
 
-int encoder_L_R = 0; // Æ½ï¿½ï¿½ï¿½Ù¶ï¿½
-uint32 distance = 0; // ï¿½Û¼Æ¾ï¿½ï¿½ï¿½
-
-void Distance_Add()
+/* ÀÛ¼ÆÐÐ³Ì£ºÈ¡×óÓÒÂÖËÙ¾ø¶ÔÖµµÄ¾ùÖµ²¢¼Óµ½ distance */
+void Distance_Add(void)
 {
-	encoder_L_R = (unsigned int) ((My_abs(speed_left) + My_abs(speed_right)) / 2.0);
+	encoder_L_R = (IABS((int32)speed_left) + IABS((int32)speed_right)) >> 1;
 	distance += encoder_L_R;
 }
 
-uint8 imu_cnt = 0,t = 0;
+volatile uint16 ind_10ms_flag = 0;
+static uint16 imu_cnt = 0;
+static uint8 ind_cnt = 0;
+
+/* ×¢²á TIM1 / TIM4 ÖÐ¶Ï£¬³õÊ¼»¯Á½Â·±àÂëÆ÷ */
 void encoder_init()
 {
 	tim1_irq_handler = pit_handler;
 	tim4_irq_handler = pit_handler4;
-	pit_ms_init(PIT_CH, 1);
-	pit_ms_init(PIT_CH4, 2);
+	interrupt_set_priority(TIMER1_IRQn,3);
+	pit_ms_init(PIT_CH, 2);
+	pit_ms_init(PIT_CH4, 5);
 
 	encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
 	encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
 }
 
+/* TIM1 2ms ½ÚÅÄ£ºÖ´ÐÐËÙ¶È±Õ»· */
 void pit_handler(void)
 {
-	imu660ra_get_acc(); // ï¿½ï¿½È¡ IMU660RA ï¿½Ä¼ï¿½ï¿½Ù¶È²ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
-	imu660ra_get_gyro();
-	imu_cnt++;
-	if(imu_cnt >= 5)
-	{
-		imu_cnt = 0;
-		gyro_proc();
-		t++;
-		if(t >= 2)
-		{
-			t = 0;
-			Inductance_Read(adc_inductance);
-			elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance[4]);
-			Dir_Control();
-		}
-		Dir_Control_gyro();
-		Calculate_Differential_Drive();
-	}
+//	imu_cnt++;
+//	if(imu_cnt>300&&imu_cnt<550)
+//	{
+//	left_spid.target=100;
+//	right_spid.target=100;
+//	}
+//		
+//	if(imu_cnt>550&&imu_cnt<800)
+//		{
+//	left_spid.target=180;
+//	right_spid.target=180;
+//		}
+//		
+//	if(imu_cnt>800)
+//		{
+//		imu_cnt=0;
+//		}
+	Dual_Loop_Control();
 }
 
+/* TIM4 5ms ½ÚÅÄ£ºÖ´ÐÐ IMU + ·½Ïò½ÇËÙ¶È»· + ²îËÙ*/
 void pit_handler4(void)
 {
-	Dual_Loop_Control();
+
+//	if (++ind_cnt >= 2)
+//	{
+//		ind_cnt = 0;
+	Inductance_Read(adc_inductance);
+	elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2],adc_inductance[3], adc_inductance[4]);
+	Dir_Control();
+	gyro_proc();
+	Dir_Control_gyro();
+	Calculate_Differential_Drive();
+
+//	}
+
 }

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            14/05/26  22:22:14  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            17/05/26  21:47:57  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -12,123 +12,135 @@ stmt  level    source
     1          #include "element.h"
     2          #include "imu.h"
     3          
-    4          // 状态与偏差全局定义
-    5          TrackState_e TrackState = NORMAL;
-    6          uint16 times = 0;
-    7          // 核心阈值定义
-    8          float Nowangel = 0;
-    9          uint8 dur_time = 0;
-   10          void Element_Control(int16 *param)
-   11          {
-   12   1          switch (TrackState)
-   13   1          {
-   14   2              case NORMAL:
-   15   2                  // 环岛判定：单侧远端电感激增
-   16   2                      if ((param[3] >= 8) && (param[3] <= 20) && (param[4] >= 40) && (param[2] <= 25) && first_complement.ang
+    4          TrackState_e TrackState = NORMAL;
+    5          uint8 times = 0;
+    6          
+    7          float Nowangel = 0;
+    8          uint8 dur_time = 0;
+    9          uint8 ring_dir = 0;
+   10          float ang_diff = 0;
+   11          /* ����Ԫ��״̬�������ݵ�������ݽǶ��л� NORMAL / �������׶� */
+   12          void Element_Control(uint16 *param)
+   13          {
+   14   1          switch (TrackState)
+   15   1          {
+   16   2              case NORMAL:
+   17   2      
+   18   2                      if ((param[3] >= 6) && (param[3] <= 20) && (param[4] >= 40) && (param[2] <= 25) && first_complement.ang
              -le.pitch <=30)
-   17   2                  {
-   18   3                                      times++;
-   19   3                                      if(times >= 2)
-   20   3                                      {                
-   21   4                                              TrackState = RIGHT_ROUNDAPPROCH;        
-   22   4                                              times = 0;
-   23   4                                      }
-   24   3      
-   25   3                  }
-   26   2                              
-   27   2                      else if ((param[2] >= 8) &&(param[2] <= 20)&& (param[1] >= 40) && (param[3] <= 25) && first_complement.
-             -angle.pitch <=30)//左侧横电感>75 && 右侧横电感 >40 
-   28   2                  {
-   29   3                                      times++;
-   30   3                                      if(times >= 2)
-   31   3                                      {                
-   32   4                                              TrackState = LEFT_ROUNDAPPROCH; //识别为左环岛
-   33   4                                              times = 0;
-   34   4                                      }
-   35   3                  }
-   36   2                  break;
-   37   2                              
-   38   2                      case RIGHT_ROUNDAPPROCH:
-   39   2                              dur_time++;
-   40   2                              if((param[4] >=45) && (param[3] >= 35))
-   41   2                              {
-   42   3                                      times++;
-   43   3                                      if(times >=2)
-   44   3                                      {
-   45   4                                              TrackState = RIGHT_ROUND;       
-   46   4                                              Nowangel = Daty_Z; // 记录初始角度
-   47   4                                              times = 0;
-   48   4                                      }
-   49   3                              }
-   50   2                              if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}
-   51   2                              break;
-   52   2                              
-   53   2                      case LEFT_ROUNDAPPROCH:
-   54   2                              dur_time++;
-   55   2                  if((param[1] >= 45) && param[2] >= 35)
-C251 COMPILER V5.60.0,  element                                                            14/05/26  22:22:14  PAGE 2   
+   19   2                  {
+   20   3                                      times++;
+   21   3                                      if(times >= 2)
+   22   3                                      {
+   23   4                                              TrackState = RIGHT_ROUNDAPPROCH;
+   24   4                                              times = 0;
+   25   4                                      }
+   26   3      
+   27   3                  }
+   28   2      
+   29   2                      else if ((param[2] >= 6) &&(param[2] <= 20)&& (param[1] >= 40) && (param[3] <= 25) && first_complement.
+             -angle.pitch <=30)
+   30   2                  {
+   31   3                                      times++;
+   32   3                                      if(times >= 2)
+   33   3                                      {
+   34   4                                              TrackState = LEFT_ROUNDAPPROCH;
+   35   4                                              times = 0;
+   36   4                                      }
+   37   3                  }
+   38   2                  break;
+   39   2      
+   40   2                      case RIGHT_ROUNDAPPROCH:
+   41   2                              dur_time++;
+   42   2                              if((param[4] >=45) && (param[3] >= 35))
+   43   2                              {
+   44   3                                      times++;
+   45   3                                      if(times >=2)
+   46   3                                      {
+   47   4                                              TrackState = RIGHT_ROUND;
+   48   4                                              Nowangel = Daty_Z;
+   49   4                                              times = 0;
+   50   4                                              ring_dir = 1;
+   51   4                                      }
+   52   3                              }
+   53   2                              if(dur_time >= 120){TrackState = NORMAL;dur_time = 0;}
+   54   2                              break;
+   55   2      
+C251 COMPILER V5.60.0,  element                                                            17/05/26  21:47:57  PAGE 2   
 
-   56   2                              {
-   57   3                                      times++;
-   58   3                                      if(times >=2)
-   59   3                                      {
-   60   4                                              TrackState = LEFT_ROUND;        
-   61   4                                              Nowangel = Daty_Z; // 记录初始角度
-   62   4                                              times = 0;
-   63   4                                      }
-   64   3                              }
-   65   2                              if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}                  
-   66   2                              break;
-   67   2                      case LEFT_ROUND:
-   68   2                      case RIGHT_ROUND:
-   69   2                  // 入环强制差速中... 直到车体实际上偏转了约35度，认为已经成功入环
-   70   2                  if (My_abs(Nowangel - Daty_Z) >= 35) 
-   71   2                  {
-   72   3                      TrackState = ROUNDIN;
-   73   3                  }
-   74   2                  break;
-   75   2                  
-   76   2              case ROUNDIN:
-   77   2                  // 环内循迹中... 转了差不多一圈（例如270-300度），准备出环
-   78   2                  if (My_abs(Nowangel - Daty_Z) >= 280) // 提前一点出环，避免错过
-   79   2                  {
-   80   3                      TrackState = ROUNDOUT;
-   81   3                      Nowangel = Daty_Z; // 重新记录角度用于出环判定
-   82   3                  }
-   83   2                  break;
-   84   2                  
-   85   2              case ROUNDOUT:
-   86   2                              Distance_Add();
-   87   2                  // 出环强制差速中... 当反向转出一定角度，或者检测到双边电感恢复�
-             -�称时，回到NORMAL
-   88   2                  if (distance >= 20000) // 出环转出30度左右
-   89   2                  {
-   90   3                      TrackState = NORMAL;
-   91   3                                      distance = 0;
-   92   3                  }
-   93   2                  break;
-   94   2          }
-   95   1      }
+   56   2                      case LEFT_ROUNDAPPROCH:
+   57   2                              dur_time++;
+   58   2                  if((param[1] >= 45) && param[2] >= 35)
+   59   2                              {
+   60   3                                      times++;
+   61   3                                      if(times >=2)
+   62   3                                      {
+   63   4                                              TrackState = LEFT_ROUND;
+   64   4                                              Nowangel = Daty_Z;
+   65   4                                              times = 0;
+   66   4                                              ring_dir = 2;
+   67   4                                      }
+   68   3                              }
+   69   2                              if(dur_time >= 120){TrackState = NORMAL;dur_time = 0;}
+   70   2                              break;
+   71   2                      case LEFT_ROUND:
+   72   2                      case RIGHT_ROUND:
+   73   2                              dur_time = 0;
+   74   2                  {
+   75   3                      float ang_diff = Nowangel - Daty_Z;
+   76   3                      if (ang_diff < 0) ang_diff = -ang_diff;
+   77   3                      if (ang_diff >= 35) TrackState = ROUNDIN;
+   78   3                  }
+   79   2                  break;
+   80   2      
+   81   2              case ROUNDIN:
+   82   2      
+   83   2                  {
+   84   3                      ang_diff = Nowangel - Daty_Z;
+   85   3                      if (ang_diff < 0) ang_diff = -ang_diff;
+   86   3                      if (ang_diff >= 290)
+   87   3                      {
+   88   4                          TrackState = ROUNDOUT;
+   89   4                          Nowangel = Daty_Z;
+   90   4                      }
+   91   3                  }
+   92   2                  break;
+   93   2      
+   94   2              case ROUNDOUT:
+   95   2                              ang_diff = Nowangel - Daty_Z;
+   96   2                  if (ang_diff < 0) ang_diff = -ang_diff;
+   97   2                              Distance_Add();
+   98   2                  if (distance >= 20000 || ang_diff >= 25)
+   99   2                  {
+  100   3                      TrackState = NORMAL;
+  101   3                                      ring_dir = 0;
+  102   3                                      distance = 0;
+  103   3                  }
+  104   2                  break;
+  105   2          }
+  106   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       897     ------
+  code size            =      1099     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        13     ------
+  xdata size           =        21     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
+C251 COMPILER V5.60.0,  element                                                            17/05/26  21:47:57  PAGE 3   
+
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        29     ------
+  hconst size          =        43     ------
 End of Module Information.
 
 

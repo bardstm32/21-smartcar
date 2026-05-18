@@ -58,7 +58,7 @@ typedef struct IMU_Original
 } IMU_Original;
 
 extern IMU_Original IMU_original;
-
+extern gyro_param_t Gyro_Offset;
 typedef struct Angle
 {
     float pitch_temp;
