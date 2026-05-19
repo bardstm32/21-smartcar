@@ -1,26 +1,20 @@
 #include "zf_common_headfile.h"
+/* 入口：初始化外设与 PID，主循环按 ind_10ms_flag 调度电感读取与状态机 */
+uint8 send_div = 0;
 void main()
-{
+{	
 	clock_init(SYSTEM_CLOCK_30M);
 	debug_init();
 	ALL_init();
-	PID_Init(&left_spid,  3.2,0,0.6f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&right_spid, 3.0,0,0.6f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&Turn_PID,   0.2,0.0000785,0,4.10, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&Gyro_PID,  2.5, 0, 0, 2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
-	
-	P77=1;
-	system_delay_ms(1);
-	P77=0;
-	system_delay_us(5);
-	P77=1;
-	
+
+
 	while (1)
-	{	
+	{
 		Element_Control(adc_inductance);
-		Send_Data_To_PC();
+		Oscilloscope_Display(eleOut_0,eleOut_1,elemid ,imu660ra_gyro_z - Gyro_Offset.Zdata,
+						speed_left,left_spid.target,right_spid.target,speed_right);
+
+			//Send_Data_To_PC();
+
 	}
-	
-	
 }

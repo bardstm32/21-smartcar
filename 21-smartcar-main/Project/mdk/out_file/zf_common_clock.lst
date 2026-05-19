@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_common_clock                                                    04/05/26  16:34:45  PAGE 1   
+C251 COMPILER V5.60.0,  zf_common_clock                                                    19/05/26  19:24:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_common_clock
@@ -10,207 +10,164 @@ COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_common\zf_c
 
 stmt  level    source
 
-    1          /********************************************************************************************************
-             -*************
-    2          * STC32G Opensourec Library 即（STC32G 开源库）是一个基于官方 SDK 接口的第三方开源�
-             -�
-    3          * Copyright (c) 2022 SEEKFREE 逐飞科技
-    4          *
-    5          * 本文件是STC 开源库的一部分
-    6          *
-    7          * STC32G 开源库 是免费软件
-    8          * 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许
-             -可证）的条款
-    9          * 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修�
-             -�它
-   10          *
-   11          * 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-   12          * 甚至没有隐含的适销性或适合特定用途的保证
-   13          * 更多细节请参见 GPL
-   14          *
-   15          * 您应该在收到本开源库的同时收到一份 GPL 的副本
-   16          * 如果没有，请参阅<https://www.gnu.org/licenses/>
-   17          *
-   18          * 额外注明：
-   19          * 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-   20          * 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-   21          * 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-   22          * 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本
-             -声明）
-   23          *
-   24          * 文件名称          
-   25          * 公司名称          成都逐飞科技有限公司
-   26          * 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-   27          * 开发环境          MDK FOR C251
-   28          * 适用平台          STC32G
-   29          * 店铺链接          https://seekfree.taobao.com/
-   30          *
-   31          * 修改记录
-   32          * 日期              作者           备注
-   33          * 2024-08-01        大W            first version
-   34          *********************************************************************************************************
-             -***********/
-   35          
-   36          #include "zf_common_typedef.h"
-   37          #include "zf_common_clock.h"
-   38          #include "zf_common_debug.h"
-   39          #include "zf_common_interrupt.h"
-   40          
-   41          #include "zf_driver_delay.h"
-   42          
-   43          //内核频率
-   44          int32 system_clock = SYSTEM_CLOCK_30M;
-   45          
-   46          
-   47          
-   48          //-------------------------------------------------------------------------------------------------------
+    1          #include "zf_common_typedef.h"
+    2          #include "zf_common_clock.h"
+    3          #include "zf_common_debug.h"
+    4          #include "zf_common_interrupt.h"
+    5          
+    6          #include "zf_driver_delay.h"
+    7          
+    8          //内核频率
+    9          int32 system_clock = SYSTEM_CLOCK_30M;
+   10          
+   11          
+   12          
+   13          //-------------------------------------------------------------------------------------------------------
              -------------
-   49          //  @brief      STC32G设置系统频率
-C251 COMPILER V5.60.0,  zf_common_clock                                                    04/05/26  16:34:45  PAGE 2   
-
-   50          //  @param      NULL            空值
-   51          //  @return     void            系统频率
-   52          //  Sample usage:               
-   53          //-------------------------------------------------------------------------------------------------------
+   14          //  @brief      STC32G设置系统频率
+   15          //  @param      NULL            空值
+   16          //  @return     void            系统频率
+   17          //  Sample usage:               
+   18          //-------------------------------------------------------------------------------------------------------
              -------------
-   54          uint32 set_sys_clk(uint32 sys_clk)
-   55          {
-   56   1              
-   57   1              P_SW2 |= 0x80;
-   58   1                      
-   59   1              switch(sys_clk) 
-   60   1              {
-   61   2                      case SYSTEM_CLOCK_22_1184M:
-   62   2                              // 选择 22.1184MHz
-   63   2                              CLKDIV = 0x04;
-   64   2                              IRTRIM = T22M_ADDR;
-   65   2                              VRTRIM = VRT27M_ADDR;
-   66   2                              IRCBAND = 0x02;
-   67   2                              CLKDIV = 0x00;
-   68   2                      break;
-   69   2                              
-   70   2                      case SYSTEM_CLOCK_24M:
-   71   2                              // 选择 24MHz
-   72   2                              CLKDIV = 0x04;
-   73   2                              IRTRIM = T24M_ADDR;
-   74   2                              VRTRIM = VRT27M_ADDR;
-   75   2                              IRCBAND = 0x02;
-   76   2                              CLKDIV = 0x00;
-   77   2                      break;
-   78   2                              
-   79   2                      case SYSTEM_CLOCK_27M:
-   80   2                              // 选择 27MHz
-   81   2                              CLKDIV = 0x04;
-   82   2                              IRTRIM = T27M_ADDR;
-   83   2                              VRTRIM = VRT27M_ADDR;
-   84   2                              IRCBAND = 0x02;
-   85   2                              CLKDIV = 0x00;
-   86   2                      break;
-   87   2                              
-   88   2                      case SYSTEM_CLOCK_30M:
-   89   2                              // 选择 30MHz
-   90   2                              CLKDIV = 0x04;
-   91   2                              IRTRIM = T30M_ADDR;
-   92   2                              VRTRIM = VRT27M_ADDR;
-   93   2                              IRCBAND = 0x02;
-   94   2                              CLKDIV = 0x00;
-   95   2                      break;
-   96   2                              
-   97   2                      case SYSTEM_CLOCK_33_1776M:
-   98   2                              // 选择 33.1776MHz
-   99   2                              CLKDIV = 0x04;
-  100   2                              IRTRIM = T33M_ADDR;
-  101   2                              VRTRIM = VRT27M_ADDR;
-  102   2                              IRCBAND = 0x02;
-  103   2                              CLKDIV = 0x00;
-  104   2                      break;
-  105   2                              
-  106   2                      case SYSTEM_CLOCK_35M:
-  107   2                              // 选择 35MHz
-  108   2                              CLKDIV = 0x04;
-  109   2                              IRTRIM = T35M_ADDR;
-  110   2                              VRTRIM = VRT44M_ADDR;
-  111   2                              IRCBAND = 0x03;
-  112   2                              CLKDIV = 0x00;
-  113   2                      break;
-  114   2                              
-C251 COMPILER V5.60.0,  zf_common_clock                                                    04/05/26  16:34:45  PAGE 3   
+   19          uint32 set_sys_clk(uint32 sys_clk)
+   20          {
+   21   1              
+   22   1              P_SW2 |= 0x80;
+   23   1                      
+   24   1              switch(sys_clk) 
+   25   1              {
+   26   2                      case SYSTEM_CLOCK_22_1184M:
+   27   2                              // 选择 22.1184MHz
+   28   2                              CLKDIV = 0x04;
+   29   2                              IRTRIM = T22M_ADDR;
+   30   2                              VRTRIM = VRT27M_ADDR;
+   31   2                              IRCBAND = 0x02;
+   32   2                              CLKDIV = 0x00;
+   33   2                      break;
+   34   2                              
+   35   2                      case SYSTEM_CLOCK_24M:
+   36   2                              // 选择 24MHz
+   37   2                              CLKDIV = 0x04;
+   38   2                              IRTRIM = T24M_ADDR;
+   39   2                              VRTRIM = VRT27M_ADDR;
+   40   2                              IRCBAND = 0x02;
+   41   2                              CLKDIV = 0x00;
+   42   2                      break;
+   43   2                              
+   44   2                      case SYSTEM_CLOCK_27M:
+   45   2                              // 选择 27MHz
+   46   2                              CLKDIV = 0x04;
+   47   2                              IRTRIM = T27M_ADDR;
+   48   2                              VRTRIM = VRT27M_ADDR;
+   49   2                              IRCBAND = 0x02;
+   50   2                              CLKDIV = 0x00;
+   51   2                      break;
+   52   2                              
+   53   2                      case SYSTEM_CLOCK_30M:
+   54   2                              // 选择 30MHz
+C251 COMPILER V5.60.0,  zf_common_clock                                                    19/05/26  19:24:56  PAGE 2   
 
-  115   2                      default:
-  116   2                              sys_clk = SYSTEM_CLOCK_30M;
-  117   2                              // 选择 30MHz
-  118   2                              CLKDIV = 0x04;
-  119   2                              IRTRIM = T30M_ADDR;
-  120   2                              VRTRIM = VRT27M_ADDR;
-  121   2                              IRCBAND = 0x02;
-  122   2                              CLKDIV = 0x00;
-  123   2                      break;
-  124   2              }
-  125   1      
-  126   1              return sys_clk;
-  127   1      }
-  128          
-  129          
-  130          
-  131          
-  132          void clock_init (uint32 clock)                                              // 核心时钟初始化
-  133          {
-  134   1              EAXFR = 1;                              // 使能访问XFR
-  135   1              P_SW2 = 0x80;           // 开启特殊地址访问
-  136   1          CKCON = 0x00;           // 设置外部数据总线为最快
-  137   1          WTST = 0;               // 设置程序代码等待参数，赋值为0可将CPU执行程序的速度�
+   55   2                              CLKDIV = 0x04;
+   56   2                              IRTRIM = T30M_ADDR;
+   57   2                              VRTRIM = VRT27M_ADDR;
+   58   2                              IRCBAND = 0x02;
+   59   2                              CLKDIV = 0x00;
+   60   2                      break;
+   61   2                              
+   62   2                      case SYSTEM_CLOCK_33_1776M:
+   63   2                              // 选择 33.1776MHz
+   64   2                              CLKDIV = 0x04;
+   65   2                              IRTRIM = T33M_ADDR;
+   66   2                              VRTRIM = VRT27M_ADDR;
+   67   2                              IRCBAND = 0x02;
+   68   2                              CLKDIV = 0x00;
+   69   2                      break;
+   70   2                              
+   71   2                      case SYSTEM_CLOCK_35M:
+   72   2                              // 选择 35MHz
+   73   2                              CLKDIV = 0x04;
+   74   2                              IRTRIM = T35M_ADDR;
+   75   2                              VRTRIM = VRT44M_ADDR;
+   76   2                              IRCBAND = 0x03;
+   77   2                              CLKDIV = 0x00;
+   78   2                      break;
+   79   2                              
+   80   2                      default:
+   81   2                              sys_clk = SYSTEM_CLOCK_30M;
+   82   2                              // 选择 30MHz
+   83   2                              CLKDIV = 0x04;
+   84   2                              IRTRIM = T30M_ADDR;
+   85   2                              VRTRIM = VRT27M_ADDR;
+   86   2                              IRCBAND = 0x02;
+   87   2                              CLKDIV = 0x00;
+   88   2                      break;
+   89   2              }
+   90   1      
+   91   1              return sys_clk;
+   92   1      }
+   93          
+   94          
+   95          
+   96          
+   97          void clock_init (uint32 clock)                                              // 核心时钟初始化
+   98          {
+   99   1              EAXFR = 1;                              // 使能访问XFR
+  100   1              P_SW2 = 0x80;           // 开启特殊地址访问
+  101   1          CKCON = 0x00;           // 设置外部数据总线为最快
+  102   1          WTST = 0;               // 设置程序代码等待参数，赋值为0可将CPU执行程序的速度�
              -��置为最快
-  138   1      
-  139   1      #if (1 == EXTERNAL_CRYSTA_ENABLE)
+  103   1      
+  104   1      #if (1 == EXTERNAL_CRYSTA_ENABLE)
                        XOSCCR = 0xc0;                  //启动外部晶振
                        while (!(XOSCCR & 1));  //等待时钟稳定
                        CLKDIV = 0x00;                  //时钟不分频
                        CLKSEL = 0x01;                  //选择外部晶振
                #else
-  145   1              //自动设置系统频率
-  146   1              #if (0 == FOSC)
-  147   1                      system_clock = set_sys_clk(clock);
-  148   1              #else
+  110   1              //自动设置系统频率
+  111   1              #if (0 == FOSC)
+  112   1                      system_clock = set_sys_clk(clock);
+  113   1              #else
                                system_clock = FOSC;
                        #endif
-  151   1      #endif
-  152   1      
-  153   1              system_delay_init();    // 延时函数初始化
-  154   1      
-  155   1       
-  156   1              P0M0 = 0x00;
-  157   1              P0M1 = 0x00;
-  158   1              P1M0 = 0x00;
-  159   1              P1M1 = 0x00;
-  160   1              P2M0 = 0x00;
-  161   1              P2M1 = 0x00;
-  162   1              P3M0 = 0x00;
-  163   1              P3M1 = 0x00;
-  164   1              P4M0 = 0x00;
-  165   1              P4M1 = 0x00;
-  166   1              P5M0 = 0x00;
-  167   1              P5M1 = 0x00;
-  168   1              P6M0 = 0x00;
-  169   1              P6M1 = 0x00;
-  170   1              P7M0 = 0x00;
-  171   1              P7M1 = 0x00;
-  172   1              
-  173   1              ADCCFG = 0;
-  174   1              AUXR = 0;
-  175   1              SCON = 0;
-  176   1              S2CON = 0;
-  177   1              S3CON = 0;
-  178   1              S4CON = 0;
-  179   1              P_SW1 = 0;
-C251 COMPILER V5.60.0,  zf_common_clock                                                    04/05/26  16:34:45  PAGE 4   
+  116   1      #endif
+  117   1      
+  118   1              system_delay_init();    // 延时函数初始化
+  119   1      
+C251 COMPILER V5.60.0,  zf_common_clock                                                    19/05/26  19:24:56  PAGE 3   
 
-  180   1              IE2 = 0;
-  181   1              TMOD = 0;
-  182   1              
-  183   1              interrupt_global_enable();
-  184   1      }
-  185          
-  186          
+  120   1       
+  121   1              P0M0 = 0x00;
+  122   1              P0M1 = 0x00;
+  123   1              P1M0 = 0x00;
+  124   1              P1M1 = 0x00;
+  125   1              P2M0 = 0x00;
+  126   1              P2M1 = 0x00;
+  127   1              P3M0 = 0x00;
+  128   1              P3M1 = 0x00;
+  129   1              P4M0 = 0x00;
+  130   1              P4M1 = 0x00;
+  131   1              P5M0 = 0x00;
+  132   1              P5M1 = 0x00;
+  133   1              P6M0 = 0x00;
+  134   1              P6M1 = 0x00;
+  135   1              P7M0 = 0x00;
+  136   1              P7M1 = 0x00;
+  137   1              
+  138   1              ADCCFG = 0;
+  139   1              AUXR = 0;
+  140   1              SCON = 0;
+  141   1              S2CON = 0;
+  142   1              S3CON = 0;
+  143   1              S4CON = 0;
+  144   1              P_SW1 = 0;
+  145   1              IE2 = 0;
+  146   1              TMOD = 0;
+  147   1              
+  148   1              interrupt_global_enable();
+  149   1      }
+  150          
+  151          
 
 
 Module Information          Static   Overlayable

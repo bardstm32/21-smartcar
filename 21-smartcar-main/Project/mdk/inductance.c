@@ -1,167 +1,104 @@
-/*********************************************************************************************************************
- * @file inductance.c
- * @brief 电感数据读取与处理
- * 该文件包含了电感初始化、电感数据读取和处理的相关函数。
- * 电感传感器的数据通过ADC读取，并进行滤波和归一化处理，以提高数据精度和可靠性。
- * 适用平台          STC32G128K
- * @date              @author            备注
- * 2026-3-21     三帅勇闯智能车-rw         无
- * 修改记录：
- * @date              @author            备注
- *
- ********************************************************************************************************************/
+
 #include "zf_common_headfile.h"
+
 uint16 inductance_init_data[5][Filter_deepth];
 uint16 inductance_filter_data[5];
-float CUR_PARA = 8,STR_PARA = 2;
-/**
- * range_protect - 将值限制在指定的最小值和最大值之间
- * 该函数接收一个值以及最小值和最大值作为参数，如果值大于最大值，则返回最大值；
- * 如果值小于最小值，则返回最小值；否则返回该值本身。
- * @param value     待限制的值
- * @param min_value 最小值
- * @param max_value 最大值
- * @return          限制在[min_value, max_value]之间的值
- */
+int16 CUR_PARA =1, STR_PARA = 2;
+
+/* 把 int16 限制在 [min, max] 区间 */
 int16 range_protect_int(int16 value, int16 min_value, int16 max_value)
 {
     return (value > max_value) ? max_value : ((value < min_value) ? min_value : value);
 }
 
+/* 把 float 限制在 [min, max] 区间 */
 float range_protect_float(float value, float min_value, float max_value)
 {
     return (value > max_value) ? max_value : ((value < min_value) ? min_value : value);
 }
 
-
-/**
- * Inductance_Init - 初始化电感传感器
- * 该函数用于初始化四个电感传感器，每个传感器配置为12位ADC模式。
- * @return 无
- */
+/* 把 L1~L4 四路 ADC 通道初始化为 12 位模式 */
 void Inductance_Init(void)
 {
-    adc_init(L1, ADC_12BIT); // 初始化电感传感器L1为12位ADC模式
-    adc_init(L2, ADC_12BIT); // 初始化电感传感器L2为12位ADC模式
-    adc_init(L3, ADC_12BIT); // 初始化电感传感器L3为12位ADC模式
-    adc_init(L4, ADC_12BIT); // 初始化电感传感器L4为12位ADC模式
+    adc_init(L1, ADC_12BIT);
+    adc_init(L2, ADC_12BIT);
+    adc_init(L3, ADC_12BIT);
+    adc_init(L4, ADC_12BIT);
 }
 
-/**
- * Median_Average_Filter - 计算数组中去掉一个最大值和一个最小值后的平均值
- * 该函数接收一个整型数组和一个整数times作为参数，计算数组中去掉一个最大值
- * 和一个最小值后的平均值。适用于需要滤除异常值的场景。
- * @param arr   整型数组，包含待处理的数据
- * @param times 需要处理的数组元素个数
- * @return      去掉一个最大值和一个最小值后的数组元素平均值
- */
-int Median_Average_Filter(int *arr, int times)
+/* 中值平均：去掉一个最大值和一个最小值，剩余取平均 */
+int Median_Average_Filter(uint16 *arr, int times)
 {
-    // 初始化最小值、最大值和累加和
     int min = arr[0], max = arr[0], sum = 0, i = 0;
 
-    // 遍历数组，更新最小值、最大值，并计算累加和
     for (i = 0; i < times; i++)
     {
-        if (arr[i] < min)
-            min = arr[i]; // 更新最小值
-        if (arr[i] > max)
-            max = arr[i]; // 更新最大值
-        sum += arr[i];    // 计算累加和
+        if (arr[i] < min) min = arr[i];
+        if (arr[i] > max) max = arr[i];
+        sum += arr[i];
     }
 
-    // 返回去掉最大值和最小值后的平均值
-    // 注意：该方法假设times至少为3，否则会导致除以零的错误
     return (sum - min - max) / (times - 2);
 }
 
-/**
- * Adc_Normalize - 将ADC值归一化到指定范围
- * 该函数接收一个ADC值以及最大值和最小值作为参数，将ADC值归一化到0到100之间，
- * 并使用range_protect函数确保结果在[1.0, 100.0]范围内。
- * @param value     ADC值
- * @param max_value 最大值
- * @param min_value 最小值
- * @return          归一化后的值，范围在[1.0, 100.0]之间
- */
+/* 把 ADC 值线性归一化到 [0,100]，越界饱和 */
 float ADC_Normalize_0_100(uint16 adc_val, uint16 adc_max, uint16 adc_min)
 {
     float temp;
-    // 公式：(值 - 最小值) * 100 / (最大值 - 最小值)
-    temp = (adc_val* 100.0f)/ adc_max;
-    // 限幅，防止越界
-    if (temp > 100.0)
-        temp = 100.0;
-    if (temp < 0.0)
-        temp = 0.0;
+
+    if (adc_val <= adc_min)
+        return 0.0f;
+
+    if (adc_val >= adc_max)
+        return 100.0f;
+
+    temp = ((adc_val - adc_min) * 100.0f / (adc_max - adc_min));
+
     return temp;
 }
 
-/* Inductance_Count_Err - 差比和计算（按公式修改版）
- * 该函数接收四个电感值作为参数，按公式计算电感误差并将其限制在-100到100之间。
- * @param L  电感值L（对应公式中a1）
- * @param LM 电感值LM（对应公式中a2）
- * @param RM 电感值RM（对应公式中b1）
- * @param R  电感值R（对应公式中b2）
- * @return   电感误差值，范围在[-10000, 10000]之间
- */
+/* 方向偏差（基础版，纯整数计算后转 float） */
 float Inductance_Count_Err(int16 L, int16 LM, int16 RM, int16 R)
 {
-    float scaled_err;
-	float numerator,denominator;
-    numerator = ((L - R) + CUR_PARA*(LM - RM))*10000.0f;
-    denominator = (L+R)+My_abs((LM-RM))+1;
-
-    scaled_err = numerator / denominator;
-    // 使用range_protect函数确保结果在[-10000.0, 10000.0]范围内
-    scaled_err = range_protect_float(scaled_err, -10000, 10000);
-    // 返回电感误差值
-    return scaled_err;
+    int32 num = ((int32)(L - R) + (int32)CUR_PARA * (LM - RM)) * 10000;
+    int32 den = (L + R) + IABS(LM - RM) + 1;
+    int32 res = num / den;
+    if (res >  10000) res =  10000;
+    if (res < -10000) res = -10000;
+    return (float)res;
 }
 
+/* 方向偏差（加权版，由 STR_PARA / CUR_PARA 调直道与弯道权重） */
 float Inductance_Count_Err2(int16 L, int16 LM, int16 RM, int16 R)
 {
-    float scaled_err;
-	float numerator,denominator;
-    numerator = (STR_PARA*(L - R) + CUR_PARA*(LM - RM))*10000.0f;
-    denominator = STR_PARA*(L+R)+CUR_PARA*My_abs((LM-RM))+1;
-
-    scaled_err = numerator / denominator;
-    // 使用range_protect函数确保结果在[-10000.0, 10000.0]范围内
-    scaled_err = range_protect_float(scaled_err, -10000, 10000);
-    // 返回电感误差值
-    return scaled_err;
+    int32 num = ((int32)STR_PARA * (L - R) + (int32)CUR_PARA * (LM - RM)) * 1000;
+    int32 den = (int32)STR_PARA * (L + R) + (int32)CUR_PARA * IABS(LM - RM) + 1;
+    int32 res = num / den;
+    if (res >  1000) res =  1000;
+    if (res < -1000) res = -1000;
+    return (float)res;
 }
 
-/**
- * Inductance_Read - 读取并滤波电感值
- * 该函数用于读取四个电感传感器的原始值，并使用Median_Average_Filter函数进行滤波处理。
- * @param inductance_filter_data 用于存储滤波后的电感值的数组
- * @return 无
- */
+/* 四路电感各采样 Filter_deepth 次 → 中值平均 → 归一化 */
 void Inductance_Read(uint16 *inductance_norm_data)
 {
-    uint8 i; // 声明变量i，必须在作用域最前面
-    // 原始值
+    uint8 i;
 
-    // 原始值的读取
     for (i = 0; i < Filter_deepth; i++)
     {
-        inductance_init_data[1][i] = adc_convert(L1); // 将电感传感器L1的值读取并存储
-        inductance_init_data[2][i] = adc_convert(L2); // 将电感传感器L2的值读取并存储
-        inductance_init_data[3][i] = adc_convert(L3); // 将电感传感器L3的值读取并存储
-        inductance_init_data[4][i] = adc_convert(L4); // 将电感传感器L4的值读取并存储
+        inductance_init_data[1][i] = adc_convert(L1);
+        inductance_init_data[2][i] = adc_convert(L2);
+        inductance_init_data[3][i] = adc_convert(L3);
+        inductance_init_data[4][i] = adc_convert(L4);
     }
 
-    // 滤波
     for (i = 1; i <= 4; i++)
     {
-        // 使用Median_Average_Filter函数进行滤波处理
         inductance_filter_data[i] = Median_Average_Filter(inductance_init_data[i], Filter_deepth);
-    } 
-		 
-    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3689, 0);
-    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3680, 0);
-    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3702, 0);
-    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3687, 0);
+    }
+
+    inductance_norm_data[1] = ADC_Normalize_0_100(inductance_filter_data[1], 3675, 1);
+    inductance_norm_data[2] = ADC_Normalize_0_100(inductance_filter_data[2], 3673, 1);
+    inductance_norm_data[3] = ADC_Normalize_0_100(inductance_filter_data[3], 3685, 1);
+    inductance_norm_data[4] = ADC_Normalize_0_100(inductance_filter_data[4], 3676, 3);
 }

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            05/05/26  22:02:37  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            19/05/26  21:04:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -18,66 +18,84 @@ stmt  level    source
     7          void pit_handler(void);
     8          void pit_handler4(void);
     9          
-   10          #define ENCODER_DIR_LEFT (TIM0_ENCOEDER)                   // 正交编码器对应使用的编码器接口 这里使用QTIMER1的ENCOEDER1
-   11          #define ENCODER_DIR_DIR_LEFT (IO_P35)                      // DIR 对应的引脚
-   12          #define ENCODER_DIR_PULSE_LEFT (TIM0_ENCOEDER_P34) // PULSE 对应的引脚
+   10          #define ENCODER_DIR_LEFT (TIM0_ENCOEDER)
+   11          #define ENCODER_DIR_DIR_LEFT (IO_P35)
+   12          #define ENCODER_DIR_PULSE_LEFT (TIM0_ENCOEDER_P34)
    13          
-   14          #define ENCODER_DIR_RIGHT (TIM3_ENCOEDER)                       // 正交编码器对应使用的编码器接口 这里使用QTIMER1的ENCOEDER1
-   15          #define ENCODER_DIR_DIR_RIGHT (IO_P53)                          // DIR 对应的引脚
-   16          #define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04) // PULSE 对应的引脚
+   14          #define ENCODER_DIR_RIGHT (TIM3_ENCOEDER)
+   15          #define ENCODER_DIR_DIR_RIGHT (IO_P53)
+   16          #define ENCODER_DIR_PULSE_RIGHT (TIM3_ENCOEDER_P04)
    17          
-   18          uint16 imu_cnt = 0,t = 0;
-   19          
-   20          void encoder_init()
-   21          {
-   22   1              tim1_irq_handler = pit_handler;
-   23   1              tim4_irq_handler = pit_handler4;
-   24   1              pit_ms_init(PIT_CH, 1);
-   25   1              pit_ms_init(PIT_CH4, 2);
-   26   1      
-   27   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
-   28   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
-   29   1      }
-   30          
-   31          void pit_handler(void)
-   32          {
-   33   1              imu660ra_get_acc(); // 获取 IMU660RA 的加速度测量数值
-   34   1              imu660ra_get_gyro();
-   35   1              imu_cnt++; 
-   36   1              if(imu_cnt >=5)
-   37   1              {   
-   38   2                      gyro_proc();
-   39   2                      t++;
-   40   2                      if(t >=2)
-   41   2                      {
-   42   3                              Inductance_Read(adc_inductance);
-   43   3                              elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2], adc_inductance[3], adc_inductance
-             -[4]);
-   44   3                              Dir_Control();
-   45   3                              imu_cnt = 0;
-   46   3                              t = 0;
-   47   3                      }
-   48   2                      Dir_Control_gyro();     
-   49   2                      Calculate_Differential_Drive();
-   50   2              }
-   51   1      }
-   52          
-   53          void pit_handler4(void)
-   54          {
-   55   1              Dual_Loop_Control();
-   56   1      }
-C251 COMPILER V5.60.0,  encoder                                                            05/05/26  22:02:37  PAGE 2   
+   18          int encoder_L_R = 0;
+   19          uint32 distance = 0;
+   20          int16 cnt=0;
+   21          /* 累计行程：取左右轮速绝对值的均值并加到 distance */
+   22          void Distance_Add(void)
+   23          {
+   24   1              encoder_L_R = (IABS((int32)speed_left) + IABS((int32)speed_right)) >> 1;
+   25   1              distance += encoder_L_R;
+   26   1      }
+   27          
+   28          
+   29          /* 注册 TIM1 / TIM4 中断，初始化两路编码器 */
+   30          void encoder_init()
+   31          {
+   32   1              tim1_irq_handler = pit_handler;
+   33   1              tim4_irq_handler = pit_handler4;
+   34   1              interrupt_set_priority(TIMER1_IRQn,3);
+   35   1              pit_ms_init(PIT_CH, 2);
+   36   1              pit_ms_init(PIT_CH4, 5);
+   37   1      
+   38   1              encoder_dir_init(ENCODER_DIR_LEFT, ENCODER_DIR_DIR_LEFT, ENCODER_DIR_PULSE_LEFT);
+   39   1              encoder_dir_init(ENCODER_DIR_RIGHT, ENCODER_DIR_DIR_RIGHT, ENCODER_DIR_PULSE_RIGHT);
+   40   1      }
+   41          
+   42          /* TIM1 2ms 节拍：执行速度闭环 */
+   43          void pit_handler(void)
+   44          {
+   45   1      //      cnt++;
+   46   1      //      if(cnt>0&&cnt<400)
+   47   1      //      {
+   48   1      //      left_spid.target=150;
+   49   1      //      right_spid.target=150;
+   50   1      //      }
+   51   1      //      if(cnt>400&&cnt<800)
+   52   1      //      {
+   53   1      //      left_spid.target=200;
+   54   1      //      right_spid.target=200;
+   55   1      //      }
+   56   1      //      if(cnt>800)
+   57   1      //      {
+C251 COMPILER V5.60.0,  encoder                                                            19/05/26  21:04:09  PAGE 2   
 
+   58   1      //      cnt=0;
+   59   1      //      }
+   60   1              
+   61   1              Dual_Loop_Control();
+   62   1      }
+   63          
+   64          /* TIM4 5ms 节拍：执行 IMU + 方向角速度环 + 差速*/
+   65          void pit_handler4(void)
+   66          {
+   67   1                      Inductance_Read(adc_inductance);
+   68   1                      elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2],adc_inductance[3], adc_inductance[4
+             -]);
+   69   1                      Dir_Control();
+   70   1                      Dir_Control_gyro();
+   71   1                      Calculate_Differential_Drive();
+   72   1                      gyro_proc();
+   73   1      
+   74   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       256     ------
+  code size            =       321     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =        14     ------
+  xdata size           =        18     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -87,7 +105,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        29     ------
+  hconst size          =        38     ------
 End of Module Information.
 
 

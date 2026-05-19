@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  all_init                                                           05/05/26  21:21:52  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           19/05/26  21:04:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
@@ -10,28 +10,46 @@ COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNI
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          void ALL_init()
-    3          {
-    4   1              interrupt_global_disable();
-    5   1              imu660ra_init();
-    6   1              gyro_init();
-    7   1              pwm_init(PWMA_CH1P_P60, 25000, 0);
-    8   1              pwm_init(PWMA_CH2P_P62, 25000, 0);
-    9   1      //      pwm_init(PWMA_CH4N_P27, 25000, 0);
-   10   1      //      pwm_set_duty(PWMA_CH4N_P27, 5000);
-   11   1              gpio_init(IO_P61, GPO, GPIO_LOW, GPO_PUSH_PULL);
-   12   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
-   13   1              wireless_uart_init();
-   14   1              encoder_init();
-   15   1              Oscilloscope_Init();
-   16   1              Inductance_Init();
-   17   1              interrupt_global_enable();
-   18   1      }
+    2          /* ȫ�������ʼ����IMU����� PWM������������� ADC
+             -�����ߴ��� */
+    3          void ALL_init()
+    4          {
+    5   1              interrupt_global_disable();
+    6   1              imu660ra_init();
+    7   1              gyro_init();
+    8   1      
+    9   1              pwm_init(PWMA_CH1P_P60, 25000, 0);
+   10   1              pwm_init(PWMA_CH2P_P62, 25000, 0);
+   11   1              
+   12   1              pwm_init(PWMA_CH4N_P27, 25000, 0);
+   13   1              pwm_set_duty(PWMA_CH4N_P27, 6500);
+   14   1              Inductance_Init();
+   15   1              PID_Init(&left_spid,  15.5,0,1.85f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   16   1              PID_Init(&right_spid, 15.5,0,1.85f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   17   1              PID_Init(&Turn_PID,   0.2,0.0240,0,0.60, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   18   1              PID_Init(&Gyro_PID,   0.008, 0, 0,2.2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   19   1      
+   20   1              encoder_init();
+   21   1              gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+   22   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+   23   1              wireless_uart_init();
+   24   1              Oscilloscope_Init();
+   25   1              
+   26   1              
+   27   1              gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
+   28   1              P77=1;
+   29   1              system_delay_ms(1);
+   30   1              P77=0;
+   31   1              system_delay_us(5);
+   32   1              P77=1;
+   33   1              system_delay_ms(500);
+   34   1              interrupt_global_enable();
+   35   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       104     ------
+  code size            =       567     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

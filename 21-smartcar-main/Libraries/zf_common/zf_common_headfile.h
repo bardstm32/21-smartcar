@@ -70,26 +70,11 @@
 #include "zf_device_config.h"
 #include "zf_device_type.h"
 
-#include "zf_device_icm20602.h"
+//#include "zf_device_icm20602.h"
 #include "zf_device_imu660ra.h"
-#include "zf_device_imu660rb.h"
-#include "zf_device_imu660rc.h"
-#include "zf_device_imu963ra.h"
 
-//#include "zf_device_oled.h"
-#include "zf_device_tft180.h"
-#include "zf_device_ips114.h"
-#include "zf_device_ips200.h"
-#include "zf_device_ips200pro.h"
-
-#include "zf_device_dl1a.h"
-#include "zf_device_dl1b.h"
-
-#include "zf_device_ble6a20.h"
-#include "zf_device_tsl1401.h"
 #include "zf_device_wireless_uart.h"
-//#include "zf_device_gnss.h"
-#include "zf_device_gps_tau1201.h"
+
 
 //------逐飞科技产品组件层文件
 #include "seekfree_assistant.h"
@@ -103,7 +88,6 @@
 #include "all_init.h"
 #include "encoder.h"
 #include "moto.h"
-#include "led.h"
 #include "trank.h"
 #include "inductance.h"
 #include "menu.h"

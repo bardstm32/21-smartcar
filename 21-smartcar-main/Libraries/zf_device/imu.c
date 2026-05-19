@@ -5,6 +5,10 @@
  *  Created on: 2025年11月15日
  *      Author: zheng
  */
+#define ANGLE_TO_RAD(x)     ((x) * PI / 180.0)                                  // 角度转换为弧度
+#define RAD_TO_ANGLE(x)     ((x) * 180.0 / PI)                                  // 弧度转换为角度
+#define PI                  (3.1415926535898)
+ 
 First_Complement first_complement;
 gyro_param_t Gyro_Offset; // 陀螺仪零漂参数结构体
 IMU_param_t IMU_Data;     // 去除零漂后的IMU数据结构体
@@ -231,7 +235,8 @@ float fast_sqrt(float num)
 
 float My_abs(float x)
 {
-    return x < 0 ? -x : x;
+    if(x>=0)return x;
+	else return -x;
 }
 
 void KalmanCreate(extKalman_t *p, float T_Q, float T_R)

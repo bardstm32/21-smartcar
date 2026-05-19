@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_driver_pit                                                      04/05/26  16:34:47  PAGE 1   
+C251 COMPILER V5.60.0,  zf_driver_pit                                                      19/05/26  19:24:57  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_driver_pit
@@ -9,173 +9,136 @@ COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_driver\zf_d
 
 stmt  level    source
 
-    1          /********************************************************************************************************
-             -*************
-    2          * STC32G Opensourec Library 即（STC32G 开源库）是一个基于官方 SDK 接口的第三方开源库
-    3          * Copyright (c) 2022 SEEKFREE 逐飞科技
-    4          *
-    5          * 本文件是STC 开源库的一部分
-    6          *
-    7          * STC32G 开源库 是免费软件
-    8          * 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-    9          * 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
-   10          *
-   11          * 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-   12          * 甚至没有隐含的适销性或适合特定用途的保证
-   13          * 更多细节请参见 GPL
-   14          *
-   15          * 您应该在收到本开源库的同时收到一份 GPL 的副本
-   16          * 如果没有，请参阅<https://www.gnu.org/licenses/>
-   17          *
-   18          * 额外注明：
-   19          * 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-   20          * 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-   21          * 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-   22          * 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
-   23          *
-   24          * 文件名称          
-   25          * 公司名称          成都逐飞科技有限公司
-   26          * 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-   27          * 开发环境          MDK FOR C251
-   28          * 适用平台          STC32G
-   29          * 店铺链接          https://seekfree.taobao.com/
-   30          *
-   31          * 修改记录
-   32          * 日期              作者           备注
-   33          * 2024-08-01        大W            first version
-   34          *********************************************************************************************************
-             -***********/
-   35          
-   36          #include "zf_common_clock.h"
-   37          #include "zf_driver_pit.h"
-   38          
-   39          
-   40          //-------------------------------------------------------------------------------------------------------
+    1          #include "zf_common_clock.h"
+    2          #include "zf_driver_pit.h"
+    3          
+    4          
+    5          //-------------------------------------------------------------------------------------------------------
              -------------
-   41          //  @brief      定时器周期中断
-   42          //  @param      pit_n      定时器通道号
-   43          //  @param      time_ms    时间(ms)
-   44          //  @return     void
-   45          //  Sample usage:          pit_timer_ms(TIM_0, 10)
-   46          //                                                 使用定时器0做周期中断，时间10ms一次。
-   47          //-------------------------------------------------------------------------------------------------------
+    6          //  @brief      定时器周期中断
+    7          //  @param      pit_n      定时器通道号
+    8          //  @param      time_ms    时间(ms)
+    9          //  @return     void
+   10          //  Sample usage:          pit_timer_ms(TIM_0, 10)
+   11          //                                                 使用定时器0做周期中断，时间10ms一次。
+   12          //-------------------------------------------------------------------------------------------------------
              -------------
-   48          void pit_init(pit_index_enum pit_n, uint32 period)
-   49          {
-   50   1              uint8 freq_div = 0;                
-   51   1          uint16 period_temp = 0;               
-   52   1          uint16 temp = 0;
-   53   1      
-C251 COMPILER V5.60.0,  zf_driver_pit                                                      04/05/26  16:34:47  PAGE 2   
+   13          void pit_init(pit_index_enum pit_n, uint32 period)
+   14          {
+   15   1              uint8 freq_div = 0;                
+   16   1          uint16 period_temp = 0;               
+   17   1          uint16 temp = 0;
+   18   1      
+   19   1      
+   20   1              if(period > (255*65535))
+   21   1              {
+   22   2                      // 设置定时器为12T模式防止溢出
+   23   2                      period = period / 12;
+   24   2                      
+   25   2                      if(TIM0_PIT == pit_n)
+   26   2                      {
+   27   3                              AUXR &= ~0x80;          
+   28   3                      }
+   29   2                      else if(TIM1_PIT == pit_n)
+   30   2                      {
+   31   3                              AUXR &= ~0x40;          
+   32   3                      }
+   33   2                      else if(TIM2_PIT == pit_n)
+   34   2                      {
+   35   3                              AUXR &= ~0x04;          
+   36   3                      }
+   37   2                      else if(TIM3_PIT == pit_n)
+   38   2                      {
+   39   3                              T4T3M &= ~0x02; 
+   40   3                      }
+   41   2                      else if(TIM4_PIT == pit_n)
+   42   2                      {
+   43   3                              T4T3M &= ~0x20;         
+   44   3                      }
+   45   2              
+   46   2      
+   47   2              }
+   48   1              else
+   49   1              {
+   50   2                      // 设置为1T模式
+   51   2                      if(TIM0_PIT == pit_n)
+   52   2                      {
+   53   3                              AUXR |= 0x80;           
+   54   3                      }
+   55   2                      else if(TIM1_PIT == pit_n)
+C251 COMPILER V5.60.0,  zf_driver_pit                                                      19/05/26  19:24:57  PAGE 2   
 
-   54   1      
-   55   1              if(period > (255*65535))
-   56   1              {
-   57   2                      // 设置定时器为12T模式防止溢出
-   58   2                      period = period / 12;
-   59   2                      
-   60   2                      if(TIM0_PIT == pit_n)
-   61   2                      {
-   62   3                              AUXR &= ~0x80;          
-   63   3                      }
-   64   2                      else if(TIM1_PIT == pit_n)
-   65   2                      {
-   66   3                              AUXR &= ~0x40;          
-   67   3                      }
-   68   2                      else if(TIM2_PIT == pit_n)
-   69   2                      {
-   70   3                              AUXR &= ~0x04;          
-   71   3                      }
-   72   2                      else if(TIM3_PIT == pit_n)
-   73   2                      {
-   74   3                              T4T3M &= ~0x02; 
-   75   3                      }
-   76   2                      else if(TIM4_PIT == pit_n)
-   77   2                      {
-   78   3                              T4T3M &= ~0x20;         
-   79   3                      }
-   80   2              
-   81   2      
-   82   2              }
-   83   1              else
-   84   1              {
-   85   2                      // 设置为1T模式
-   86   2                      if(TIM0_PIT == pit_n)
-   87   2                      {
-   88   3                              AUXR |= 0x80;           
-   89   3                      }
-   90   2                      else if(TIM1_PIT == pit_n)
-   91   2                      {
-   92   3                              AUXR |= 0x40;           
-   93   3                      }
-   94   2                      else if(TIM2_PIT == pit_n)
-   95   2                      {
-   96   3                              AUXR |= 0x04;           
-   97   3                      }
-   98   2                      else if(TIM3_PIT == pit_n)
-   99   2                      {
-  100   3                              T4T3M |= 0x02;  
-  101   3                      }
-  102   2                      else if(TIM4_PIT == pit_n)
-  103   2                      {
-  104   3                              T4T3M |= 0x20;          
-  105   3                      }
-  106   2      
-  107   2              }
-  108   1                      
-  109   1              
-  110   1              freq_div = ((period) >> 15);                   // 计算预分频
-  111   1              period_temp = ((period) / (freq_div+1));       // 计算自动重装载值
-  112   1      
-  113   1              temp = (uint16)65536 - period_temp;
-  114   1      
-  115   1          if(TIM0_PIT == pit_n)
-  116   1          {
-  117   2                      TM0PS = freq_div;       // 设置分频值
-  118   2              TMOD |= 0x00;           // 模式 0
-  119   2              TL0 = temp;
-C251 COMPILER V5.60.0,  zf_driver_pit                                                      04/05/26  16:34:47  PAGE 3   
+   56   2                      {
+   57   3                              AUXR |= 0x40;           
+   58   3                      }
+   59   2                      else if(TIM2_PIT == pit_n)
+   60   2                      {
+   61   3                              AUXR |= 0x04;           
+   62   3                      }
+   63   2                      else if(TIM3_PIT == pit_n)
+   64   2                      {
+   65   3                              T4T3M |= 0x02;  
+   66   3                      }
+   67   2                      else if(TIM4_PIT == pit_n)
+   68   2                      {
+   69   3                              T4T3M |= 0x20;          
+   70   3                      }
+   71   2      
+   72   2              }
+   73   1                      
+   74   1              
+   75   1              freq_div = ((period) >> 15);                   // 计算预分频
+   76   1              period_temp = ((period) / (freq_div+1));       // 计算自动重装载值
+   77   1      
+   78   1              temp = (uint16)65536 - period_temp;
+   79   1      
+   80   1          if(TIM0_PIT == pit_n)
+   81   1          {
+   82   2                      TM0PS = freq_div;       // 设置分频值
+   83   2              TMOD |= 0x00;           // 模式 0
+   84   2              TL0 = temp;
+   85   2              TH0 = temp >> 8;
+   86   2              TR0 = 1;                        // 启动定时器
+   87   2              ET0 = 1;                        // 使能定时器中断
+   88   2          }
+   89   1          else if(TIM1_PIT == pit_n)
+   90   1          {
+   91   2                      TM1PS = freq_div;       // 设置分频值
+   92   2              TMOD |= 0x00; // 模式 0
+   93   2              TL1 = temp;
+   94   2              TH1 = temp >> 8;
+   95   2              TR1 = 1; // 启动定时器
+   96   2              ET1 = 1; // 使能定时器中断
+   97   2          }
+   98   1          else if(TIM2_PIT == pit_n)
+   99   1          {
+  100   2                      TM2PS = freq_div;       // 设置分频值
+  101   2              T2L = temp;
+  102   2              T2H = temp >> 8;
+  103   2              AUXR |= 0x10; // 启动定时器
+  104   2              IE2 |= 0x04; // 使能定时器中断
+  105   2          }
+  106   1          else if(TIM3_PIT == pit_n)
+  107   1          {
+  108   2                      TM3PS = freq_div;       // 设置分频值
+  109   2              T3L = temp;
+  110   2              T3H = temp >> 8;
+  111   2              T4T3M |= 0x08; // 启动定时器
+  112   2              IE2 |= 0x20; // 使能定时器中断
+  113   2          }
+  114   1          else if(TIM4_PIT == pit_n)
+  115   1          {
+  116   2                      TM4PS = freq_div;       // 设置分频值
+  117   2              T4L = temp;
+  118   2              T4H = temp >> 8;
+  119   2              T4T3M |= 0x80; // 启动定时器
+  120   2              IE2 |= 0x40; // 使能定时器中断
+  121   2          }
+C251 COMPILER V5.60.0,  zf_driver_pit                                                      19/05/26  19:24:57  PAGE 3   
 
-  120   2              TH0 = temp >> 8;
-  121   2              TR0 = 1;                        // 启动定时器
-  122   2              ET0 = 1;                        // 使能定时器中断
-  123   2          }
-  124   1          else if(TIM1_PIT == pit_n)
-  125   1          {
-  126   2                      TM1PS = freq_div;       // 设置分频值
-  127   2              TMOD |= 0x00; // 模式 0
-  128   2              TL1 = temp;
-  129   2              TH1 = temp >> 8;
-  130   2              TR1 = 1; // 启动定时器
-  131   2              ET1 = 1; // 使能定时器中断
-  132   2          }
-  133   1          else if(TIM2_PIT == pit_n)
-  134   1          {
-  135   2                      TM2PS = freq_div;       // 设置分频值
-  136   2              T2L = temp;
-  137   2              T2H = temp >> 8;
-  138   2              AUXR |= 0x10; // 启动定时器
-  139   2              IE2 |= 0x04; // 使能定时器中断
-  140   2          }
-  141   1          else if(TIM3_PIT == pit_n)
-  142   1          {
-  143   2                      TM3PS = freq_div;       // 设置分频值
-  144   2              T3L = temp;
-  145   2              T3H = temp >> 8;
-  146   2              T4T3M |= 0x08; // 启动定时器
-  147   2              IE2 |= 0x20; // 使能定时器中断
-  148   2          }
-  149   1          else if(TIM4_PIT == pit_n)
-  150   1          {
-  151   2                      TM4PS = freq_div;       // 设置分频值
-  152   2              T4L = temp;
-  153   2              T4H = temp >> 8;
-  154   2              T4T3M |= 0x80; // 启动定时器
-  155   2              IE2 |= 0x40; // 使能定时器中断
-  156   2          }
-  157   1              
-  158   1      }
-  159          
+  122   1              
+  123   1      }
+  124          
 
 
 Module Information          Static   Overlayable
