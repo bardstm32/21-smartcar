@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            19/05/26  21:04:09  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            20/05/26  22:52:21  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -66,7 +66,7 @@ stmt  level    source
    55   1      //      }
    56   1      //      if(cnt>800)
    57   1      //      {
-C251 COMPILER V5.60.0,  encoder                                                            19/05/26  21:04:09  PAGE 2   
+C251 COMPILER V5.60.0,  encoder                                                            20/05/26  22:52:21  PAGE 2   
 
    58   1      //      cnt=0;
    59   1      //      }

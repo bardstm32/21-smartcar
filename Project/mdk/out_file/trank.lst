@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  trank                                                              19/05/26  21:04:09  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              20/05/26  22:52:21  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
@@ -66,7 +66,7 @@ stmt  level    source
    55   1      
    56   1          pid->err = pid->target - pid->measure;
    57   1      
-C251 COMPILER V5.60.0,  trank                                                              19/05/26  21:04:09  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              20/05/26  22:52:21  PAGE 2   
 
    58   1          pid->P  = pid->Kp  * pid->err;
    59   1          pid->P2 = pid->Kp2 * pid->err * My_abs(pid->err);
@@ -108,7 +108,7 @@ stmt  level    source
    94          void Dir_Control_gyro()
    95          {
    96   1          eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z - Gyro_Offset.Zdata);
-   97   1              eleOut_1 = eleOut_1 +0.755*eleOut_0;
+   97   1              eleOut_1 = eleOut_1 +0.7*eleOut_0;
    98   1              eleOut_1 = range_protect_float(eleOut_1, -9000.0f, 9000.0f);
    99   1      }
   100          
@@ -134,7 +134,7 @@ stmt  level    source
   120          
   121          
   122          /* 增量式速度 PID（带条件积分 anti-windup）                                 */
-C251 COMPILER V5.60.0,  trank                                                              19/05/26  21:04:09  PAGE 3   
+C251 COMPILER V5.60.0,  trank                                                              20/05/26  22:52:21  PAGE 3   
 
   123          /*   普通增量式：dU = Kp*(e - e_prev) + Ki*e，每周期累加到 out               */
   124          /*   问题：out 钉在饱和值时若误差仍同向，Ki 持续累加；阻力消失后无法立刻退饱和 */
@@ -170,13 +170,13 @@ stmt  level    source
   150   1          IncPID_Calc(&left_spid,  speed_left);                                  /* 左轮速度环 */
   151   1          IncPID_Calc(&right_spid, speed_right);                                 /* 右轮速度环 */
   152   1      
-  153   1          Motor_SetSpeed(left_spid.out,right_spid.out);           /* 写入 PWM 输出 */
+  153   1          Motor_SetSpeed((int16)left_spid.out,(int16)right_spid.out);           /* 写入 PWM 输出 */
   154   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      2482     ------
+  code size            =      2490     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

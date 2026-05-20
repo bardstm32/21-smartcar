@@ -94,7 +94,7 @@ void Dir_Control()
 void Dir_Control_gyro()
 {
     eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z - Gyro_Offset.Zdata);
-	eleOut_1 = eleOut_1 +0.755*eleOut_0;
+	eleOut_1 = eleOut_1 +0.7*eleOut_0;
 	eleOut_1 = range_protect_float(eleOut_1, -9000.0f, 9000.0f);
 }
 
@@ -150,5 +150,5 @@ void Dual_Loop_Control(void)
     IncPID_Calc(&left_spid,  speed_left);                                  /* 左轮速度环 */
     IncPID_Calc(&right_spid, speed_right);                                 /* 右轮速度环 */
 
-    Motor_SetSpeed(left_spid.out,right_spid.out);           /* 写入 PWM 输出 */
+    Motor_SetSpeed((int16)left_spid.out,(int16)right_spid.out);           /* 写入 PWM 输出 */
 }

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            19/05/26  21:04:09  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            20/05/26  22:52:22  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -66,7 +66,7 @@ stmt  level    source
    53   2                              if(dur_time >= 120){TrackState = NORMAL;dur_time = 0;}
    54   2                              break;
    55   2      
-C251 COMPILER V5.60.0,  element                                                            19/05/26  21:04:09  PAGE 2   
+C251 COMPILER V5.60.0,  element                                                            20/05/26  22:52:22  PAGE 2   
 
    56   2                      case LEFT_ROUNDAPPROCH:
    57   2                              dur_time++;
@@ -135,7 +135,7 @@ Module Information          Static   Overlayable
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
-C251 COMPILER V5.60.0,  element                                                            19/05/26  21:04:09  PAGE 3   
+C251 COMPILER V5.60.0,  element                                                            20/05/26  22:52:22  PAGE 3   
 
   far data size        =    ------     ------
   huge data size       =    ------     ------

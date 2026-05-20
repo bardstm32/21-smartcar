@@ -12,10 +12,10 @@ void ALL_init()
 	pwm_init(PWMA_CH4N_P27, 25000, 0);
 	pwm_set_duty(PWMA_CH4N_P27, 6500);
 	Inductance_Init();
-	PID_Init(&left_spid,  15.5,0,1.85f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&right_spid, 15.5,0,1.85f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&Turn_PID,   0.2,0.0240,0,0.60, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&Gyro_PID,   0.008, 0, 0,2.2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&left_spid,  16.2,0,2.1f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&right_spid, 16.2,0,2.1f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&Turn_PID,   0.2,0.0275,0,0.7,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&Gyro_PID,   0.08, 0, 0,2.2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
 
 	encoder_init();
 	gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
