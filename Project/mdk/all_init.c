@@ -1,5 +1,4 @@
 #include "zf_common_headfile.h"
-/* ȫ�������ʼ����IMU����� PWM������������� ADC�����ߴ��� */
 void ALL_init()
 {
 	interrupt_global_disable();

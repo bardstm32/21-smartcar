@@ -1,4 +1,8 @@
+<<<<<<< HEAD:Project/mdk/out_file/eeprom.lst
 C251 COMPILER V5.60.0,  eeprom                                                             17/05/26  21:47:55  PAGE 1   
+=======
+C251 COMPILER V5.60.0,  eeprom                                                             19/05/26  21:04:08  PAGE 1   
+>>>>>>> 10dfd61f563e4089327466c874f18a479a7ee334:21-smartcar-main/Project/mdk/out_file/eeprom.lst
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE eeprom
@@ -66,7 +70,11 @@ stmt  level    source
    53           * @param min 最小值（16位整数）
    54           * @return 无
    55           */
+<<<<<<< HEAD:Project/mdk/out_file/eeprom.lst
 C251 COMPILER V5.60.0,  eeprom                                                             17/05/26  21:47:55  PAGE 2   
+=======
+C251 COMPILER V5.60.0,  eeprom                                                             19/05/26  21:04:08  PAGE 2   
+>>>>>>> 10dfd61f563e4089327466c874f18a479a7ee334:21-smartcar-main/Project/mdk/out_file/eeprom.lst
 
    56          void eeprom_write_value(uint32 addr, uint16 max, uint16 min)
    57          {
