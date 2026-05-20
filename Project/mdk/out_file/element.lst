@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  element                                                            17/05/26  21:47:57  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            19/05/26  21:04:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
 OBJECT MODULE PLACED IN .\out_file\element.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE element.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE element.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR
                     -(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\
                     -code) DEBUG PRINT(.\out_file\element.lst) OBJECT(.\out_file\element.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    53   2                              if(dur_time >= 120){TrackState = NORMAL;dur_time = 0;}
    54   2                              break;
    55   2      
-C251 COMPILER V5.60.0,  element                                                            17/05/26  21:47:57  PAGE 2   
+C251 COMPILER V5.60.0,  element                                                            19/05/26  21:04:09  PAGE 2   
 
    56   2                      case LEFT_ROUNDAPPROCH:
    57   2                              dur_time++;
@@ -135,7 +135,7 @@ Module Information          Static   Overlayable
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
-C251 COMPILER V5.60.0,  element                                                            17/05/26  21:47:57  PAGE 3   
+C251 COMPILER V5.60.0,  element                                                            19/05/26  21:04:09  PAGE 3   
 
   far data size        =    ------     ------
   huge data size       =    ------     ------

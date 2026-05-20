@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  zf_common_clock                                                    17/05/26  17:30:58  PAGE 1   
+C251 COMPILER V5.60.0,  zf_common_clock                                                    19/05/26  19:24:56  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_common_clock
 OBJECT MODULE PLACED IN .\out_file\zf_common_clock.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_common\zf_common_clock.c LARGE NOALIAS WARNINGLEVEL
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE ..\..\libraries\zf_common\zf_common_clock.c LARGE NOALIAS WARNINGLEVEL
                     -(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\
                     -..\libraries\zf_driver;..\user;..\code) DEBUG PRINT(.\out_file\zf_common_clock.lst) OBJECT(.\out_file\zf_common_clock.ob
                     -j) 
@@ -66,7 +66,7 @@ stmt  level    source
    52   2                              
    53   2                      case SYSTEM_CLOCK_30M:
    54   2                              // 选择 30MHz
-C251 COMPILER V5.60.0,  zf_common_clock                                                    17/05/26  17:30:58  PAGE 2   
+C251 COMPILER V5.60.0,  zf_common_clock                                                    19/05/26  19:24:56  PAGE 2   
 
    55   2                              CLKDIV = 0x04;
    56   2                              IRTRIM = T30M_ADDR;
@@ -134,7 +134,7 @@ stmt  level    source
   117   1      
   118   1              system_delay_init();    // 延时函数初始化
   119   1      
-C251 COMPILER V5.60.0,  zf_common_clock                                                    17/05/26  17:30:58  PAGE 3   
+C251 COMPILER V5.60.0,  zf_common_clock                                                    19/05/26  19:24:56  PAGE 3   
 
   120   1       
   121   1              P0M0 = 0x00;

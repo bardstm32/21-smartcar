@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  all_init                                                           17/05/26  22:50:52  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           19/05/26  21:04:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
 OBJECT MODULE PLACED IN .\out_file\all_init.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDI
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDI
                     -R(..\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..
                     -\code) DEBUG PRINT(.\out_file\all_init.lst) OBJECT(.\out_file\all_init.obj) 
 
@@ -20,14 +20,14 @@ stmt  level    source
     8   1      
     9   1              pwm_init(PWMA_CH1P_P60, 25000, 0);
    10   1              pwm_init(PWMA_CH2P_P62, 25000, 0);
-   11   1              pwm_init(PWMA_CH4N_P27, 25000, 0);
-   12   1              pwm_set_duty(PWMA_CH4N_P27, 6500);
-   13   1              Inductance_Init();
-   14   1              PID_Init(&left_spid,  43,0,4.2f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   15   1              PID_Init(&right_spid, 43,0,4.0f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   16   1              PID_Init(&Turn_PID,   0.2,0.0230,0,0.58, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   17   1      //      PID_Init(&Gyro_PID,   2.3, 0, 0,2.6, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   18   1              PID_Init(&Gyro_PID,   0, 0, 0,0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   11   1              
+   12   1              pwm_init(PWMA_CH4N_P27, 25000, 0);
+   13   1              pwm_set_duty(PWMA_CH4N_P27, 6500);
+   14   1              Inductance_Init();
+   15   1              PID_Init(&left_spid,  15.5,0,1.85f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   16   1              PID_Init(&right_spid, 15.5,0,1.85f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   17   1              PID_Init(&Turn_PID,   0.2,0.0240,0,0.60, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   18   1              PID_Init(&Gyro_PID,   0.008, 0, 0,2.2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
    19   1      
    20   1              encoder_init();
    21   1              gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
@@ -49,7 +49,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       561     ------
+  code size            =       567     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

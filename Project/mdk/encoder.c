@@ -17,7 +17,7 @@ void pit_handler4(void);
 
 int encoder_L_R = 0;
 uint32 distance = 0;
-
+int16 cnt=0;
 /* 累计行程：取左右轮速绝对值的均值并加到 distance */
 void Distance_Add(void)
 {
@@ -25,9 +25,6 @@ void Distance_Add(void)
 	distance += encoder_L_R;
 }
 
-volatile uint16 ind_10ms_flag = 0;
-static uint16 imu_cnt = 0;
-static uint8 ind_cnt = 0;
 
 /* 注册 TIM1 / TIM4 中断，初始化两路编码器 */
 void encoder_init()
@@ -45,40 +42,33 @@ void encoder_init()
 /* TIM1 2ms 节拍：执行速度闭环 */
 void pit_handler(void)
 {
-//	imu_cnt++;
-//	if(imu_cnt>300&&imu_cnt<550)
+//	cnt++;
+//	if(cnt>0&&cnt<400)
 //	{
-//	left_spid.target=100;
-//	right_spid.target=100;
+//	left_spid.target=150;
+//	right_spid.target=150;
 //	}
-//		
-//	if(imu_cnt>550&&imu_cnt<800)
-//		{
-//	left_spid.target=180;
-//	right_spid.target=180;
-//		}
-//		
-//	if(imu_cnt>800)
-//		{
-//		imu_cnt=0;
-//		}
+//	if(cnt>400&&cnt<800)
+//	{
+//	left_spid.target=200;
+//	right_spid.target=200;
+//	}
+//	if(cnt>800)
+//	{
+//	cnt=0;
+//	}
+	
 	Dual_Loop_Control();
 }
 
 /* TIM4 5ms 节拍：执行 IMU + 方向角速度环 + 差速*/
 void pit_handler4(void)
 {
-
-//	if (++ind_cnt >= 2)
-//	{
-//		ind_cnt = 0;
-	Inductance_Read(adc_inductance);
-	elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2],adc_inductance[3], adc_inductance[4]);
-	Dir_Control();
-	gyro_proc();
-	Dir_Control_gyro();
-	Calculate_Differential_Drive();
-
-//	}
+		Inductance_Read(adc_inductance);
+		elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2],adc_inductance[3], adc_inductance[4]);
+		Dir_Control();
+		Dir_Control_gyro();
+		Calculate_Differential_Drive();
+		gyro_proc();
 
 }

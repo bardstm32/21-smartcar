@@ -23,11 +23,11 @@ void Motor_SetSpeed(int16 speed_left, int16 speed_right)
 
     if (speed_right < 0)
     {
-        gpio_set_level(IO_P61, 0);
+        gpio_set_level(IO_P61, 1);
     }
     else if (speed_right > 0)
     {
-        gpio_set_level(IO_P61, 1);
+        gpio_set_level(IO_P61, 0);
     }
 
     pwm_set_duty(PWMA_CH2P_P62, ABS(speed_left));

@@ -1,4 +1,5 @@
 #include "zf_common_headfile.h"
+/* ȫ�������ʼ����IMU����� PWM������������� ADC�����ߴ��� */
 void ALL_init()
 {
 	interrupt_global_disable();
@@ -7,14 +8,14 @@ void ALL_init()
 
 	pwm_init(PWMA_CH1P_P60, 25000, 0);
 	pwm_init(PWMA_CH2P_P62, 25000, 0);
+	
 	pwm_init(PWMA_CH4N_P27, 25000, 0);
 	pwm_set_duty(PWMA_CH4N_P27, 6500);
 	Inductance_Init();
-	PID_Init(&left_spid,  43,0,4.2f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&right_spid, 43,0,4.0f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&Turn_PID,   0.2,0.0230,0,0.58, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-//	PID_Init(&Gyro_PID,   2.3, 0, 0,2.6, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-	PID_Init(&Gyro_PID,   0, 0, 0,0, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&left_spid,  15.5,0,1.85f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&right_spid, 15.5,0,1.85f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&Turn_PID,   0.2,0.0240,0,0.60, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+	PID_Init(&Gyro_PID,   0.008, 0, 0,2.2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
 
 	encoder_init();
 	gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);

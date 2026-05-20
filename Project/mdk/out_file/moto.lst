@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  moto                                                               17/05/26  21:47:56  PAGE 1   
+C251 COMPILER V5.60.0,  moto                                                               19/05/26  21:04:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE moto
 OBJECT MODULE PLACED IN .\out_file\moto.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE moto.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..
+COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE moto.c LARGE NOALIAS WARNINGLEVEL(0) OPTIMIZE(0,SIZE) BROWSE INCDIR(..
                     -\..\libraries\zf_common;..\..\libraries\zf_components;..\..\libraries\zf_device;..\..\libraries\zf_driver;..\user;..\cod
                     -e) DEBUG PRINT(.\out_file\moto.lst) OBJECT(.\out_file\moto.obj) 
 
@@ -34,11 +34,11 @@ stmt  level    source
    23   1      
    24   1          if (speed_right < 0)
    25   1          {
-   26   2              gpio_set_level(IO_P61, 0);
+   26   2              gpio_set_level(IO_P61, 1);
    27   2          }
    28   1          else if (speed_right > 0)
    29   1          {
-   30   2              gpio_set_level(IO_P61, 1);
+   30   2              gpio_set_level(IO_P61, 0);
    31   2          }
    32   1      
    33   1          pwm_set_duty(PWMA_CH2P_P62, ABS(speed_left));
@@ -67,7 +67,7 @@ Module Information          Static   Overlayable
   pdata size           =    ------     ------
   xdata size           =        12     ------
   xdata-const size     =    ------     ------
-C251 COMPILER V5.60.0,  moto                                                               17/05/26  21:47:56  PAGE 2   
+C251 COMPILER V5.60.0,  moto                                                               19/05/26  21:04:09  PAGE 2   
 
   edata size           =    ------     ------
   bit size             =    ------     ------

@@ -34,7 +34,7 @@ void PID_Init(PID_TypeDef *pid, float kp, float kp2, float ki, float kd, float m
     pid->max_out = max_out;
     pid->max_i = max_i;
 
-    pid->target = 0;
+    pid->target =0;
     pid->measure = 0;
     pid->err = 0;
     pid->last_err = 0;
@@ -44,6 +44,7 @@ void PID_Init(PID_TypeDef *pid, float kp, float kp2, float ki, float kd, float m
     pid->I = 0;
     pid->D = 0;
     pid->out = 0;
+	pid->inc_out=0;
 }
 
 /* 位置式 PID：含 Kp2 非线性比例项与 Kd 一阶差分微分 */
@@ -93,14 +94,14 @@ void Dir_Control()
 void Dir_Control_gyro()
 {
     eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z - Gyro_Offset.Zdata);
-	eleOut_1 = eleOut_1 + eleOut_0;
+	eleOut_1 = eleOut_1 +0.755*eleOut_0;
 	eleOut_1 = range_protect_float(eleOut_1, -9000.0f, 9000.0f);
 }
 
 /* 把 eleOut_1 映射成左右轮目标速度（外侧轻加速、内侧减速） */
 void Calculate_Differential_Drive() // 差速计算
 {
-	static float k = 0; // 差速比例系数
+	float k = 0; // 差速比例系数
     k = eleOut_1 * 0.0001f;                  // 缩放成 -1 ~ 1
     k = range_protect_float(k, -0.70, 0.70); // 限制到 -0.65 ~ 0.65，实现差速限幅
 	// 计算左右轮目标速度
@@ -124,13 +125,8 @@ void Calculate_Differential_Drive() // 差速计算
 /*   做法：当 out 已饱和且误差仍在推它继续饱和方向时，本周期把积分项置 0        */
 void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
 {
-    pid->err = pid->target - current_speed;                                /* 本周期速度误差 e(k) = target - 实际 */
-
-    if ((pid->out >=  pid->max_out && pid->err > 0) ||                     /* 输出已正向饱和且 err 仍 >0（继续推饱和） */
-        (pid->out <= -pid->max_out && pid->err < 0))                       /* 或输出已负向饱和且 err 仍 <0 */
-        pid->I = 0;                                                        /*   则条件积分：本周期不加积分项，防 windup */
-    else                                                                   /* 否则正常计算积分增量 */
-        pid->I = pid->Ki * pid->err;                                       /*   单步积分项 = Ki * e(k) */
+    pid->err = pid->target - current_speed;                                /* 本周期速度误差 e(k) = target - 实际 */                                                                  /* 否则正常计算积分增量 */
+    pid->I = pid->Ki * pid->err;                                       /*   单步积分项 = Ki * e(k) */
 	pid->P=pid->Kp * (pid->err - pid->last_err) ;
     pid->inc_out = pid->P + pid->I;          /* 单步增量 dU = Kp*de + Ki*e */
     pid->out += pid->inc_out;                                              /* 累加到当前输出 */
@@ -146,7 +142,7 @@ void IncPID_Calc(PID_TypeDef *pid, int16 current_speed)
 void Dual_Loop_Control(void)
 {
     speed_left  = -encoder_get_count(TIM0_ENCOEDER);                       /* 左轮脉冲（按物理安装方向取反） */
-    speed_right =  encoder_get_count(TIM3_ENCOEDER);                       /* 右轮脉冲 */
+    speed_right = encoder_get_count(TIM3_ENCOEDER);                       /* 右轮脉冲 */
 
     encoder_clear_count(TIM0_ENCOEDER);                                    /* 清零，准备下一周期累计 */
     encoder_clear_count(TIM3_ENCOEDER);
@@ -154,5 +150,5 @@ void Dual_Loop_Control(void)
     IncPID_Calc(&left_spid,  speed_left);                                  /* 左轮速度环 */
     IncPID_Calc(&right_spid, speed_right);                                 /* 右轮速度环 */
 
-    Motor_SetSpeed((int16)left_spid.out, (int16)right_spid.out);           /* 写入 PWM 输出 */
+    Motor_SetSpeed(left_spid.out,right_spid.out);           /* 写入 PWM 输出 */
 }

@@ -1,13 +1,9 @@
-<<<<<<< HEAD:Project/mdk/out_file/START251.lst
-A251 MACRO ASSEMBLER  START251                                                              17/05/26 17:30:58 PAGE     1
-=======
 A251 MACRO ASSEMBLER  START251                                                              19/05/26 19:24:56 PAGE     1
->>>>>>> 10dfd61f563e4089327466c874f18a479a7ee334:21-smartcar-main/Project/mdk/out_file/START251.lst
 
 
 MACRO ASSEMBLER A251 V4.69.13.0
 OBJECT MODULE PLACED IN .\out_file\START251.obj
-ASSEMBLER INVOKED BY: D:\Keil_v5\C251\BIN\A251.EXE ..\..\libraries\zf_common\START251.A51 MODSRC INCDIR(..\..\libraries\
+ASSEMBLER INVOKED BY: E:\keil_v5\C251\BIN\A251.EXE ..\..\libraries\zf_common\START251.A51 MODSRC INCDIR(..\..\libraries\
                       zf_common) SET(LARGE) DEBUG PRINT(.\out_file\START251.lst) OBJECT(.\out_file\START251.obj) EP
 
 LOC    OBJ             LINE     SOURCE
@@ -69,11 +65,7 @@ LOC    OBJ             LINE     SOURCE
                          55     ; INTR       Val  Description
                          56     ; ----       ---  -----------
  0001                    57     INTR EQU 1  ; 1 = Interrupt pushes 4 bytes onto the stack (PC & PSW1)
-<<<<<<< HEAD:Project/mdk/out_file/START251.lst
-A251 MACRO ASSEMBLER  START251                                                              17/05/26 17:30:58 PAGE     2
-=======
 A251 MACRO ASSEMBLER  START251                                                              19/05/26 19:24:56 PAGE     2
->>>>>>> 10dfd61f563e4089327466c874f18a479a7ee334:21-smartcar-main/Project/mdk/out_file/START251.lst
 
                          58     ;           ; 0 = Interrupt pushes 2 bytes onto the stack (PCL & PCH only)
                          59     ;
@@ -141,11 +133,7 @@ LOC    OBJ             LINE     SOURCE
                         121     ;  The following EQU statements define the stack pointer for reentrant
                         122     ;  functions and initialized it:
                         123     ;
-<<<<<<< HEAD:Project/mdk/out_file/START251.lst
-A251 MACRO ASSEMBLER  START251                                                              17/05/26 17:30:58 PAGE     3
-=======
 A251 MACRO ASSEMBLER  START251                                                              19/05/26 19:24:56 PAGE     3
->>>>>>> 10dfd61f563e4089327466c874f18a479a7ee334:21-smartcar-main/Project/mdk/out_file/START251.lst
 
                         124     ;  Stack Space for reentrant functions in the SMALL model.
  0000                   125     IBPSTACK        EQU     0       ; set to 1 if small reentrant is used.
@@ -213,11 +201,7 @@ LOC    OBJ             LINE     SOURCE
 000017 F0               327     XDATALOOP:      MOVX    @DPTR,A
 000018 A3               328                     INC     DPTR
 000019 1B34             329                     DEC     WR6,#1
-<<<<<<< HEAD:Project/mdk/out_file/START251.lst
-A251 MACRO ASSEMBLER  START251                                                              17/05/26 17:30:58 PAGE     4
-=======
 A251 MACRO ASSEMBLER  START251                                                              19/05/26 19:24:56 PAGE     4
->>>>>>> 10dfd61f563e4089327466c874f18a479a7ee334:21-smartcar-main/Project/mdk/out_file/START251.lst
 
 00001B 7800       F     330                     JNE     XDATALOOP
                         331     ENDIF
@@ -247,11 +231,7 @@ LOC    OBJ             LINE     SOURCE
 ------                  355                     RSEG    ?C_C51STARTUP?3
 000000 020000     E     356                     JMP     NEAR MAIN
                         357                     END
-<<<<<<< HEAD:Project/mdk/out_file/START251.lst
-A251 MACRO ASSEMBLER  START251                                                              17/05/26 17:30:58 PAGE     5
-=======
 A251 MACRO ASSEMBLER  START251                                                              19/05/26 19:24:56 PAGE     5
->>>>>>> 10dfd61f563e4089327466c874f18a479a7ee334:21-smartcar-main/Project/mdk/out_file/START251.lst
 
 SYMBOL TABLE LISTING
 ------ ----- -------
