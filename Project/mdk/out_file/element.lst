@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            20/05/26  22:52:22  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            21/05/26  21:00:46  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -29,101 +29,116 @@ stmt  level    source
    18   2                      if ((param[3] >= 6) && (param[3] <= 20) && (param[4] >= 40) && (param[2] <= 25) && first_complement.ang
              -le.pitch <=30)
    19   2                  {
-   20   3                                      times++;
-   21   3                                      if(times >= 2)
-   22   3                                      {
-   23   4                                              TrackState = RIGHT_ROUNDAPPROCH;
-   24   4                                              times = 0;
-   25   4                                      }
+   20   3      //                              times++;
+   21   3      //                              if(times >= 2)
+   22   3      //                              {
+   23   3                                              TrackState = RIGHT_ROUNDAPPROCH;
+   24   3      //                                      times = 0;
+   25   3      //                              }
    26   3      
    27   3                  }
    28   2      
    29   2                      else if ((param[2] >= 6) &&(param[2] <= 20)&& (param[1] >= 40) && (param[3] <= 25) && first_complement.
              -angle.pitch <=30)
    30   2                  {
-   31   3                                      times++;
-   32   3                                      if(times >= 2)
-   33   3                                      {
-   34   4                                              TrackState = LEFT_ROUNDAPPROCH;
-   35   4                                              times = 0;
-   36   4                                      }
+   31   3      //                              times++;
+   32   3      //                              if(times >= 2)
+   33   3      //                              {
+   34   3                                              TrackState = LEFT_ROUNDAPPROCH;
+   35   3                                              times = 0;
+   36   3      //                              }
    37   3                  }
-   38   2                  break;
-   39   2      
-   40   2                      case RIGHT_ROUNDAPPROCH:
-   41   2                              dur_time++;
-   42   2                              if((param[4] >=45) && (param[3] >= 35))
-   43   2                              {
-   44   3                                      times++;
-   45   3                                      if(times >=2)
-   46   3                                      {
-   47   4                                              TrackState = RIGHT_ROUND;
-   48   4                                              Nowangel = Daty_Z;
-   49   4                                              times = 0;
-   50   4                                              ring_dir = 1;
-   51   4                                      }
-   52   3                              }
-   53   2                              if(dur_time >= 120){TrackState = NORMAL;dur_time = 0;}
-   54   2                              break;
-   55   2      
-C251 COMPILER V5.60.0,  element                                                            20/05/26  22:52:22  PAGE 2   
+   38   2                  
+   39   2                      else if ((param[2]+param[3])>=90)
+   40   2                  {
+   41   3                                      TrackState = CROSS;
+   42   3                                      times = 0;
+   43   3                  }
+   44   2                  break;
+   45   2                      case RIGHT_ROUNDAPPROCH:
+   46   2                              dur_time++;
+   47   2                              if((param[4] >=45) && (param[3] >= 35))
+   48   2                              {
+   49   3      //                              times++;
+   50   3      //                              if(times >=2)
+   51   3      //                              {
+   52   3                                              TrackState = RIGHT_ROUND;
+   53   3                                              Nowangel = Daty_Z;
+   54   3                                              times = 0;
+   55   3                                              ring_dir = 1;
+C251 COMPILER V5.60.0,  element                                                            21/05/26  21:00:46  PAGE 2   
 
-   56   2                      case LEFT_ROUNDAPPROCH:
-   57   2                              dur_time++;
-   58   2                  if((param[1] >= 45) && param[2] >= 35)
-   59   2                              {
-   60   3                                      times++;
-   61   3                                      if(times >=2)
-   62   3                                      {
-   63   4                                              TrackState = LEFT_ROUND;
-   64   4                                              Nowangel = Daty_Z;
-   65   4                                              times = 0;
-   66   4                                              ring_dir = 2;
-   67   4                                      }
-   68   3                              }
-   69   2                              if(dur_time >= 120){TrackState = NORMAL;dur_time = 0;}
-   70   2                              break;
-   71   2                      case LEFT_ROUND:
-   72   2                      case RIGHT_ROUND:
-   73   2                              dur_time = 0;
-   74   2                  {
-   75   3                      float ang_diff = Nowangel - Daty_Z;
-   76   3                      if (ang_diff < 0) ang_diff = -ang_diff;
-   77   3                      if (ang_diff >= 35) TrackState = ROUNDIN;
-   78   3                  }
-   79   2                  break;
-   80   2      
-   81   2              case ROUNDIN:
-   82   2      
-   83   2                  {
-   84   3                      ang_diff = Nowangel - Daty_Z;
-   85   3                      if (ang_diff < 0) ang_diff = -ang_diff;
-   86   3                      if (ang_diff >= 290)
-   87   3                      {
-   88   4                          TrackState = ROUNDOUT;
-   89   4                          Nowangel = Daty_Z;
-   90   4                      }
-   91   3                  }
-   92   2                  break;
-   93   2      
-   94   2              case ROUNDOUT:
-   95   2                              ang_diff = Nowangel - Daty_Z;
-   96   2                  if (ang_diff < 0) ang_diff = -ang_diff;
-   97   2                              Distance_Add();
-   98   2                  if (distance >= 20000 || ang_diff >= 25)
-   99   2                  {
-  100   3                      TrackState = NORMAL;
-  101   3                                      ring_dir = 0;
-  102   3                                      distance = 0;
-  103   3                  }
-  104   2                  break;
-  105   2          }
-  106   1      }
+   56   3      //                              }
+   57   3                              }
+   58   2                              if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}
+   59   2                              break;
+   60   2      
+   61   2                      case LEFT_ROUNDAPPROCH:
+   62   2                              dur_time++;
+   63   2                  if((param[1] >= 45) && param[2] >= 35)
+   64   2                              {
+   65   3      //                              times++;
+   66   3      //                              if(times >=2)
+   67   3      //                              {
+   68   3                                              TrackState = LEFT_ROUND;
+   69   3                                              Nowangel = Daty_Z;
+   70   3                                              times = 0;
+   71   3                                              ring_dir = 2;
+   72   3      //                              }
+   73   3                              }
+   74   2                              if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}
+   75   2                              break;
+   76   2                      case LEFT_ROUND:
+   77   2                      case RIGHT_ROUND:
+   78   2                              dur_time = 0;
+   79   2                  {
+   80   3                      float ang_diff = Nowangel - Daty_Z;
+   81   3                      if (ang_diff < 0) ang_diff = -ang_diff;
+   82   3                      if (ang_diff >= 35) TrackState = ROUNDIN;
+   83   3                  }
+   84   2                  break;
+   85   2      
+   86   2              case ROUNDIN:
+   87   2      
+   88   2                  {
+   89   3                      ang_diff = Nowangel - Daty_Z;
+   90   3                      if (ang_diff < 0) ang_diff = -ang_diff;
+   91   3                      if (ang_diff >= 290)
+   92   3                      {
+   93   4                          TrackState = ROUNDOUT;
+   94   4                          Nowangel = Daty_Z;
+   95   4                      }
+   96   3                  }
+   97   2                  break;
+   98   2      
+   99   2              case ROUNDOUT:
+  100   2                              ang_diff = Nowangel - Daty_Z;
+  101   2                  if (ang_diff < 0) ang_diff = -ang_diff;
+  102   2                              Distance_Add();
+  103   2                  if (distance >= 20000 || ang_diff >= 25)
+  104   2                  {
+  105   3                      TrackState = NORMAL;
+  106   3                                      ring_dir = 0;
+  107   3                                      distance = 0;
+  108   3                  }
+  109   2                  break;
+  110   2                      case CROSS:
+  111   2                              dur_time++;
+  112   2                  if (IABS(param[2]-param[3])<=5)
+  113   2                  {
+  114   3                      TrackState = NORMAL;
+  115   3                  }
+  116   2                              if(dur_time >= 20){TrackState = NORMAL;dur_time = 0;}
+  117   2                  break;
+  118   2          }
+  119   1      }
 
+
+C251 COMPILER V5.60.0,  element                                                            21/05/26  21:00:46  PAGE 3   
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1099     ------
+  code size            =      1203     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -135,8 +150,6 @@ Module Information          Static   Overlayable
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
-C251 COMPILER V5.60.0,  element                                                            20/05/26  22:52:22  PAGE 3   
-
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------

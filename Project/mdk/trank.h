@@ -2,10 +2,10 @@
 #define __TRANK_H
 
 // ===================== 全局宏定义 =====================
-#define BASE_SPEED        275.0f    // 基础直行速度（编码器计数/控制周期）
+#define BASE_SPEED        285.0f    // 基础直行速度（编码器计数/控制周期）
 
 // 速度内环输出限幅
-#define SPEED_PID_MAX_OUT     8000.0f   // 速度环输出上限（PWM）
+#define SPEED_PID_MAX_OUT     9000.0f   // 速度环输出上限（PWM）
 #define SPEED_PID_MAX_I      1900     // 速度环积分项限幅
 
 // 整数绝对值宏，避免传 int 给 float 版 My_abs 引入隐式 float 转换

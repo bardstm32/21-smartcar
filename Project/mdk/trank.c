@@ -73,6 +73,11 @@ void Dir_Control()
     {
         eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
     }
+	else if (TrackState == CROSS)
+    {
+		elemid = Inductance_Count_Err2(1.2*adc_inductance[1], 0,0, 1.2*adc_inductance[4]);
+        eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
+    }
     else if (TrackState == RIGHT_ROUND)
     {
         eleOut_0 = 6000;
@@ -84,8 +89,8 @@ void Dir_Control()
     else if (TrackState == ROUNDOUT)
     {
 		eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
-//        if(ring_dir == 1){eleOut_0 = -2000;}
-//		if(ring_dir == 2){eleOut_0 = 2000;}
+//        if(ring_dir == 1){eleOut_0 = -500;}
+//		if(ring_dir == 2){eleOut_0 = 500;}
     }
     eleOut_0 = range_protect_float(eleOut_0, -GYRO_TARGET_MAX, GYRO_TARGET_MAX);
 }
@@ -94,7 +99,7 @@ void Dir_Control()
 void Dir_Control_gyro()
 {
     eleOut_1 = PID_Calc(&Gyro_PID, eleOut_0, imu660ra_gyro_z - Gyro_Offset.Zdata);
-	eleOut_1 = eleOut_1 +0.7*eleOut_0;
+	eleOut_1 = eleOut_1 +0.70*eleOut_0;
 	eleOut_1 = range_protect_float(eleOut_1, -9000.0f, 9000.0f);
 }
 

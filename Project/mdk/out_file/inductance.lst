@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  inductance                                                         20/05/26  22:52:21  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         21/05/26  21:00:45  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
@@ -14,7 +14,7 @@ stmt  level    source
     3          
     4          uint16 inductance_init_data[5][Filter_deepth];
     5          uint16 inductance_filter_data[5];
-    6          int16 CUR_PARA =1, STR_PARA = 2;
+    6          int16 CUR_PARA_A =1.5, STR_PARA = 1.5,CUR_PARA_B =0.75;
     7          
     8          /* 把 int16 限制在 [min, max] 区间 */
     9          int16 range_protect_int(int16 value, int16 min_value, int16 max_value)
@@ -66,14 +66,14 @@ stmt  level    source
    55   1          temp = ((adc_val - adc_min) * 100.0f / (adc_max - adc_min));
    56   1      
    57   1          return temp;
-C251 COMPILER V5.60.0,  inductance                                                         20/05/26  22:52:21  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         21/05/26  21:00:45  PAGE 2   
 
    58   1      }
    59          
    60          /* 方向偏差（基础版，纯整数计算后转 float） */
    61          float Inductance_Count_Err(int16 L, int16 LM, int16 RM, int16 R)
    62          {
-   63   1          int32 num = ((int32)(L - R) + (int32)CUR_PARA * (LM - RM)) * 10000;
+   63   1          int32 num = ((int32)(L - R) + (int32)CUR_PARA_A * (LM - RM)) * 10000;
    64   1          int32 den = (L + R) + IABS(LM - RM) + 1;
    65   1          int32 res = num / den;
    66   1          if (res >  10000) res =  10000;
@@ -84,8 +84,8 @@ stmt  level    source
    71          /* 方向偏差（加权版，由 STR_PARA / CUR_PARA 调直道与弯道权重） */
    72          float Inductance_Count_Err2(int16 L, int16 LM, int16 RM, int16 R)
    73          {
-   74   1          int32 num = ((int32)STR_PARA * (L - R) + (int32)CUR_PARA * (LM - RM)) * 1000;
-   75   1          int32 den = (int32)STR_PARA * (L + R) + (int32)CUR_PARA * IABS(LM - RM) + 1;
+   74   1          int32 num = ((int32)STR_PARA * (L - R) + (int32)CUR_PARA_A * (LM - RM)) * 1000;
+   75   1          int32 den = (int32)STR_PARA * (L + R) + (int32)CUR_PARA_B * IABS(LM - RM) + 1;
    76   1          int32 res = num / den;
    77   1          if (res >  1000) res =  1000;
    78   1          if (res < -1000) res = -1000;
@@ -124,7 +124,7 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-  xdata size           =       151     ------
+  xdata size           =       153     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
@@ -134,8 +134,8 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        14     ------
-C251 COMPILER V5.60.0,  inductance                                                         20/05/26  22:52:21  PAGE 3   
+  hconst size          =        21     ------
+C251 COMPILER V5.60.0,  inductance                                                         21/05/26  21:00:45  PAGE 3   
 
 End of Module Information.
 

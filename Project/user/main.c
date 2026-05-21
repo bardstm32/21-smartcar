@@ -10,9 +10,9 @@ void main()
 
 	while (1)
 	{
-//		Element_Control(adc_inductance);
-		Oscilloscope_Display(eleOut_0,eleOut_1,left_spid.out ,imu660ra_gyro_z - Gyro_Offset.Zdata,
-						speed_left,left_spid.target,right_spid.target,speed_right);
+		Element_Control(adc_inductance);
+		Oscilloscope_Display(eleOut_0,eleOut_1,eleOut_1-0.70*eleOut_0 ,imu660ra_gyro_z - Gyro_Offset.Zdata,
+					speed_left,left_spid.target,Gyro_PID.P,Gyro_PID.D);
 
 			//Send_Data_To_PC();
 

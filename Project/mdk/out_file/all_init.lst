@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  all_init                                                           20/05/26  23:10:34  PAGE 1   
+C251 COMPILER V5.60.0,  all_init                                                           21/05/26  21:41:24  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE all_init
@@ -10,46 +10,44 @@ COMPILER INVOKED BY: E:\keil_v5\C251\BIN\C251.EXE all_init.c LARGE NOALIAS WARNI
 stmt  level    source
 
     1          #include "zf_common_headfile.h"
-    2          /* ȫ�������ʼ����IMU����� PWM������������� ADC
-             -�����ߴ��� */
-    3          void ALL_init()
-    4          {
-    5   1              interrupt_global_disable();
-    6   1              imu660ra_init();
-    7   1              gyro_init();
-    8   1      
-    9   1              pwm_init(PWMA_CH1P_P60, 25000, 0);
-   10   1              pwm_init(PWMA_CH2P_P62, 25000, 0);
-   11   1              
-   12   1              pwm_init(PWMA_CH4N_P27, 25000, 0);
-   13   1              pwm_set_duty(PWMA_CH4N_P27, 6500);
-   14   1              Inductance_Init();
-   15   1              PID_Init(&left_spid,  16.2,0,2.1f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   16   1              PID_Init(&right_spid, 16.2,0,2.1f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   17   1              PID_Init(&Turn_PID,   0.2,0.0275,0,0.7,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   18   1              PID_Init(&Gyro_PID,   0.08, 0, 0,2.2, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
-   19   1      
-   20   1              encoder_init();
-   21   1              gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
-   22   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
-   23   1              wireless_uart_init();
-   24   1              Oscilloscope_Init();
+    2          void ALL_init()
+    3          {
+    4   1              interrupt_global_disable();
+    5   1              imu660ra_init();
+    6   1              gyro_init();
+    7   1      
+    8   1              pwm_init(PWMA_CH1P_P60, 25000, 0);
+    9   1              pwm_init(PWMA_CH2P_P62, 25000, 0);
+   10   1              
+   11   1              pwm_init(PWMA_CH4N_P27, 25000, 0);
+   12   1              pwm_set_duty(PWMA_CH4N_P27, 7000);
+   13   1              Inductance_Init();
+   14   1              PID_Init(&left_spid,  20.5,0,2.6f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   15   1              PID_Init(&right_spid, 20.5,0,2.6f,0,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   16   1              PID_Init(&Turn_PID,   0.2,0.0275,0,0.7,SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   17   1              PID_Init(&Gyro_PID,   0.35, 0, 0,0.6, SPEED_PID_MAX_OUT, SPEED_PID_MAX_I);
+   18   1      
+   19   1              encoder_init();
+   20   1              gpio_init(IO_P61, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+   21   1              gpio_init(IO_P63, GPO, GPIO_HIGH, GPO_PUSH_PULL);
+   22   1              wireless_uart_init();
+   23   1              Oscilloscope_Init();
+   24   1              
    25   1              
-   26   1              
-   27   1              gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
-   28   1              P77=1;
-   29   1              system_delay_ms(1);
-   30   1              P77=0;
-   31   1              system_delay_us(5);
-   32   1              P77=1;
-   33   1              system_delay_ms(500);
-   34   1              interrupt_global_enable();
-   35   1      }
+   26   1              gpio_init(IO_P77, GPO, GPIO_LOW, GPO_PUSH_PULL);
+   27   1              P77=1;
+   28   1              system_delay_ms(1);
+   29   1              P77=0;
+   30   1              system_delay_us(5);
+   31   1              P77=1;
+   32   1              system_delay_ms(500);
+   33   1              interrupt_global_enable();
+   34   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       571     ------
+  code size            =       575     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
