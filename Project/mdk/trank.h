@@ -2,7 +2,7 @@
 #define __TRANK_H
 
 // ===================== 全局宏定义 =====================
-#define BASE_SPEED        285.0f    // 基础直行速度（编码器计数/控制周期）
+extern float BASE_SPEED;    // 基础直行速度（编码器计数/控制周期）
 
 // 速度内环输出限幅
 #define SPEED_PID_MAX_OUT     9000.0f   // 速度环输出上限（PWM）

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 19/05/26  19:24:58  PAGE 1   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 24/05/26  16:50:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_device_imu660ra
@@ -66,7 +66,7 @@ stmt  level    source
                                spi_write_8bit_registers(IMU660RA_SPI, reg | IMU660RA_SPI_W, dat, len);
                                IMU660RA_CS(1);
                        }
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 19/05/26  19:24:58  PAGE 2   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 24/05/26  16:50:23  PAGE 2   
 
                
                        //------------------------------------------------------------------------------------------------------
@@ -134,7 +134,7 @@ stmt  level    source
   106   1                      uint8 i;
   107   1                      for(i=0; i<8; i++)
   108   1                      {
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 19/05/26  19:24:58  PAGE 3   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 24/05/26  16:50:23  PAGE 3   
 
   109   2                              IMU660RA_SCK (0);
   110   2                              IMU660RA_MOSI(byte&0x80);
@@ -202,7 +202,7 @@ stmt  level    source
   166   2                      }
   167   1              }
   168          
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 19/05/26  19:24:58  PAGE 4   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 24/05/26  16:50:23  PAGE 4   
 
   169          
   170                  //------------------------------------------------------------------------------------------------------
@@ -270,7 +270,7 @@ stmt  level    source
   223                  // 备注信息     内部调用
   224                  //------------------------------------------------------------------------------------------------------
              --------------
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 19/05/26  19:24:58  PAGE 5   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 24/05/26  16:50:23  PAGE 5   
 
   225                  static void imu660ra_read_registers(uint8 reg, uint8 *dat, uint32 len)
   226                  {
@@ -338,7 +338,7 @@ stmt  level    source
   280          // 参数说明     void
   281          // 返回参数     void
   282          // 使用示例     imu660ra_get_acc();                                             // 执行该函数后
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 19/05/26  19:24:58  PAGE 6   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 24/05/26  16:50:23  PAGE 6   
 
              -，直接查看对应的变量即可
   283          // 备注信息     使用 SPI 的采集时间为69us
@@ -406,7 +406,7 @@ stmt  level    source
              -I模式
   334   1      #elif (IMU660RA_USE_INTERFACE==SOFT_IIC)
                        soft_iic_init(&imu660ra_iic_struct, IMU660RA_DEV_ADDR, IMU660RA_SOFT_IIC_DELAY, IMU660RA_SCL_PIN, IMU660
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 19/05/26  19:24:58  PAGE 7   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 24/05/26  16:50:23  PAGE 7   
 
              -RA_SDA_PIN);        // 配置 IMU660RA 的 IIC 端口
                #endif
@@ -474,7 +474,7 @@ stmt  level    source
   387   3                  {
   388   4                      imu660ra_write_register(IMU660RA_ACC_RANGE, 0x00);
   389   4                      imu660ra_transition_factor[0] = 16384;
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 19/05/26  19:24:58  PAGE 8   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 24/05/26  16:50:23  PAGE 8   
 
   390   4                  }
   391   3                  break;
@@ -542,7 +542,7 @@ stmt  level    source
   448   3                  
   449   3                  case IMU660RA_GYRO_SAMPLE_SGN_500DPS:
   450   3                  {
-C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 19/05/26  19:24:58  PAGE 9   
+C251 COMPILER V5.60.0,  zf_device_imu660ra                                                 24/05/26  16:50:23  PAGE 9   
 
   451   4                      imu660ra_write_register(IMU660RA_GYR_RANGE, 0x02);
   452   4                      imu660ra_transition_factor[1] = 65.6;

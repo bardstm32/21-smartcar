@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_driver_uart                                                     19/05/26  19:24:58  PAGE 1   
+C251 COMPILER V5.60.0,  zf_driver_uart                                                     24/05/26  16:50:22  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_driver_uart
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          uint8 return_state = 1;
    54   1          if(UART_FUNCTION_INIT == uart_function_state[index])
    55   1          {
-C251 COMPILER V5.60.0,  zf_driver_uart                                                     19/05/26  19:24:58  PAGE 2   
+C251 COMPILER V5.60.0,  zf_driver_uart                                                     24/05/26  16:50:22  PAGE 2   
 
    56   2              uart_function_state[index] = mode;
    57   2          }
@@ -134,7 +134,7 @@ stmt  level    source
   115   1      }
   116          
   117          //-------------------------------------------------------------------------------------------------------
-C251 COMPILER V5.60.0,  zf_driver_uart                                                     19/05/26  19:24:58  PAGE 3   
+C251 COMPILER V5.60.0,  zf_driver_uart                                                     24/05/26  16:50:22  PAGE 3   
 
              -------------
   118          // 函数简介     串口发送一个字节
@@ -202,7 +202,7 @@ stmt  level    source
   173   1              
   174   1              // 等待串口有数据
   175   1              while(!(DMA_URXR_STA(uart_n)&0x03));
-C251 COMPILER V5.60.0,  zf_driver_uart                                                     19/05/26  19:24:58  PAGE 4   
+C251 COMPILER V5.60.0,  zf_driver_uart                                                     24/05/26  16:50:22  PAGE 4   
 
   176   1      
   177   1              // 读取数据
@@ -270,7 +270,7 @@ stmt  level    source
   235   1              DMA_URXR_AMT(uart_n)  = (1 - 1);                                                                        // 设置接收的字节数
   236   1              DMA_URXR_AMTH(uart_n) = (1 - 1)>>8;                                                                     // 设置接收的字节数
   237   1              DMA_URXR_RXAL(uart_n) = (uint8)((uint16)uart_rx_buff[uart_n]);          // 设置接收缓冲地址
-C251 COMPILER V5.60.0,  zf_driver_uart                                                     19/05/26  19:24:58  PAGE 5   
+C251 COMPILER V5.60.0,  zf_driver_uart                                                     24/05/26  16:50:22  PAGE 5   
 
   238   1              DMA_URXR_RXAH(uart_n) = (uint8)((uint16)uart_rx_buff[uart_n] >> 8);     // 设置接收缓冲地址
   239   1              DMA_URXR_CFG(uart_n)  = 0x0F;                                                                           // 中断优先级最高，DMA优先级最高
@@ -338,7 +338,7 @@ stmt  level    source
   298   3                  //            else if(TIM_2 == tim_n)
   299   3                  {
   300   4                      SCON |= 0x50;
-C251 COMPILER V5.60.0,  zf_driver_uart                                                     19/05/26  19:24:58  PAGE 6   
+C251 COMPILER V5.60.0,  zf_driver_uart                                                     24/05/26  16:50:22  PAGE 6   
 
   301   4                      T2L = brt;
   302   4                      T2H = brt >> 8;
@@ -406,7 +406,7 @@ stmt  level    source
   364   4                  }
   365   3                  //            else if(TIM_3 == tim_n)
   366   3                  //            {
-C251 COMPILER V5.60.0,  zf_driver_uart                                                     19/05/26  19:24:58  PAGE 7   
+C251 COMPILER V5.60.0,  zf_driver_uart                                                     24/05/26  16:50:22  PAGE 7   
 
   367   3                  //                S3CON |= 0x50;
   368   3                  //                T3L = brt;
@@ -475,7 +475,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-C251 COMPILER V5.60.0,  zf_driver_uart                                                     19/05/26  19:24:58  PAGE 8   
+C251 COMPILER V5.60.0,  zf_driver_uart                                                     24/05/26  16:50:22  PAGE 8   
 
   code size            =      2433     ------
   ecode size           =    ------     ------

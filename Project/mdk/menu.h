@@ -9,7 +9,7 @@
 void Send_Data_To_PC(void);
 void Parameter_Debug_Init(void);
 void Parameter_Debug(float *param1, float *param2,float *param3, float *param4, int32 *target1, int32 *target2);
-void Oscilloscope_Display(float num1, float num2,int16 num3,int16 num4,int16 num5,float num6,float num7,int16 num8);
+void Oscilloscope_Display(float num1, float num2,int16 num3,int16 num4,float num5,float num6,float num7,float num8);
 void Oscilloscope_Init(void);
 
 #endif // __MENU_H__

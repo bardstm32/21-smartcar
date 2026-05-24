@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  inductance                                                         21/05/26  21:00:45  PAGE 1   
+C251 COMPILER V5.60.0,  inductance                                                         24/05/26  16:50:25  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE inductance
@@ -14,7 +14,7 @@ stmt  level    source
     3          
     4          uint16 inductance_init_data[5][Filter_deepth];
     5          uint16 inductance_filter_data[5];
-    6          int16 CUR_PARA_A =1.5, STR_PARA = 1.5,CUR_PARA_B =0.75;
+    6          int16 CUR_PARA_A =4, STR_PARA =3,CUR_PARA_B =1;
     7          
     8          /* 把 int16 限制在 [min, max] 区间 */
     9          int16 range_protect_int(int16 value, int16 min_value, int16 max_value)
@@ -66,7 +66,7 @@ stmt  level    source
    55   1          temp = ((adc_val - adc_min) * 100.0f / (adc_max - adc_min));
    56   1      
    57   1          return temp;
-C251 COMPILER V5.60.0,  inductance                                                         21/05/26  21:00:45  PAGE 2   
+C251 COMPILER V5.60.0,  inductance                                                         24/05/26  16:50:25  PAGE 2   
 
    58   1      }
    59          
@@ -84,12 +84,12 @@ stmt  level    source
    71          /* 方向偏差（加权版，由 STR_PARA / CUR_PARA 调直道与弯道权重） */
    72          float Inductance_Count_Err2(int16 L, int16 LM, int16 RM, int16 R)
    73          {
-   74   1          int32 num = ((int32)STR_PARA * (L - R) + (int32)CUR_PARA_A * (LM - RM)) * 1000;
-   75   1          int32 den = (int32)STR_PARA * (L + R) + (int32)CUR_PARA_B * IABS(LM - RM) + 1;
-   76   1          int32 res = num / den;
-   77   1          if (res >  1000) res =  1000;
-   78   1          if (res < -1000) res = -1000;
-   79   1          return (float)res;
+   74   1          float num = ((STR_PARA * (L - R))+ (CUR_PARA_A * (LM - RM))) * 1000.0f;
+   75   1          float den = ((STR_PARA * (L + R)) +(CUR_PARA_B * IABS(LM - RM))) + 1.0f;
+   76   1          float res = (num / den);
+   77   1          if (res >  1000.0f) res =  1000.0f;
+   78   1          if (res < -1000.0f) res = -1000.0f;
+   79   1          return res;
    80   1      }
    81          
    82          /* 四路电感各采样 Filter_deepth 次 → 中值平均 → 归一化 */
@@ -119,7 +119,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1732     ------
+  code size            =      1706     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
@@ -135,7 +135,7 @@ Module Information          Static   Overlayable
   huge data size       =    ------     ------
   const size           =    ------     ------
   hconst size          =        21     ------
-C251 COMPILER V5.60.0,  inductance                                                         21/05/26  21:00:45  PAGE 3   
+C251 COMPILER V5.60.0,  inductance                                                         24/05/26  16:50:25  PAGE 3   
 
 End of Module Information.
 

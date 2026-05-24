@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  element                                                            21/05/26  21:00:46  PAGE 1   
+C251 COMPILER V5.60.0,  element                                                            24/05/26  16:50:25  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE element
@@ -26,119 +26,119 @@ stmt  level    source
    15   1          {
    16   2              case NORMAL:
    17   2      
-   18   2                      if ((param[3] >= 6) && (param[3] <= 20) && (param[4] >= 40) && (param[2] <= 25) && first_complement.ang
-             -le.pitch <=30)
-   19   2                  {
-   20   3      //                              times++;
-   21   3      //                              if(times >= 2)
-   22   3      //                              {
-   23   3                                              TrackState = RIGHT_ROUNDAPPROCH;
-   24   3      //                                      times = 0;
-   25   3      //                              }
-   26   3      
-   27   3                  }
-   28   2      
-   29   2                      else if ((param[2] >= 6) &&(param[2] <= 20)&& (param[1] >= 40) && (param[3] <= 25) && first_complement.
-             -angle.pitch <=30)
-   30   2                  {
-   31   3      //                              times++;
-   32   3      //                              if(times >= 2)
-   33   3      //                              {
-   34   3                                              TrackState = LEFT_ROUNDAPPROCH;
-   35   3                                              times = 0;
-   36   3      //                              }
-   37   3                  }
-   38   2                  
-   39   2                      else if ((param[2]+param[3])>=90)
-   40   2                  {
-   41   3                                      TrackState = CROSS;
-   42   3                                      times = 0;
-   43   3                  }
-   44   2                  break;
-   45   2                      case RIGHT_ROUNDAPPROCH:
-   46   2                              dur_time++;
-   47   2                              if((param[4] >=45) && (param[3] >= 35))
-   48   2                              {
-   49   3      //                              times++;
-   50   3      //                              if(times >=2)
-   51   3      //                              {
-   52   3                                              TrackState = RIGHT_ROUND;
-   53   3                                              Nowangel = Daty_Z;
-   54   3                                              times = 0;
-   55   3                                              ring_dir = 1;
-C251 COMPILER V5.60.0,  element                                                            21/05/26  21:00:46  PAGE 2   
+   18   2                      if ((param[3] >= 4) && (param[3] <= 20) && (param[4] >= 40) && (param[2] <= 25))
+   19   2              {
+   20   3                              TrackState = RIGHT_ROUNDAPPROCH;
+   21   3              }
+   22   2                      
+   23   2      //              if(first_complement.angle.roll <=-15 && first_complement.angle.roll >=-20)
+   24   2      //              {
+   25   2      //                      TrackState = SEESAW;
+   26   2      //              }
+   27   2                      
+   28   2                      else if ((param[2] >= 6) &&(param[2] <= 20)&& (param[1] >= 40) && (param[3] <= 25))
+   29   2              {
+   30   3                              TrackState = LEFT_ROUNDAPPROCH;
+   31   3              }
+   32   2                  
+   33   2                      else if ((param[2]>=55 && param[3]>=55))
+   34   2              {
+   35   3                              TrackState = CROSS;
+   36   3              }
+   37   2              break;
+   38   2                      
+   39   2                      case RIGHT_ROUNDAPPROCH:
+   40   2                              dur_time++;
+   41   2                              if((param[4] >=30) && (param[3] >= 40))
+   42   2                              {
+   43   3                                              TrackState = RIGHT_ROUND;
+   44   3                                              Nowangel = Daty_Z;
+   45   3                                              times = 0;
+   46   3                                              ring_dir = 1;
+   47   3                              }
+   48   2                              if(dur_time >= 80){TrackState = NORMAL;dur_time = 0;}
+   49   2                              break;
+   50   2      
+   51   2                      case LEFT_ROUNDAPPROCH:
+   52   2                              dur_time++;
+   53   2                  if(((param[1] >= 50) && param[2] >= 35))
+   54   2                              {
+   55   3                                              TrackState = LEFT_ROUND;
+   56   3                                              Nowangel = Daty_Z;
+   57   3                                              times = 0;
+C251 COMPILER V5.60.0,  element                                                            24/05/26  16:50:25  PAGE 2   
 
-   56   3      //                              }
-   57   3                              }
-   58   2                              if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}
-   59   2                              break;
-   60   2      
-   61   2                      case LEFT_ROUNDAPPROCH:
-   62   2                              dur_time++;
-   63   2                  if((param[1] >= 45) && param[2] >= 35)
-   64   2                              {
-   65   3      //                              times++;
-   66   3      //                              if(times >=2)
-   67   3      //                              {
-   68   3                                              TrackState = LEFT_ROUND;
-   69   3                                              Nowangel = Daty_Z;
-   70   3                                              times = 0;
-   71   3                                              ring_dir = 2;
-   72   3      //                              }
-   73   3                              }
-   74   2                              if(dur_time >= 100){TrackState = NORMAL;dur_time = 0;}
-   75   2                              break;
-   76   2                      case LEFT_ROUND:
-   77   2                      case RIGHT_ROUND:
-   78   2                              dur_time = 0;
-   79   2                  {
-   80   3                      float ang_diff = Nowangel - Daty_Z;
-   81   3                      if (ang_diff < 0) ang_diff = -ang_diff;
-   82   3                      if (ang_diff >= 35) TrackState = ROUNDIN;
-   83   3                  }
-   84   2                  break;
-   85   2      
-   86   2              case ROUNDIN:
-   87   2      
-   88   2                  {
-   89   3                      ang_diff = Nowangel - Daty_Z;
-   90   3                      if (ang_diff < 0) ang_diff = -ang_diff;
-   91   3                      if (ang_diff >= 290)
-   92   3                      {
-   93   4                          TrackState = ROUNDOUT;
-   94   4                          Nowangel = Daty_Z;
-   95   4                      }
-   96   3                  }
-   97   2                  break;
-   98   2      
-   99   2              case ROUNDOUT:
-  100   2                              ang_diff = Nowangel - Daty_Z;
-  101   2                  if (ang_diff < 0) ang_diff = -ang_diff;
-  102   2                              Distance_Add();
-  103   2                  if (distance >= 20000 || ang_diff >= 25)
-  104   2                  {
-  105   3                      TrackState = NORMAL;
-  106   3                                      ring_dir = 0;
-  107   3                                      distance = 0;
-  108   3                  }
-  109   2                  break;
-  110   2                      case CROSS:
-  111   2                              dur_time++;
-  112   2                  if (IABS(param[2]-param[3])<=5)
-  113   2                  {
-  114   3                      TrackState = NORMAL;
-  115   3                  }
-  116   2                              if(dur_time >= 20){TrackState = NORMAL;dur_time = 0;}
-  117   2                  break;
-  118   2          }
-  119   1      }
+   58   3                                              ring_dir = 2;
+   59   3                              }
+   60   2                              if(dur_time >= 80){TrackState = NORMAL;dur_time = 0;}
+   61   2                              break;
+   62   2                      case LEFT_ROUND:
+   63   2                      case RIGHT_ROUND:
+   64   2                              dur_time = 0;
+   65   2                  {
+   66   3                      float ang_diff = Nowangel - Daty_Z;
+   67   3                      if (ang_diff < 0) ang_diff = -ang_diff;
+   68   3                      if (ang_diff >= 20) TrackState = ROUNDIN;
+   69   3                  }
+   70   2                  break;
+   71   2      
+   72   2              case ROUNDIN:
+   73   2                  {
+   74   3                      ang_diff = Nowangel - Daty_Z;
+   75   3                      if (ang_diff < 0) ang_diff = -ang_diff;
+   76   3                      if (ang_diff >= 300)
+   77   3                      {
+   78   4                          TrackState = ROUNDOUT;
+   79   4                          Nowangel = Daty_Z;
+   80   4                      }
+   81   3                  }
+   82   2                  break;
+   83   2      
+   84   2              case ROUNDOUT:
+   85   2                              ang_diff = Nowangel - Daty_Z;
+   86   2                  if (ang_diff < 0) ang_diff = -ang_diff;
+   87   2                              Distance_Add();
+   88   2                              if((ring_dir == 1 && param[3] <= 45 && param[4] <= 45) || distance >=20000)
+   89   2                              {
+   90   3                                      TrackState = NORMAL;
+   91   3                                      Nowangel = Daty_Z;
+   92   3                                      ring_dir = 0;
+   93   3                                      distance = 0;
+   94   3                              }
+   95   2                  else if((ring_dir == 2 && param[1] <= 45 && param[2] <= 45) || distance >=20000)
+   96   2                  {
+   97   3                      TrackState = NORMAL;
+   98   3                                      Nowangel = Daty_Z;
+   99   3                                      ring_dir = 0;
+  100   3                                      distance = 0;
+  101   3                  }
+  102   2                  break;
+  103   2                              
+  104   2                      case CROSS:
+  105   2                              dur_time++;
+  106   2                  if (IABS(param[2]-param[3])<=10)
+  107   2                  {
+  108   3                      TrackState = NORMAL;
+  109   3                  }
+  110   2                              if(dur_time >= 20){TrackState = NORMAL;dur_time = 0;}
+  111   2                  break;
+  112   2                      
+  113   2      //              case SEESAW:
+  114   2      //                      BASE_SPEED = 100;
+  115   2      //                      if(first_complement.angle.roll >= 15 || first_complement.angle.roll <=-20)
+  116   2      //                      {
+  117   2      //                              TrackState = NORMAL;
+  118   2      //                              BASE_SPEED = 295;
+  119   2      //                      }
+  120   2          }
+  121   1      }
 
 
-C251 COMPILER V5.60.0,  element                                                            21/05/26  21:00:46  PAGE 3   
+C251 COMPILER V5.60.0,  element                                                            24/05/26  16:50:25  PAGE 3   
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1203     ------
+  code size            =      1337     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

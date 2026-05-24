@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_common_debug                                                    19/05/26  19:24:56  PAGE 1   
+C251 COMPILER V5.60.0,  zf_common_debug                                                    24/05/26  16:50:20  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_common_debug
@@ -66,7 +66,7 @@ stmt  level    source
              ---------------
    50          //static void debug_protective_handler (void)
    51          //{
-C251 COMPILER V5.60.0,  zf_common_debug                                                    19/05/26  19:24:56  PAGE 2   
+C251 COMPILER V5.60.0,  zf_common_debug                                                    24/05/26  16:50:20  PAGE 2   
 
    52          //   // 暂未更新
    53          //}
@@ -134,7 +134,7 @@ stmt  level    source
   111          //            while(*file_str++ != '\0');
   112          
   113          //            // 只取一级目录 如果文件放在盘符根目录 或者 MDK 的工程根目录 就会直接输出当前目录
-C251 COMPILER V5.60.0,  zf_common_debug                                                    19/05/26  19:24:56  PAGE 3   
+C251 COMPILER V5.60.0,  zf_common_debug                                                    24/05/26  16:50:20  PAGE 3   
 
   114          //            for(j = 0; (j < 2) && (len_origin >= 0); len_origin --)             // 查找两个 '/'
   115          //            {
@@ -202,7 +202,7 @@ stmt  level    source
   175          
   176          //                    file_path_buffer[j] = '\0';                                 // 末尾添加\0
   177          
-C251 COMPILER V5.60.0,  zf_common_debug                                                    19/05/26  19:24:56  PAGE 4   
+C251 COMPILER V5.60.0,  zf_common_debug                                                    24/05/26  16:50:20  PAGE 4   
 
   178          //                    debug_output_info.output_screen(0, debug_output_info.font_y_size * show_line_index 
              -++, file_path_buffer);
@@ -270,7 +270,7 @@ stmt  level    source
   236          {
   237   1          fifo_read_buffer(&debug_uart_fifo, buff, &len, FIFO_READ_AND_CLEAN);
   238   1      
-C251 COMPILER V5.60.0,  zf_common_debug                                                    19/05/26  19:24:56  PAGE 5   
+C251 COMPILER V5.60.0,  zf_common_debug                                                    24/05/26  16:50:20  PAGE 5   
 
   239   1          return len;
   240   1      }
@@ -338,7 +338,7 @@ stmt  level    source
   293          
   294          ////-----------------------------------------------------------------------------------------------------
              ---------------
-C251 COMPILER V5.60.0,  zf_common_debug                                                    19/05/26  19:24:56  PAGE 6   
+C251 COMPILER V5.60.0,  zf_common_debug                                                    24/05/26  16:50:20  PAGE 6   
 
   295          //// 函数简介      禁用断言
   296          //// 参数说明     void
@@ -406,7 +406,7 @@ stmt  level    source
              ---------------
   354          //void debug_log_handler (uint8 pass, char *str, char *file, int line)
   355          //{
-C251 COMPILER V5.60.0,  zf_common_debug                                                    19/05/26  19:24:56  PAGE 7   
+C251 COMPILER V5.60.0,  zf_common_debug                                                    24/05/26  16:50:20  PAGE 7   
 
   356          //      uint8 log_str[] = "Log message";
   357          //    do
@@ -474,7 +474,7 @@ stmt  level    source
   415          
   416          //-------------------------------------------------------------------------------------------------------
              -------------
-C251 COMPILER V5.60.0,  zf_common_debug                                                    19/05/26  19:24:56  PAGE 8   
+C251 COMPILER V5.60.0,  zf_common_debug                                                    24/05/26  16:50:20  PAGE 8   
 
   417          // 函数简介      debug 串口初始化 此部分不允许用户更改
   418          // 参数说明     void
@@ -543,7 +543,7 @@ Module Information          Static   Overlayable
   xdata size           =       128     ------
   xdata-const size     =    ------     ------
   edata size           =    ------     ------
-C251 COMPILER V5.60.0,  zf_common_debug                                                    19/05/26  19:24:56  PAGE 9   
+C251 COMPILER V5.60.0,  zf_common_debug                                                    24/05/26  16:50:20  PAGE 9   
 
   bit size             =    ------     ------
   ebit size            =    ------     ------

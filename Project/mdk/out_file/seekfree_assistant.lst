@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 21/05/26  21:00:44  PAGE 1   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 24/05/26  16:50:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE seekfree_assistant
@@ -66,7 +66,7 @@ stmt  level    source
    44          {
    45   1          uint32 image_size = 0;
    46   1      
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 21/05/26  21:00:44  PAGE 2   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 24/05/26  16:50:23  PAGE 2   
 
    47   1          seekfree_assistant_camera_data.head           = SEEKFREE_ASSISTANT_SEND_HEAD;
    48   1          seekfree_assistant_camera_data.function       = SEEKFREE_ASSISTANT_CAMERA_FUNCTION;
@@ -134,7 +134,7 @@ stmt  level    source
   102   1          seekfree_assistant_camera_buffer.image_addr   = image_addr;
   103   1          seekfree_assistant_camera_buffer.width        = width;
   104   1          seekfree_assistant_camera_buffer.height       = height;
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 21/05/26  21:00:44  PAGE 3   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 24/05/26  16:50:23  PAGE 3   
 
   105   1      }
   106          
@@ -202,7 +202,7 @@ stmt  level    source
   163   1      
   164   1          for(i=0; i < SEEKFREE_ASSISTANT_CAMERA_MAX_BOUNDARY; i++)
   165   1          {
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 21/05/26  21:00:44  PAGE 4   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 24/05/26  16:50:23  PAGE 4   
 
   166   2              // 判断是否发送横坐标数据
   167   2              if(NULL != buffer->boundary_x[i])
@@ -270,7 +270,7 @@ stmt  level    source
   222   3                  if(NULL != dot_x2)
   223   3                  {
   224   4                      boundary_num++;
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 21/05/26  21:00:44  PAGE 5   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 24/05/26  16:50:23  PAGE 5   
 
   225   4                      seekfree_assistant_camera_dot_data.valid_flag |= 1 << 1;
   226   4                      seekfree_assistant_camera_buffer.boundary_x[i++] = dot_x2;
@@ -338,7 +338,7 @@ stmt  level    source
   288   4                      seekfree_assistant_camera_buffer.boundary_x[i]   = dot_x3;
   289   4                      seekfree_assistant_camera_buffer.boundary_y[i++] = dot_y3;
   290   4                  }
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 21/05/26  21:00:44  PAGE 6   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 24/05/26  16:50:23  PAGE 6   
 
   291   3      
   292   3                  if((255 < seekfree_assistant_camera_buffer.width) || (255 < seekfree_assistant_camera_buffer.
@@ -406,7 +406,7 @@ stmt  level    source
   349   3                  // 找到帧头
   350   3                  receive_packet = (seekfree_assistant_parameter_struct *)temp_buffer;
   351   3                  temp_sum = receive_packet->check_sum;
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 21/05/26  21:00:44  PAGE 7   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 24/05/26  16:50:23  PAGE 7   
 
   352   3                  receive_packet->check_sum = 0;
   353   3      
@@ -474,7 +474,7 @@ stmt  level    source
   402   1          fifo_init(&seekfree_assistant_fifo,  FIFO_DATA_8BIT, seekfree_assistant_buffer, SEEKFREE_ASSISTANT_BU
              -FFER_SIZE);
   403   1      }
-C251 COMPILER V5.60.0,  seekfree_assistant                                                 21/05/26  21:00:44  PAGE 8   
+C251 COMPILER V5.60.0,  seekfree_assistant                                                 24/05/26  16:50:23  PAGE 8   
 
   404          
   405          

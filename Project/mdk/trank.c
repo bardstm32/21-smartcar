@@ -20,6 +20,7 @@ volatile int16 speed_right = 0;
 float elemid = 0;
 float eleOut_0 = 0;
 float eleOut_1 = 0;
+float BASE_SPEED =375;
 volatile float Turn_target = 0;
 volatile uint8 control_ready = 0;        /* 控制就绪门闸：0 = 速度环禁出，1 = 已有有效目标速度可执行 */
 
@@ -75,7 +76,7 @@ void Dir_Control()
     }
 	else if (TrackState == CROSS)
     {
-		elemid = Inductance_Count_Err2(1.2*adc_inductance[1], 0,0, 1.2*adc_inductance[4]);
+		elemid = Inductance_Count_Err2(adc_inductance[1], 0,0,adc_inductance[4]);
         eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
     }
     else if (TrackState == RIGHT_ROUND)
@@ -88,11 +89,18 @@ void Dir_Control()
     }
     else if (TrackState == ROUNDOUT)
     {
-		eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
-//        if(ring_dir == 1){eleOut_0 = -500;}
-//		if(ring_dir == 2){eleOut_0 = 500;}
-    }
-    eleOut_0 = range_protect_float(eleOut_0, -GYRO_TARGET_MAX, GYRO_TARGET_MAX);
+		if(ring_dir == 1)
+		{
+			elemid = Inductance_Count_Err2(1.5*adc_inductance[1], 0,0,adc_inductance[4]);
+		}		
+		else if(ring_dir == 2)
+		{
+			elemid = Inductance_Count_Err2(adc_inductance[1], 0,0,1.5*adc_inductance[4]);
+		}
+			eleOut_0 = PID_Calc(&Turn_PID, 0, elemid);
+	}
+	    eleOut_0 = range_protect_float(eleOut_0, -GYRO_TARGET_MAX, GYRO_TARGET_MAX);
+
 }
 
 /* 方向角速度环：反馈使用 (原始 LSB - 零漂)，与 Kp/Kd 整定量级匹配 */
@@ -108,18 +116,18 @@ void Calculate_Differential_Drive() // 差速计算
 {
 	float k = 0; // 差速比例系数
     k = eleOut_1 * 0.0001f;                  // 缩放成 -1 ~ 1
-    k = range_protect_float(k, -0.70, 0.70); // 限制到 -0.65 ~ 0.65，实现差速限幅
+    k = range_protect_float(k, -0.7, 0.7); // 限制到 -0.65 ~ 0.65，实现差速限幅
 	// 计算左右轮目标速度
 	if(k >= 0) // 右转
 	{
-		left_spid.target = BASE_SPEED *(1+k*0.4);
+		left_spid.target = BASE_SPEED *(1+k*0.25);
 		right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
 	}
 	if(k < 0) // 左转
 	{
 		k *= -1;
 		left_spid.target = BASE_SPEED * (1 - k); // 加少减多
-		right_spid.target = BASE_SPEED * (1+k*0.4);
+		right_spid.target = BASE_SPEED * (1+k*0.25);
 	}
 }
 
@@ -155,5 +163,5 @@ void Dual_Loop_Control(void)
     IncPID_Calc(&left_spid,  speed_left);                                  /* 左轮速度环 */
     IncPID_Calc(&right_spid, speed_right);                                 /* 右轮速度环 */
 
-    Motor_SetSpeed((int16)left_spid.out,(int16)right_spid.out);           /* 写入 PWM 输出 */
+	Motor_SetSpeed((int16)left_spid.out,(int16)right_spid.out);           /* 写入 PWM 输出 */
 }

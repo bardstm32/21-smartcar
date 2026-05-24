@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            19/05/26  19:24:59  PAGE 1   
+C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            24/05/26  16:50:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_device_wireless_uart
@@ -66,7 +66,7 @@ stmt  level    source
    49   2                      system_delay_ms(1);
    50   2                      time_cnt--;
    51   2              }
-C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            19/05/26  19:24:59  PAGE 2   
+C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            24/05/26  16:50:23  PAGE 2   
 
    52   1              
    53   1              if (time_cnt) 
@@ -134,7 +134,7 @@ stmt  level    source
   111   1      }
   112          
   113          
-C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            19/05/26  19:24:59  PAGE 3   
+C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            24/05/26  16:50:23  PAGE 3   
 
   114          //-------------------------------------------------------------------------------------------------------
              -------------
@@ -202,7 +202,7 @@ stmt  level    source
   169   1      #if(0 == WIRELESS_UART_AUTO_BAUD_RATE)                                          // 关闭自动波特率
   170   1          // 本函数使用的波特率为115200 为无线转串口模块的默认波特率 如需其他波特率请自行配置模块并修改串口的波
              -特率
-C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            19/05/26  19:24:59  PAGE 4   
+C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            24/05/26  16:50:23  PAGE 4   
 
   171   1          uart_init (WIRELESS_UART_INDEX, WIRELESS_UART_BUAD_RATE, WIRELESS_UART_RX_PIN, WIRELESS_UART_TX_PIN);
              -   // 初始化串口
@@ -270,7 +270,7 @@ stmt  level    source
                    while(0);
                    
                #endif
-C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            19/05/26  19:24:59  PAGE 5   
+C251 COMPILER V5.60.0,  zf_device_wireless_uart                                            24/05/26  16:50:23  PAGE 5   
 
   225   1          return return_state;
   226   1      }

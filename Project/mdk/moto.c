@@ -38,9 +38,10 @@ void Motor_SetSpeed(int16 speed_left, int16 speed_right)
 void Motor_Protect(uint16 *inductance_norm_data)
 {
     uint16 sum = inductance_norm_data[1] + inductance_norm_data[2] + inductance_norm_data[3] + inductance_norm_data[4];
-    if (sum < 10)
+    if (sum < 5)
     {
         Motor_SetSpeed(0, 0);
         interrupt_global_disable();
+		pwm_set_duty(PWMA_CH4N_P27, 0);
     }
 }

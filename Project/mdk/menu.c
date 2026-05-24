@@ -12,8 +12,8 @@ void Send_Data_To_PC(void)
 
 	char send_buf[128];
 
-    sprintf(send_buf, "state: %d %d %d %d %d %d %d \r\n",TrackState,adc_inductance[1],adc_inductance[2]
-	,adc_inductance[3],adc_inductance[4],speed_left,speed_right);
+    sprintf(send_buf, "state: %d %d %d %d %d %f %f \r\n",TrackState,adc_inductance[1],adc_inductance[2]
+	,adc_inductance[3],adc_inductance[4],Nowangel - Daty_Z,elemid);
 
 
     wireless_uart_send_string(send_buf);
@@ -52,7 +52,7 @@ void Oscilloscope_Init(void)
 
 
 /* 8 通道波形上传 */
-void Oscilloscope_Display(float num1, float num2,int16 num3,int16 num4,int16 num5,float num6,float num7,int16 num8)
+void Oscilloscope_Display(float num1, float num2,int16 num3,int16 num4,float num5,float num6,float num7,float num8)
 {
     seekfree_assistant_oscilloscope_data.dat[0] = num1;
     seekfree_assistant_oscilloscope_data.dat[1] = num2;

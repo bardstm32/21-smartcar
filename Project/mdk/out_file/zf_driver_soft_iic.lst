@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 1   
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_driver_soft_iic
@@ -66,7 +66,7 @@ stmt  level    source
    48          // 使用示例     soft_iic_stop(soft_iic_obj);
    49          // 备注信息     内部调用
    50          //-------------------------------------------------------------------------------------------------------
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 2   
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 2   
 
              -------------
    51          void soft_iic_stop (soft_iic_info_struct *soft_iic_obj)
@@ -134,7 +134,7 @@ stmt  level    source
                #endif
   110   1          soft_iic_delay(soft_iic_obj->delay);
   111   1      
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 3   
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 3   
 
   112   1          gpio_high(soft_iic_obj->scl_pin);                                           // SCL 高电平
   113   1          soft_iic_delay(soft_iic_obj->delay);
@@ -202,7 +202,7 @@ stmt  level    source
                    gpio_set_dir(soft_iic_obj->sda_pin, GPI, GPI_FLOATING_IN);
                #endif
   173   1      
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 4   
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 4   
 
   174   1          while(temp --)
   175   1          {
@@ -270,7 +270,7 @@ stmt  level    source
   232          // 参数说明     *soft_iic_obj   软件 IIC 指定信息 可以参照 zf_driver_soft_iic.h 里的格式看看
   233          // 参数说明     dat            要写入的数据
   234          // 返回参数     void            
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 5   
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 5   
 
   235          // 使用示例     soft_iic_write_16bit(soft_iic_obj, 0x0101);
   236          // 备注信息     
@@ -338,7 +338,7 @@ stmt  level    source
   291          // 函数简介     软件 IIC 接口向传感器寄存器写 8bit 数组
   292          // 参数说明     *soft_iic_obj   软件 IIC 指定信息 可以参照 zf_driver_soft_iic.h 里的格式看看
   293          // 参数说明     register_name   传感器的寄存器地址
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 6   
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 6   
 
   294          // 参数说明     *dat           数据存放缓冲区
   295          // 参数说明     len             缓冲区长度
@@ -406,7 +406,7 @@ stmt  level    source
   349   1          soft_iic_start(soft_iic_obj);
   350   1          soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
   351   1          soft_iic_send_data(soft_iic_obj, (uint8)((register_name & 0xFF00) >> 8));
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 7   
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 7   
 
   352   1          soft_iic_send_data(soft_iic_obj, (uint8)(register_name & 0x00FF));
   353   1          while(len--)
@@ -474,7 +474,7 @@ stmt  level    source
              -------------
   410          uint16 soft_iic_read_16bit (soft_iic_info_struct *soft_iic_obj)
   411          {
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 8   
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 8   
 
   412   1          uint16 temp = 0;
   413   1              zf_assert(soft_iic_obj != NULL);
@@ -542,7 +542,7 @@ stmt  level    source
   470          // 参数说明     *soft_iic_obj   软件 IIC 指定信息 可以参照 zf_driver_soft_iic.h 里的格式看看
   471          // 参数说明     register_name   传感器的寄存器地址
   472          // 参数说明     *dat           要读取的数据的缓冲区指针
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 9   
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 9   
 
   473          // 参数说明     len             要读取的数据长度
   474          // 返回参数     void            
@@ -610,7 +610,7 @@ stmt  level    source
   529          {
   530   1          zf_assert(soft_iic_obj != NULL);
   531   1          zf_assert(dat != NULL);
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 10  
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 10  
 
   532   1          soft_iic_start(soft_iic_obj);
   533   1          soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
@@ -678,7 +678,7 @@ stmt  level    source
   591          // 备注信息     
   592          //-------------------------------------------------------------------------------------------------------
              -------------
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 11  
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 11  
 
   593          void soft_iic_transfer_16bit_array (soft_iic_info_struct *soft_iic_obj, const uint16 *write_data, uint32 
              -write_len, uint16 *read_data, uint32 read_len)
@@ -746,7 +746,7 @@ stmt  level    source
   650   1          soft_iic_start(soft_iic_obj);
   651   1          soft_iic_send_data(soft_iic_obj, soft_iic_obj->addr << 1);
   652   1          soft_iic_send_data(soft_iic_obj, register_name);
-C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 19/05/26  19:24:58  PAGE 12  
+C251 COMPILER V5.60.0,  zf_driver_soft_iic                                                 24/05/26  16:50:22  PAGE 12  
 
   653   1          soft_iic_stop(soft_iic_obj);
   654   1      

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  moto                                                               21/05/26  21:00:45  PAGE 1   
+C251 COMPILER V5.60.0,  moto                                                               24/05/26  16:50:24  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE moto
@@ -50,25 +50,26 @@ stmt  level    source
    39          {
    40   1          uint16 sum = inductance_norm_data[1] + inductance_norm_data[2] + inductance_norm_data[3] + inductance
              -_norm_data[4];
-   41   1          if (sum < 10)
+   41   1          if (sum < 5)
    42   1          {
    43   2              Motor_SetSpeed(0, 0);
    44   2              interrupt_global_disable();
-   45   2          }
-   46   1      }
+   45   2                      pwm_set_duty(PWMA_CH4N_P27, 0);
+   46   2          }
+   47   1      }
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       289     ------
+  code size            =       298     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =        12     ------
-  xdata-const size     =    ------     ------
-C251 COMPILER V5.60.0,  moto                                                               21/05/26  21:00:45  PAGE 2   
+C251 COMPILER V5.60.0,  moto                                                               24/05/26  16:50:24  PAGE 2   
 
+  xdata-const size     =    ------     ------
   edata size           =    ------     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------

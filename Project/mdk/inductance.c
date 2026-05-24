@@ -3,7 +3,7 @@
 
 uint16 inductance_init_data[5][Filter_deepth];
 uint16 inductance_filter_data[5];
-int16 CUR_PARA_A =1.5, STR_PARA = 1.5,CUR_PARA_B =0.75;
+int16 CUR_PARA_A =4, STR_PARA =3,CUR_PARA_B =1;
 
 /* 把 int16 限制在 [min, max] 区间 */
 int16 range_protect_int(int16 value, int16 min_value, int16 max_value)
@@ -71,12 +71,12 @@ float Inductance_Count_Err(int16 L, int16 LM, int16 RM, int16 R)
 /* 方向偏差（加权版，由 STR_PARA / CUR_PARA 调直道与弯道权重） */
 float Inductance_Count_Err2(int16 L, int16 LM, int16 RM, int16 R)
 {
-    int32 num = ((int32)STR_PARA * (L - R) + (int32)CUR_PARA_A * (LM - RM)) * 1000;
-    int32 den = (int32)STR_PARA * (L + R) + (int32)CUR_PARA_B * IABS(LM - RM) + 1;
-    int32 res = num / den;
-    if (res >  1000) res =  1000;
-    if (res < -1000) res = -1000;
-    return (float)res;
+    float num = ((STR_PARA * (L - R))+ (CUR_PARA_A * (LM - RM))) * 1000.0f;
+    float den = ((STR_PARA * (L + R)) +(CUR_PARA_B * IABS(LM - RM))) + 1.0f;
+    float res = (num / den);
+    if (res >  1000.0f) res =  1000.0f;
+    if (res < -1000.0f) res = -1000.0f;
+    return res;
 }
 
 /* 四路电感各采样 Filter_deepth 次 → 中值平均 → 归一化 */

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            21/05/26  21:00:45  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            24/05/26  16:50:24  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -56,17 +56,17 @@ stmt  level    source
    45   1      //      cnt++;
    46   1      //      if(cnt>0&&cnt<400)
    47   1      //      {
-   48   1      //      left_spid.target=150;
-   49   1      //      right_spid.target=150;
+   48   1      //      left_spid.target=200;
+   49   1      //      right_spid.target=200;
    50   1      //      }
    51   1      //      if(cnt>400&&cnt<800)
    52   1      //      {
-   53   1      //      left_spid.target=200;
-   54   1      //      right_spid.target=200;
+   53   1      //      left_spid.target=280;
+   54   1      //      right_spid.target=280;
    55   1      //      }
    56   1      //      if(cnt>800)
    57   1      //      {
-C251 COMPILER V5.60.0,  encoder                                                            21/05/26  21:00:45  PAGE 2   
+C251 COMPILER V5.60.0,  encoder                                                            24/05/26  16:50:24  PAGE 2   
 
    58   1      //      cnt=0;
    59   1      //      }
@@ -76,16 +76,17 @@ stmt  level    source
    63          
    64          /* TIM4 5ms 节拍：执行 IMU + 方向角速度环 + 差速*/
    65          void pit_handler4(void)
-   66          {
+   66          {               
    67   1                      Inductance_Read(adc_inductance);
    68   1                      elemid = Inductance_Count_Err2(adc_inductance[1], adc_inductance[2],adc_inductance[3], adc_inductance[4
              -]);
    69   1                      Dir_Control();
-   70   1                      Dir_Control_gyro();
-   71   1                      Calculate_Differential_Drive();
-   72   1                      gyro_proc();
-   73   1      
-   74   1      }
+   70   1                      gyro_proc();
+   71   1                      Dir_Control_gyro();
+   72   1                      Calculate_Differential_Drive();
+   73   1                      
+   74   1      
+   75   1      }
 
 
 Module Information          Static   Overlayable
