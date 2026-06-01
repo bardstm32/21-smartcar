@@ -20,7 +20,7 @@ volatile int16 speed_right = 0;
 float elemid = 0;
 float eleOut_0 = 0;
 float eleOut_1 = 0;
-float BASE_SPEED =375;
+float BASE_SPEED =360;
 volatile float Turn_target = 0;
 volatile uint8 control_ready = 0;        /* 控制就绪门闸：0 = 速度环禁出，1 = 已有有效目标速度可执行 */
 

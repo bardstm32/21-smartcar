@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  trank                                                              24/05/26  22:08:55  PAGE 1   
+C251 COMPILER V5.60.0,  trank                                                              24/05/26  22:21:25  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE trank
@@ -31,7 +31,7 @@ stmt  level    source
    20          float elemid = 0;
    21          float eleOut_0 = 0;
    22          float eleOut_1 = 0;
-   23          float BASE_SPEED =375;
+   23          float BASE_SPEED =360;
    24          volatile float Turn_target = 0;
    25          volatile uint8 control_ready = 0;        /* 控制就绪门闸：0 = 速度环禁出，1 = 已有有效目标速度可执行 */
    26          
@@ -66,7 +66,7 @@ stmt  level    source
    55   1          pid->measure = measure;
    56   1      
    57   1          pid->err = pid->target - pid->measure;
-C251 COMPILER V5.60.0,  trank                                                              24/05/26  22:08:55  PAGE 2   
+C251 COMPILER V5.60.0,  trank                                                              24/05/26  22:21:25  PAGE 2   
 
    58   1      
    59   1          pid->P  = pid->Kp  * pid->err;
@@ -134,7 +134,7 @@ stmt  level    source
   120   1              // 计算左右轮目标速度
   121   1              if(k >= 0) // 右转
   122   1              {
-C251 COMPILER V5.60.0,  trank                                                              24/05/26  22:08:55  PAGE 3   
+C251 COMPILER V5.60.0,  trank                                                              24/05/26  22:21:25  PAGE 3   
 
   123   2                      left_spid.target = BASE_SPEED *(1+k*0.25);
   124   2                      right_spid.target  = BASE_SPEED *(1-k) ; // 加少减多
@@ -203,7 +203,7 @@ Module Information          Static   Overlayable
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------
-C251 COMPILER V5.60.0,  trank                                                              24/05/26  22:08:55  PAGE 4   
+C251 COMPILER V5.60.0,  trank                                                              24/05/26  22:21:25  PAGE 4   
 
   const size           =    ------     ------
   hconst size          =        65     ------
